@@ -1,6 +1,7 @@
 package ru.lastenko.maxim.SRRA_requests.entity;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "executors", schema = "requests", catalog = "")
@@ -27,6 +28,15 @@ public class Executor {
     private String email;
 
     public Executor() {
+    }
+
+    public Executor(int id, String executor, boolean isActive, String job, String phoneNumber, String email) {
+        this.id = id;
+        this.executor = executor;
+        this.isActive = isActive;
+        this.job = job;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
     }
 
     public int getId() {
@@ -75,5 +85,35 @@ public class Executor {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "Executor{" +
+                "id=" + id +
+                ", executor='" + executor + '\'' +
+                ", isActive=" + isActive +
+                ", job='" + job + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Executor executor1 = (Executor) o;
+        return id == executor1.id &&
+                isActive == executor1.isActive &&
+                executor.equals(executor1.executor) &&
+                job.equals(executor1.job) &&
+                Objects.equals(phoneNumber, executor1.phoneNumber) &&
+                Objects.equals(email, executor1.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, executor, isActive, job, phoneNumber, email);
     }
 }
