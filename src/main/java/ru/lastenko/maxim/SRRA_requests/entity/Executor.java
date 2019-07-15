@@ -1,19 +1,28 @@
 package ru.lastenko.maxim.SRRA_requests.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "executors", schema = "requests", catalog = "")
 public class Executor {
 
     @Id
     @GeneratedValue
     private int id;
+
+    @Column(name = "executor")
     private String executor;
+
+    @Column(name = "is_active")
     private boolean isActive;
+
+    @Column(name = "job")
     private String job;
+
+    @Column(name = "phone_number")
     private String phoneNumber;
+
+    @Column(name = "e-mail")
     private String email;
 
     public Executor() {
