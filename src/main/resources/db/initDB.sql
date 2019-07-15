@@ -7,6 +7,6 @@ CREATE TABLE requests.executors
     is_active boolean NOT NULL,
     job character varying(30),
     phone_number character varying(14),
-    "e-mail" character varying(25),
+    email character varying(25),
     PRIMARY KEY (executor_id)
 )

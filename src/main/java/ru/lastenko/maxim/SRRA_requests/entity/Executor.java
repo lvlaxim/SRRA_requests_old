@@ -8,6 +8,7 @@ public class Executor {
 
     @Id
     @GeneratedValue
+    @Column(name = "executor_id")
     private int id;
 
     @Column(name = "executor")
@@ -22,7 +23,7 @@ public class Executor {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Column(name = "e-mail")
+    @Column(name = "email")
     private String email;
 
     public Executor() {
