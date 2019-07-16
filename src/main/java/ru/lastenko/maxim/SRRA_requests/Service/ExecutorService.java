@@ -22,11 +22,10 @@ public class ExecutorService {
     }
 
     public Executor getById(int Id) {
-        return repository.getOne(Id);
+        return repository.findById(Id).orElse(null);
     }
 
     public List<Executor> getAll() {
-//        return repository.findAll();
         return repository.findAllByOrderByExecutorAsc();
     }
 

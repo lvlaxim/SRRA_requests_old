@@ -10,7 +10,7 @@ public class Executor {
     @Id
     @GeneratedValue
     @Column(name = "executor_id")
-    private int id;
+    private Integer id;
 
     @Column(name = "executor")
     private String executor;
@@ -30,7 +30,7 @@ public class Executor {
     public Executor() {
     }
 
-    public Executor(int id, String executor, boolean isActive, String job, String phoneNumber, String email) {
+    public Executor(Integer id, String executor, boolean isActive, String job, String phoneNumber, String email) {
         this.id = id;
         this.executor = executor;
         this.isActive = isActive;
@@ -39,11 +39,11 @@ public class Executor {
         this.email = email;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
