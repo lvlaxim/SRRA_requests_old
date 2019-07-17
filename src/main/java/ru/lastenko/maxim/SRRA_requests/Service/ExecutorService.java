@@ -10,12 +10,8 @@ import java.util.List;
 @Service
 public class ExecutorService {
 
-    private ExecutorRepository repository;
-
     @Autowired
-    public void setRepository(ExecutorRepository repository) {
-        this.repository = repository;
-    }
+    private ExecutorRepository repository;
 
     public Executor save(Executor executor) {
         return repository.save(executor);
