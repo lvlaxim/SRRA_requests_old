@@ -8,7 +8,8 @@ import java.util.Objects;
 public class Executor {
 
     @Id
-    @GeneratedValue
+    @SequenceGenerator(name = "executors_executor_id_seq", sequenceName = "requests.executors_executor_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "executors_executor_id_seq")
     @Column(name = "executor_id")
     private Integer id;
 
