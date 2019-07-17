@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS requests.executors;
+DROP TABLE IF EXISTS requests.departments;
 
 CREATE TABLE requests.executors
 (
@@ -9,4 +10,12 @@ CREATE TABLE requests.executors
     phone_number character varying(14),
     email character varying(25),
     PRIMARY KEY (executor_id)
-)
+);
+
+CREATE TABLE requests.departments
+(
+    department_id smallserial NOT NULL,
+    department_head character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    department character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    PRIMARY KEY (department_id)
+);
