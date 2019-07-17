@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface ExecutorRepository extends JpaRepository<Executor, Integer> {
 
-    List<Executor> findAllByOrderByExecutorAsc();
+    List<Executor> findAllByOrderByNameAsc();
 
 }

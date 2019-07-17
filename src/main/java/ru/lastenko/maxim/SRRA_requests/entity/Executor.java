@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "executors", schema = "requests", catalog = "")
+@Table(name = "executors", schema = "requests")
 public class Executor {
 
     @Id
@@ -14,7 +14,7 @@ public class Executor {
     private Integer id;
 
     @Column(name = "executor")
-    private String executor;
+    private String name;
 
     @Column(name = "is_active")
     private boolean isActive;
@@ -31,9 +31,9 @@ public class Executor {
     public Executor() {
     }
 
-    public Executor(Integer id, String executor, boolean isActive, String job, String phoneNumber, String email) {
+    public Executor(Integer id, String name, boolean isActive, String job, String phoneNumber, String email) {
         this.id = id;
-        this.executor = executor;
+        this.name = name;
         this.isActive = isActive;
         this.job = job;
         this.phoneNumber = phoneNumber;
@@ -48,12 +48,12 @@ public class Executor {
         this.id = id;
     }
 
-    public String getExecutor() {
-        return executor;
+    public String getName() {
+        return name;
     }
 
-    public void setExecutor(String executor) {
-        this.executor = executor;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public boolean isActive() {
@@ -92,7 +92,7 @@ public class Executor {
     public String toString() {
         return "Executor{" +
                 "id=" + id +
-                ", executor='" + executor + '\'' +
+                ", name='" + name + '\'' +
                 ", isActive=" + isActive +
                 ", job='" + job + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
@@ -107,7 +107,7 @@ public class Executor {
         Executor executor1 = (Executor) o;
         return id == executor1.id &&
                 isActive == executor1.isActive &&
-                executor.equals(executor1.executor) &&
+                name.equals(executor1.name) &&
                 job.equals(executor1.job) &&
                 Objects.equals(phoneNumber, executor1.phoneNumber) &&
                 Objects.equals(email, executor1.email);
@@ -115,6 +115,6 @@ public class Executor {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, executor, isActive, job, phoneNumber, email);
+        return Objects.hash(id, name, isActive, job, phoneNumber, email);
     }
 }

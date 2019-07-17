@@ -26,7 +26,7 @@ public class ExecutorService {
     }
 
     public List<Executor> getAll() {
-        return repository.findAllByOrderByExecutorAsc();
+        return repository.findAllByOrderByNameAsc();
     }
 
     public void deleteById(int Id) {
