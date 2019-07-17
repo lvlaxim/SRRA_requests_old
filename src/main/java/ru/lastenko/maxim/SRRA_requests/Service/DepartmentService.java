@@ -11,7 +11,7 @@ public class DepartmentService {
     @Autowired
     private DepartmentRepository repository;
 
-    public Department getById(int Id) {
-        return repository.findById(Id).orElse(null);
+    public Department getById(int id) {
+        return repository.findById(id).orElse(null);
     }
 }
