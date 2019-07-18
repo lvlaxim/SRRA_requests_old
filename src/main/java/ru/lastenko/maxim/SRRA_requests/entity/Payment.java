@@ -19,6 +19,11 @@ public class Payment {
     public Payment() {
     }
 
+    public Payment(int id, String type) {
+        this.id = id;
+        this.type = type;
+    }
+
     public Integer getId() {
         return id;
     }
