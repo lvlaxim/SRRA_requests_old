@@ -8,12 +8,15 @@ DELETE
 FROM requests.prices;
 DELETE
 FROM requests.rubrics;
+DELETE
+FROM requests.sources;
 
 ALTER SEQUENCE requests.departments_department_id_seq RESTART WITH 1;
 ALTER SEQUENCE requests.executors_executor_id_seq RESTART WITH 1;
 ALTER SEQUENCE requests.payments_payment_id_seq RESTART WITH 1;
 ALTER SEQUENCE requests.prices_price_id_seq RESTART WITH 1;
 ALTER SEQUENCE requests.rubrics_rubric_id_seq RESTART WITH 1;
+ALTER SEQUENCE requests.sources_source_id_seq RESTART WITH 1;
 
 -- ALTER SEQUENCE requests. RESTART WITH 1;
 
@@ -38,3 +41,7 @@ VALUES ('Копать', 'Штык', 1000),
 INSERT INTO requests.rubrics(rubric_code, rubric)
 VALUES ('Код1', 'Рубрика1'),
        ('Код2', 'Рубрика2');
+
+INSERT INTO requests.sources(sources)
+VALUES ('Источник1'),
+       ('Источник2');
