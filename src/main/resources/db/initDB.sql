@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS requests.executors;
 DROP TABLE IF EXISTS requests.departments;
+DROP TABLE IF EXISTS requests.payments;
 
 CREATE TABLE requests.executors
 (
@@ -19,3 +20,10 @@ CREATE TABLE requests.departments
     department character varying(50) COLLATE pg_catalog."default" NOT NULL,
     PRIMARY KEY (department_id)
 );
+
+CREATE TABLE requests.payments
+(
+    payment_id smallserial NOT NULL,
+    payment character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    PRIMARY KEY (payment_id)
+)

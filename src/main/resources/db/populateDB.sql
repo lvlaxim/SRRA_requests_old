@@ -1,8 +1,6 @@
-DELETE
-FROM requests.executors;
-
-DELETE
-FROM requests.departments;
+DELETE FROM requests.executors;
+DELETE FROM requests.departments;
+DELETE FROM requests.payments;
 
 ALTER SEQUENCE requests.executors_executor_id_seq RESTART WITH 1;
 ALTER SEQUENCE requests.departments_department_id_seq RESTART WITH 1;
@@ -16,3 +14,8 @@ VALUES ('ИсполнительБ', true, 'ДолжностьБ', '222-22-22', '
 INSERT INTO requests.departments(department_head, department)
 VALUES ('НачальникА', 'ОтделА'),
        ('НачальникБ', 'ОтделБ');
+
+INSERT INTO requests.payments(payment)
+VALUES ('Платный'),
+       ('Частично платный'),
+       ('Бесплатный');
