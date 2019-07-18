@@ -34,6 +34,6 @@ CREATE TABLE requests.prices
     price_id smallserial NOT NULL,
     work_type character varying(150) COLLATE pg_catalog."default" NOT NULL,
     unit character varying(20) COLLATE pg_catalog."default" NOT NULL,
-    price money NOT NULL,
+    price NUMERIC(1000,2) NOT NULL,
     PRIMARY KEY (price_id)
 );

@@ -25,4 +25,4 @@ VALUES ('Платный'),
 
 INSERT INTO requests.prices(work_type, unit, price)
 VALUES ('Копать', 'Штык', 1000),
-       ('Кидать', 'Ящик', 2000);
+       ('Кидать', 'Ящик', 999.99);
