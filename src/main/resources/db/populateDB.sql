@@ -1,7 +1,11 @@
-DELETE FROM requests.departments;
-DELETE FROM requests.executors;
-DELETE FROM requests.payments;
-DELETE FROM requests.prices;
+DELETE
+FROM requests.departments;
+DELETE
+FROM requests.executors;
+DELETE
+FROM requests.payments;
+DELETE
+FROM requests.prices;
 
 ALTER SEQUENCE requests.departments_department_id_seq RESTART WITH 1;
 ALTER SEQUENCE requests.executors_executor_id_seq RESTART WITH 1;
@@ -26,3 +30,7 @@ VALUES ('Платный'),
 INSERT INTO requests.prices(work_type, unit, price)
 VALUES ('Копать', 'Штык', 1000),
        ('Кидать', 'Ящик', 999.99);
+
+INSERT INTO requests.rubrics(rubric_code, rubric)
+VALUES ('Код1', 'Рубрика1'),
+       ('Код2', 'Рубрика2');

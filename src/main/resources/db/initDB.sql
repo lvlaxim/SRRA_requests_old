@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS requests.departments;
 DROP TABLE IF EXISTS requests.executors;
 DROP TABLE IF EXISTS requests.payments;
 DROP TABLE IF EXISTS requests.prices;
+DROP TABLE IF EXISTS requests.rubrics;
 
 CREATE TABLE requests.departments
 (
@@ -36,4 +37,12 @@ CREATE TABLE requests.prices
     unit character varying(20) COLLATE pg_catalog."default" NOT NULL,
     price NUMERIC(1000,2) NOT NULL,
     PRIMARY KEY (price_id)
+);
+
+CREATE TABLE requests.rubrics
+(
+    rubric_id smallserial NOT NULL,
+    rubric_code character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    rubric character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    PRIMARY KEY (rubric_id)
 );
