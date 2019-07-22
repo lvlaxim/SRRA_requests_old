@@ -19,6 +19,7 @@ ALTER SEQUENCE requests.payments_payment_id_seq RESTART WITH 1;
 ALTER SEQUENCE requests.prices_price_id_seq RESTART WITH 1;
 ALTER SEQUENCE requests.rubrics_rubric_id_seq RESTART WITH 1;
 ALTER SEQUENCE requests.sources_source_id_seq RESTART WITH 1;
+ALTER SEQUENCE requests.themes_theme_id_seq RESTART WITH 1;
 
 -- ALTER SEQUENCE requests. RESTART WITH 1;
 

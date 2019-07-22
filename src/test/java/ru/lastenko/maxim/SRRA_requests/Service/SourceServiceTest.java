@@ -11,26 +11,24 @@ import ru.lastenko.maxim.SRRA_requests.entity.Source;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Sql(scripts = "classpath:db/populateDB.sql")
 public class SourceServiceTest {
 
-    public static final Source SOURCE_1 = new Source(1, "Источник1");
-    public static final Source SOURCE_2 = new Source(2, "Источник2");
+    public static final Source SOURCE1 = new Source(1, "Источник1");
+    public static final Source SOURCE2 = new Source(2, "Источник2");
 
     @Autowired
     private SourceService service;
 
     @Test
     public void getById() {
-        Assert.assertEquals(SOURCE_2, service.getById(2));
+        Assert.assertEquals(SOURCE2, service.getById(2));
     }
 
     @Test
     public void getAll() {
-        Assert.assertEquals(List.of(SOURCE_1, SOURCE_2), service.getAll());
+        Assert.assertEquals(List.of(SOURCE1, SOURCE2), service.getAll());
     }
 }

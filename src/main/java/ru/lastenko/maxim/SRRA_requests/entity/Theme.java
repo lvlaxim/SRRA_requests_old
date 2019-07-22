@@ -4,13 +4,13 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "executors", schema = "requests")
+@Table(name = "themes", schema = "requests")
 public class Theme {
 
     @Id
-    @SequenceGenerator(name = "executors_executor_id_seq", sequenceName = "requests.executors_executor_id_seq")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "executors_executor_id_seq")
-    @Column(name = "executor_id")
+    @SequenceGenerator(name = "themes_theme_id_seq", sequenceName = "requests.themes_theme_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "themes_theme_id_seq")
+    @Column(name = "theme_id")
     private Integer id;
 
     @Column(name = "theme")
