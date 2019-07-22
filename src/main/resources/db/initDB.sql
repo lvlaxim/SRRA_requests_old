@@ -20,7 +20,7 @@ CREATE TABLE requests.executors
 (
     executor_id smallserial NOT NULL,
     executor character varying(25) NOT NULL,
-    is_active boolean NOT NULL,
+    is_active boolean NOT NULL DEFAULT true,
     job character varying(30),
     phone_number character varying(14),
     email character varying(25),
