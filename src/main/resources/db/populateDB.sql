@@ -10,6 +10,8 @@ DELETE
 FROM requests.rubrics;
 DELETE
 FROM requests.sources;
+DELETE
+FROM requests.themes;
 
 ALTER SEQUENCE requests.departments_department_id_seq RESTART WITH 1;
 ALTER SEQUENCE requests.executors_executor_id_seq RESTART WITH 1;
@@ -45,3 +47,7 @@ VALUES ('Код1', 'Рубрика1'),
 INSERT INTO requests.sources(sources)
 VALUES ('Источник1'),
        ('Источник2');
+
+INSERT INTO requests.themes(theme)
+VALUES ('Тема1'),
+       ('Тема2');

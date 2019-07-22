@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS requests.payments;
 DROP TABLE IF EXISTS requests.prices;
 DROP TABLE IF EXISTS requests.rubrics;
 DROP TABLE IF EXISTS requests.sources;
+DROP TABLE IF EXISTS requests.themes;
 
 CREATE TABLE requests.departments
 (
@@ -15,7 +16,7 @@ CREATE TABLE requests.departments
 
 CREATE TABLE requests.executors
 (
-    executor_id serial NOT NULL,
+    executor_id smallserial NOT NULL,
     executor character varying(25) NOT NULL,
     is_active boolean NOT NULL,
     job character varying(30),
@@ -53,5 +54,12 @@ CREATE TABLE requests.sources
     source_id smallserial NOT NULL,
     sources character varying(15) COLLATE pg_catalog."default" NOT NULL,
     PRIMARY KEY (source_id)
-)
+);
+
+CREATE TABLE requests.themes
+(
+    theme_id smallserial NOT NULL,
+    theme character varying(130) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT themes_pkey PRIMARY KEY (theme_id)
+);
 
