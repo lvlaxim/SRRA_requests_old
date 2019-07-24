@@ -22,6 +22,6 @@ public class RequestService {
     }
 
     public List<Request> getAllOrderedByIdDesc(){
-        return repository.FindAllByOrderByIdDesc();
+        return repository.findAllByOrderByIdDesc();
     }
 }
