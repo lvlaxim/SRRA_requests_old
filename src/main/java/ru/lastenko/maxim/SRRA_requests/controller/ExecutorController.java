@@ -28,9 +28,4 @@ public class ExecutorController {
     public List<Executor> getAll() {
         return service.getAll();
     }
-
-    public void deleteById(int Id) {
-        service.deleteById(Id);
-    }
-
 }

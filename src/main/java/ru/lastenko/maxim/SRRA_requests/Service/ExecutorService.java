@@ -25,8 +25,4 @@ public class ExecutorService {
         return repository.findAllByOrderByNameAsc();
     }
 
-    public void deleteById(int Id) {
-        repository.deleteById(Id);
-    }
-
 }
