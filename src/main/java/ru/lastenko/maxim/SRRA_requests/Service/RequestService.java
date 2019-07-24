@@ -20,4 +20,8 @@ public class RequestService {
     public List<Request> getAll() {
         return repository.findAll();
     }
+
+    public List<Request> getAllOrderedByIdDesc(){
+        return repository.FindAllByOrderByIdDesc();
+    }
 }

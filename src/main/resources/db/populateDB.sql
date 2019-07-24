@@ -25,7 +25,6 @@ ALTER SEQUENCE requests.sources_source_id_seq RESTART WITH 1;
 ALTER SEQUENCE requests.themes_theme_id_seq RESTART WITH 1;
 ALTER SEQUENCE requests.requests_request_id_seq RESTART WITH 1;
 
--- ALTER SEQUENCE requests. RESTART WITH 1;
 
 INSERT INTO requests.executors(executor, is_active, job, phone_number, email)
 VALUES ('ИсполнительБ', true, 'ДолжностьБ', '222-22-22', 'executorB@gosarhro.ru'),
