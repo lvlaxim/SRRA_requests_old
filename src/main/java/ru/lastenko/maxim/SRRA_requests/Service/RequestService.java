@@ -16,4 +16,8 @@ public class RequestService {
     public Request getById(int id){
         return repository.findById(id).orElse(null);
     }
+
+    public List<Request> getAll() {
+        return repository.findAll();
+    }
 }
