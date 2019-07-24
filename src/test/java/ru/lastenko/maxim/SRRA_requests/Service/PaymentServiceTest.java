@@ -7,20 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.lastenko.maxim.SRRA_requests.entity.Payment;
+import ru.lastenko.maxim.SRRA_requests.TestData;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static ru.lastenko.maxim.SRRA_requests.TestData.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Sql(scripts = "classpath:db/populateDB.sql")
 public class PaymentServiceTest {
-
-    public static final Payment PAID_PAYMENT = new Payment(1, "Платный");
-    public static final Payment PARTIALLY_PAID_PAYMENT = new Payment(2, "Частично платный");
-    public static final Payment FREE_PAYMENT = new Payment(3, "Бесплатный");
 
     @Autowired
     private PaymentService service;

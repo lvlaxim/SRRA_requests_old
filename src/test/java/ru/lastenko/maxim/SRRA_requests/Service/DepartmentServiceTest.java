@@ -7,16 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.lastenko.maxim.SRRA_requests.entity.Department;
+import ru.lastenko.maxim.SRRA_requests.TestData;
 
-import static org.junit.Assert.*;
+import static ru.lastenko.maxim.SRRA_requests.TestData.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Sql(scripts = "classpath:db/populateDB.sql")
 public class DepartmentServiceTest {
-
-    public static final Department DEPARTMENT_B = new Department(2, "НачальникБ", "ОтделБ");
 
     @Autowired
     DepartmentService service;

@@ -7,19 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.lastenko.maxim.SRRA_requests.entity.Rubric;
+import ru.lastenko.maxim.SRRA_requests.TestData;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static ru.lastenko.maxim.SRRA_requests.TestData.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Sql(scripts = "classpath:db/populateDB.sql")
 public class RubricServiceTest {
-
-    public static final Rubric RUBRIC_1 = new Rubric(1, "Код1", "Рубрика1");
-    public static final Rubric RUBRIC_2 = new Rubric(2, "Код2", "Рубрика2");
 
     @Autowired
     RubricService service;
