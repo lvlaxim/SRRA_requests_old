@@ -30,7 +30,7 @@
             <td th:text="${request.getShortRequest()}">Вопрос (кратко)</td>
             <td th:text="${request.getShortAnswer()}">Ответ (кратко)</td>
             <td th:text="${request.isUrgent()}">Срочный</td>
-            <td th:text="${request.getReceiptDate()}">Дата полученя</td>
+            <td th:text="${#temporals.format(request.getReceiptDate(), 'dd.MM.yyyy')}">Дата полученя</td>
         </tr>
         </tbody>
     </table>
