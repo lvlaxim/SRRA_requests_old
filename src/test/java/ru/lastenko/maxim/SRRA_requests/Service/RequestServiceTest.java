@@ -42,19 +42,19 @@ public class RequestServiceTest {
         Assert.assertEquals(expectedRequests, service.getAll());
     }
 
-    @Test
-    public void getAllOrderedByIdDesc() {
-        List<Request> expectedRequests = List.of(
-                REQUEST8,
-                REQUEST7,
-                REQUEST6,
-                REQUEST5,
-                REQUEST4,
-                REQUEST3,
-                REQUEST2,
-                REQUEST1
-        );
-
-        Assert.assertEquals(expectedRequests, service.getAllOrderedByIdDesc());
-    }
+//    @Test
+//    public void getAllOrderedByIdDesc() {
+//        List<Request> expectedRequests = List.of(
+//                REQUEST8,
+//                REQUEST7,
+//                REQUEST6,
+//                REQUEST5,
+//                REQUEST4,
+//                REQUEST3,
+//                REQUEST2,
+//                REQUEST1
+//        );
+//
+//        Assert.assertEquals(expectedRequests, service.getAllOrderedByIdDesc());
+//    }
 }

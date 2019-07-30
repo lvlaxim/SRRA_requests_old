@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <link th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    <title>Запросы</title>
+</head>
+<body>
+<div>
+    <table>
+        <thead>
+        <tr>
+            <th>№</th>
+            <th>Рубрика</th>
+            <th>Тема</th>
+            <th>Тема</th>
+            <th>Вопрос (кратко)</th>
+            <th>Ответ (кратко)</th>
+            <th>Срочный</th>
+            <th>Дата получения</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="request : ${requests}">
+            <td th:text="${request.getId()}">№</td>
+            <td th:text="${request.getRubric().getName()}">Рубрика</td>
+            <td th:text="${request.getTheme().getName()}">Тема</td>
+            <td th:text="${request.getSubject()}">Тема</td>
+            <td th:text="${request.getShortRequest()}">Вопрос (кратко)</td>
+            <td th:text="${request.getShortAnswer()}">Ответ (кратко)</td>
+            <td th:text="${request.isUrgent()}">Срочный</td>
+            <td th:text="${request.getReceiptDate()}">Дата полученя</td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="row">
+        <div class="form-group col-md-1">
+            <select class="form-control pagination" id="pageSizeSelect">
+                <option th:each="pageSize : ${pageSizes}" th:text="${pageSize}" th:value="${pageSize}"
+                        th:selected="${pageSize} == ${selectedPageSize}"></option>
+            </select>
+        </div>
+        <div th:if="${requests.totalPages != 1}" class="form-group col-md-11 pagination-centered">
+            <ul class="pagination">
+                <li th:class="${requests.number == 0} ? disabled">
+                    <a class="pageLink" th:href="@{/(pageSize=${selectedPageSize}, page=1)}">&laquo;</a>
+                </li>
+                <li th:class="${requests.number == 0} ? disabled">
+                    <a class="pageLink" th:href="@{/(pageSize=${selectedPageSize}, page=${requests.number})}">&larr;</a>
+                </li>
+                <li th:class="${requests.number == (page - 1)} ? 'active pointer-disabled'"
+                    th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}">
+                    <a class="pageLink" th:href="@{/(pageSize=${selectedPageSize}, page=${page})}"
+                       th:text="${page}"></a>
+                </li>
+                <li th:class="${requests.number + 1 == requests.totalPages} ? disabled">
+                    <a class="pageLink"
+                       th:href="@{/(pageSize=${selectedPageSize}, page=${requests.number + 2})}">&rarr;</a>
+                </li>
+                <li th:class="${requests.number + 1 == requests.totalPages} ? disabled">
+                    <a class="pageLink"
+                       th:href="@{/(pageSize=${selectedPageSize}, page=${requests.totalPages})}">&raquo;</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
