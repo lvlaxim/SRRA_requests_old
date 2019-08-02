@@ -7,7 +7,7 @@ import java.util.Objects;
 import static java.math.BigDecimal.ROUND_HALF_UP;
 
 @Entity
-@Table(name = "prices", schema = "requests")
+@Table(name = "prices")
 public class WorkType {
 
     @Id

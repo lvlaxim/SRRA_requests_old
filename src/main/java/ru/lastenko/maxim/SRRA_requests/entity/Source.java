@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "sources", schema = "requests")
+@Table(name = "sources")
 public class Source {
 
     @Id
