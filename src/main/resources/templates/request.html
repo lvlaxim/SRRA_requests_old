@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+<body>
+
+<div th:replace="fragments/header :: header"></div>
+<div class="container mt-4">
+
+
+
+    <div th:text="${request.getId()}"></div>
+    <div th:text="${request.getRubric().getName()}"></div>
+    <div th:text="${request.getTheme().getName()}"></div>
+    <div th:text="${request.getSubject()}"></div>
+    <div th:text="${request.getShortRequest()}"></div>
+    <div th:text="${request.getShortAnswer()}"></div>
+    <div th:text="${request.getSource().getName()}"></div>
+
+    <div th:replace="fragments/footer :: footer"></div>
+</div>
+
+</body>
+</html>
