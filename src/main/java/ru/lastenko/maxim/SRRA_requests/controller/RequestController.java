@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import ru.lastenko.maxim.SRRA_requests.Service.RequestService;
@@ -34,7 +35,7 @@ public class RequestController {
      * @param page
      * @return model and view
      */
-    @GetMapping("/")
+    @GetMapping("/requests")
     public ModelAndView list(@RequestParam("pageSize") Optional<Integer> pageSize,
                              @RequestParam("page") Optional<Integer> page) {
 
@@ -59,5 +60,10 @@ public class RequestController {
         return modelAndView;
     }
 
-
+    @GetMapping("/requests/{id}")
+    public ModelAndView view(@PathVariable Integer id) {
+        ModelAndView modelAndView = new ModelAndView("request");
+        modelAndView.addObject("request", service.getById(id));
+        return modelAndView;
+    }
 }
