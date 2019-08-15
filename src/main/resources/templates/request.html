@@ -7,16 +7,218 @@
 <div class="container mt-4">
 
 
+    <!--    <div th:text="${request.getRubric().getName()}"></div>-->
+    <form>
 
-    <div th:text="${request.getId()}"></div>
-    <div th:text="${request.getRubric().getName()}"></div>
-    <div th:text="${request.getTheme().getName()}"></div>
-    <div th:text="${request.getSubject()}"></div>
-    <div th:text="${request.getShortRequest()}"></div>
-    <div th:text="${request.getShortAnswer()}"></div>
-    <div th:text="${request.getSource().getName()}"></div>
+        <div class="row">
+            <div class="col-1">
+                <div class="h4" th:text="${request.getId()}"></div>
+            </div>
+            <div class="col-1">
+                <div class="form-group">
+                    <label for="formInNumber">Исх. №</label>
+                    <input class="form-control" type="text" id="formInNumber" th:value="${request.getInNumber()}">
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-group">
+                    <label for="formSmav">№ СМЭВ</label>
+                    <input class="form-control" type="text" id="formSmav" th:value="${request.getSmav()}">
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-group">
+                    <label for="formSourceSelect">Получил</label>
+                    <select class="form-control" id="formReceiverSelect">
+                        <option th:each="receiver : ${executors}"
+                                th:text="${receiver.getName()}"
+                                th:selected="${request.getReceiver().getId().equals(receiver.getId())}"
+                                th:hidden="${!receiver.isActive()}"
+                        >
+                            Default select
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-group">
+                    <label for="formReceiptDateInput">Дата получения</label>
+                    <input type="date" class="form-control" id="formReceiptDateInput"
+                           th:value="${request.getReceiptDate()}">
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-group">
+                    <label for="formWorkingBySelect">Работает</label>
+                    <select class="form-control" id="formWorkingBySelect">
+                        <option th:each="worker : ${executors}"
+                                th:text="${worker.getName()}"
+                                th:selected="${request.workingBy.getId().equals(worker.getId())}">
+                            Default select
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-group">
+                    <label for="formStartDateInput">Дата начала</label>
+                    <input type="date" class="form-control" id="formStartDateInput"
+                           th:value="${request.getStartDate()}">
+                </div>
+            </div>
+        </div>
 
-    <div th:replace="fragments/footer :: footer"></div>
+        <div class="row">
+            <div class="col-7">
+                <div class="form-group">
+                    <label for="formRubricSelect">Рубрика</label>
+                    <select class="form-control" id="formRubricSelect">
+                        <option th:each="rubric : ${rubrics}"
+                                th:text="${rubric.getRubric()} + '  ' + ${rubric.getName()}"
+                                th:selected="${request.getRubric().getId().equals(rubric.getId())}"
+                        >
+                            Default select
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-1"></div>
+            <div class="col-2">
+                <div class="form-group">
+                    <label for="formExecutorSelect">Исполнил</label>
+                    <select class="form-control" id="formExecutorSelect">
+                        <option th:each="executor : ${executors}"
+                                th:text="${executor.getName()}"
+                                th:selected="${request.getExecutor().getId().equals(executor.getId())}">
+                            Default select
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-group">
+                    <label for="formEndDateInput">Дата исполнения</label>
+                    <input type="date" class="form-control" id="formEndDateInput" th:value="${request.getEndDate()}">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-9">
+                <div class="form-group">
+                    <label for="formThemeSelect">Тема</label>
+                    <select class="form-control" id="formThemeSelect">
+                        <option th:each="theme : ${themes}"
+                                th:text="${theme.getName()}"
+                                th:selected="${request.getTheme().getId().equals(theme.getId())}">
+                            Default select
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-1"></div>
+            <div class="col-2">
+                <div class="form-group">
+                    <label for="formSourceSelect">Тип отправления</label>
+                    <select class="form-control" id="formSourceSelect">
+                        <option th:each="source : ${sources}"
+                                th:text="${source.getName()}"
+                                th:selected="${request.getTheme().getId().equals(source.getId())}">
+                            Default select
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <textarea class="form-control" id="formSubjectTextarea" rows="2"
+                      th:text="${request.getSubject()}"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="formShortAnswerTextarea">Ответ кратко</label>
+            <textarea class="form-control" id="formShortAnswerTextarea" rows="4"
+                      th:text="${request.getShortAnswer()}"></textarea>
+        </div>
+
+        <div class="row">
+            <div class="col-1">
+                <div class="form-group">
+                    <label for="formCopyNumber">Копий</label>
+                    <input class="form-control" type="text" id="formCopyNumber" th:value="${request.getCopyNumber()}">
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-group">
+                    <label for="formPaymentSelect">Оплата</label>
+                    <select class="form-control" id="formPaymentSelect">
+                        <option th:each="payment : ${payments}"
+                                th:text="${payment.getType()}"
+                                th:selected="${request.getPayment().getId().equals(payment.getId())}">
+                            Default select
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-5"></div>
+            <div class="col-2">
+                <div class="form-group">
+                    <label for="formInNumberFromOrg">Входящий № орг.</label>
+                    <input class="form-control" type="text" id="formInNumberFromOrg"
+                           th:value="${request.getInNumFromOrg()}">
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-group">
+                    <label for="formInDateInput">от</label>
+                    <input type="date" class="form-control" id="formInDateInput" th:value="${request.getInDate()}">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="isUrgentCheck"
+                           th:checked="${request.isUrgent()}">
+                    <label class="form-check-label" for="isUrgentCheck">
+                        Срочный
+                    </label>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="isGPW" th:checked="${request.isGPW()}">
+                    <label class="form-check-label" for="isGPW">
+                        ВОВ
+                    </label>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="isEntity" th:checked="${request.isEntity()}">
+                    <label class="form-check-label" for="isEntity">
+                        Юр. лицо
+                    </label>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="isConsular"
+                           th:checked="${request.isConsular()}">
+                    <label class="form-check-label" for="isConsular">
+                        Консульский
+                    </label>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div th:replace="fragments/footer :: footer"></div>
+    </form>
 </div>
 
 </body>

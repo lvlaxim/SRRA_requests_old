@@ -9,30 +9,28 @@
 
     <table class="table table-sm table-hover">
         <thead>
-        <tr>
-            <th scope="col">№</th>
-            <th scope="col">Рубрика</th>
-            <th scope="col">Тема</th>
-            <th scope="col">Тема</th>
-            <th scope="col">Вопрос (кратко)</th>
-            <th scope="col">Ответ (кратко)</th>
-            <th scope="col">Срочный</th>
-            <th scope="col">Дата получения</th>
+        <tr class="row">
+            <th class="col-1" scope="col">№</th>
+            <th class="col-7" scope="col">Тема</th>
+            <th class="col-1" scope="col">Исх. номер</th>
+            <th class="col-1" scope="col">Дата исполнения</th>
+            <th class="col-2" scope="col">Исполнитель</th>
         </tr>
         </thead>
         <tbody>
 
-        <tr th:each="request : ${requests}">
-            <th scope="row"><a th:href="@{/requests/{requestId}(requestId=${request.getId()})}"><span
-                    th:text="${request.getId()}">Изменить</span></a></th>
-            <td th:text="${request.getRubric().getName()}">Рубрика</td>
-            <td th:text="${request.getTheme().getName()}">Тема</td>
-            <td th:text="${request.getSubject()}">Тема</td>
-            <td th:text="${request.getShortRequest()}">Вопрос (кратко)</td>
-            <td th:text="${request.getShortAnswer()}">Ответ (кратко)</td>
-            <td th:text="${request.isUrgent()}">Срочный</td>
-            <td th:text="${#temporals.format(request.getReceiptDate(), 'dd.MM.yyyy')}">Дата полученя</td>
-
+        <tr class="row" th:each="request : ${requests}">
+            <td class="col-1" scope="row">
+                <a th:href="@{/requests/{requestId}(requestId=${request.getId()})}">
+                    <span
+                            th:text="${request.getId()}">Изменить
+                    </span>
+                </a>
+            </td>
+            <td class="col-7" scope="row" th:text="${request.getSubject()}"></td>
+            <td class="col-1" scope="row" th:text="${request.getInNumber()}"></td>
+            <td class="col-1" scope="row" th:text="${#temporals.format(request.getEndDate(), 'dd.MM.yyyy')}"></td>
+            <td class="col-2" scope="row" th:text="${request.getExecutor().getName()}"></td>
         </tr>
         </tbody>
     </table>
@@ -52,7 +50,7 @@
             </li>
             <li class="page-item"
                 th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}"
-            th:classappend="${requests.number == (page - 1)} ? active">
+                th:classappend="${requests.number == (page - 1)} ? active">
                 <a class="page-link" th:href="@{/requests/(pageSize=${selectedPageSize}, page=${page})}"
                    th:text="${page}"></a>
             </li>
