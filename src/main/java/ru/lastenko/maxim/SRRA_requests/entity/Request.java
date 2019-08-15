@@ -134,7 +134,7 @@ public class Request {
     }
 
     public Rubric getRubric() {
-        return rubric;
+        return rubric != null ? rubric : Rubric.EMPTY_RUBRIC;
     }
 
     public void setRubric(Rubric rubric) {
@@ -142,7 +142,7 @@ public class Request {
     }
 
     public Theme getTheme() {
-        return theme;
+        return theme != null ? theme : Theme.EMPTY_THEME;
     }
 
     public void setTheme(Theme theme) {
@@ -174,7 +174,7 @@ public class Request {
     }
 
     public Source getSource() {
-        return source;
+        return source != null ? source : Source.EMPTY_SOURCE;
     }
 
     public void setSource(Source source) {
@@ -254,7 +254,7 @@ public class Request {
     }
 
     public Executor getExecutor() {
-        return executor;
+        return executor != null ? executor : Executor.EMPTY_EXECUTOR;
     }
 
     public void setExecutor(Executor executor) {
