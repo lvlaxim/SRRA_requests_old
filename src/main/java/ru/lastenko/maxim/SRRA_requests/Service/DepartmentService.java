@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import ru.lastenko.maxim.SRRA_requests.entity.Department;
 import ru.lastenko.maxim.SRRA_requests.repository.DepartmentRepository;
 
+import java.util.List;
+
 @Service
 public class DepartmentService {
 
@@ -13,5 +15,9 @@ public class DepartmentService {
 
     public Department getById(int id) {
         return repository.findById(id).orElse(null);
+    }
+
+    public List<Department> getAll() {
+        return repository.findAll();
     }
 }
