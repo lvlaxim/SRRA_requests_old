@@ -11,16 +11,59 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
 
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
                     Фильтр
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Мои запросы</a>
-                    <a class="dropdown-item" href="#">В работе</a>
-                    <a class="dropdown-item" href="#">Новые запросы</a>
+                    <a class="dropdown-item" href="#">Отменить фильтр</a>
+                    <a class="dropdown-item" data-toggle="modal" data-target="#exampleModal" href="#">Создать Фильтр</a>
                 </div>
-
             </ul>
+        </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Фильтр</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="filterRequestId">Код запроса</label>
+                                        <input class="form-control" type="text" id="filterRequestId">
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="filterInNumber">Исх. №</label>
+                                        <input class="form-control" type="text" id="filterInNumber">
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="filterSmav">№ СМЭВ</label>
+                                        <input class="form-control" type="text" id="filterSmav">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+                        <button type="button" class="btn btn-primary">Применить</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </nav>
 </div>
