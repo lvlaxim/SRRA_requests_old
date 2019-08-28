@@ -10,8 +10,13 @@ import javax.persistence.criteria.Root;
 
 public class RequestSpecifications {
 
-    public static Specification<Request> getByIdSpec(Integer id) {
+    public static Specification<Request> hasId(Integer id) {
         return (Specification<Request>) (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("id"), id);
     }
+
+    public static Specification<Request> answerContains(String answer) {
+        return (request, query,criteriaBuilder) -> criteriaBuilder.like(request.get("shortAnswer"), "%" + answer + "%");
+    }
+
 }
 

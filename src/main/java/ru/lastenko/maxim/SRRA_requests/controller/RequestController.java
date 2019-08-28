@@ -3,16 +3,14 @@ package ru.lastenko.maxim.SRRA_requests.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ru.lastenko.maxim.SRRA_requests.Service.*;
 import ru.lastenko.maxim.SRRA_requests.entity.Request;
 import ru.lastenko.maxim.SRRA_requests.util.Pager;
 
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -48,7 +46,9 @@ public class RequestController {
      */
     @GetMapping("/requests")
     public ModelAndView list(@RequestParam("pageSize") Optional<Integer> pageSize,
-                             @RequestParam("page") Optional<Integer> page) {
+                             @RequestParam("page") Optional<Integer> page,
+                             @RequestParam(required = false) Integer id,
+                             @RequestParam(required = false) String answer) {
 
         ModelAndView modelAndView = new ModelAndView("requests");
 
@@ -61,9 +61,8 @@ public class RequestController {
         // param. decreased by 1.
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
 
-        Page<Request> requests = requestService.getAllOrderedByIdDesc(PageRequest.of(evalPage, evalPageSize));
+        Page<Request> requests = requestService.getByFilter(id, answer, PageRequest.of(evalPage, evalPageSize,Sort.by("id").descending()));
         Pager pager = new Pager(requests.getTotalPages(), requests.getNumber(), BUTTONS_TO_SHOW);
-
 
         modelAndView.addObject("requests", requests);
         modelAndView.addObject("selectedPageSize", evalPageSize);
