@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="pager">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${requests.number == 0} ? disabled">
+                <a class="page-link"
+                   th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                   th:href="${urlBuilder.replaceQueryParam('pageSize', selectedPageSize).replaceQueryParam('page', 1).build(false).toUriString()}"
+                   aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item" th:classappend="${requests.number == 0} ? disabled">
+                <a class="page-link"
+                   th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                   th:href="${urlBuilder.replaceQueryParam('pageSize', selectedPageSize).replaceQueryParam('page', requests.number).build(false).toUriString()}">&larr;</a>
+            </li>
+            <li class="page-item"
+                th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}"
+                th:classappend="${requests.number == (page - 1)} ? active">
+                <!--                <a class="page-link" th:href="@{/requests/(pageSize=${selectedPageSize}, page=${page})}"-->
+                <!--                https://stackoverflow.com/questions/27623405/thymeleaf-add-parameter-to-current-url?answertab=oldest#tab-top-->
+                <a class="page-link"
+                   th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                   th:href="${urlBuilder.replaceQueryParam('pageSize', selectedPageSize).replaceQueryParam('page', page).build(false).toUriString()}"
+                   th:text="${page}"></a>
+            </li>
+            <li class="page-item" th:classappend="${requests.number + 1 == requests.totalPages} ? disabled">
+                <a class="page-link"
+                   th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                   th:href="${urlBuilder.replaceQueryParam('pageSize', selectedPageSize).replaceQueryParam('page', requests.number + 2).build(false).toUriString()}">&rarr;</a>
+            </li>
+            <li class="page-item" th:classappend="${requests.number + 1 == requests.totalPages} ? disabled">
+                <a class="page-link"
+                   th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                   th:href="${urlBuilder.replaceQueryParam('pageSize', selectedPageSize).replaceQueryParam('page', requests.totalPages).build(false).toUriString()}"
+                   aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+</html>

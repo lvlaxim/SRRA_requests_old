@@ -4,6 +4,7 @@ package ru.lastenko.maxim.SRRA_requests.util;
      *
      * @author Branislav Lazic
      * @author Bruno Raljic
+     * https://github.com/BranislavLazic/spring-thymeleaf-pagination
      */
     public class Pager {
 
