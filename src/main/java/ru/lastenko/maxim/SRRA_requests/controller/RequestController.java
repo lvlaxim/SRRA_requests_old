@@ -68,7 +68,7 @@ public class RequestController {
         Page<Request> requests = requestService.getByFilter(id, answer, PageRequest.of(evalPage, evalPageSize, Sort.by("id").descending()));
         Pager pager = new Pager(requests.getTotalPages(), requests.getNumber(), BUTTONS_TO_SHOW);
 
-        ModelAndView modelAndView = new ModelAndView("requests");
+        ModelAndView modelAndView = new ModelAndView(requests.getTotalElements() == 1 ? "forward:/request" : "requests");
 
         modelAndView.addObject("requests", requests);
         modelAndView.addObject("selectedPageSize", evalPageSize);

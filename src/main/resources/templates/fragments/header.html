@@ -2,7 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="header">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/requests">Запросы</a>
+        <a class="navbar-brand"
+           th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+           th:href="${urlBuilder
+           .replacePath('/requests')
+           .replaceQueryParam('page', 1)
+           .build(false).toUriString()}">Запросы</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -13,11 +18,11 @@
 
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
-                    Фильтр<span class="badge badge-secondary" th:text="${requests.getTotalElements()}">99+</span>
+                    Фильтр <span class="badge badge-secondary" th:text="${requests.getTotalElements()}">99+</span>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Отменить фильтр</a>
                     <a class="dropdown-item" data-toggle="modal" data-target="#exampleModal" href="#">Создать Фильтр</a>
+                    <a class="dropdown-item" href="/requests">Отменить фильтр</a>
                 </div>
             </ul>
         </div>
@@ -37,6 +42,10 @@
                         </div>
 
                         <div class="modal-body">
+                            <div class="d-none">
+                                Это скрыто!!!
+                                <input class="form-control" type="checkbox" name="filterIsOn" checked value="true"/>
+                            </div>
                             <div class="row">
                                 <div class="col-4">
                                     <div class="form-group">
