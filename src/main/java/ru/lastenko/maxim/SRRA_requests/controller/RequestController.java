@@ -11,6 +11,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.lastenko.maxim.SRRA_requests.Service.*;
 import ru.lastenko.maxim.SRRA_requests.entity.Request;
 import ru.lastenko.maxim.SRRA_requests.util.Pager;
+import ru.lastenko.maxim.SRRA_requests.util.RequestFilter;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -65,11 +66,13 @@ public class RequestController {
         // param. decreased by 1.
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
 
-        Page<Request> requests = requestService.getByFilter(id, answer, PageRequest.of(evalPage, evalPageSize, Sort.by("id").descending()));
+        RequestFilter filter = getFilter(id, answer);
+        Page<Request> requests = requestService.getByFilter(filter, PageRequest.of(evalPage, evalPageSize, Sort.by("id").descending()));
         Pager pager = new Pager(requests.getTotalPages(), requests.getNumber(), BUTTONS_TO_SHOW);
 
         ModelAndView modelAndView = new ModelAndView(requests.getTotalElements() == 1 ? "forward:/request" : "requests");
 
+        modelAndView.addObject("filter", filter);
         modelAndView.addObject("requests", requests);
         modelAndView.addObject("selectedPageSize", evalPageSize);
         modelAndView.addObject("pageSizes", PAGE_SIZES);
@@ -94,9 +97,11 @@ public class RequestController {
         // param. decreased by 1.
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
 
-        Page<Request> requests = requestService.getByFilter(id, answer, PageRequest.of(evalPage, evalPageSize, Sort.by("id").descending()));
+        RequestFilter filter = getFilter(id, answer);
+        Page<Request> requests = requestService.getByFilter(filter, PageRequest.of(evalPage, evalPageSize, Sort.by("id").descending()));
         Pager pager = new Pager(requests.getTotalPages(), requests.getNumber(), BUTTONS_TO_SHOW);
 
+        modelAndView.addObject("filter", filter);
         modelAndView.addObject("requests", requests);
         modelAndView.addObject("selectedPageSize", evalPageSize);
         modelAndView.addObject("pageSizes", PAGE_SIZES);
@@ -110,5 +115,12 @@ public class RequestController {
         modelAndView.addObject("payments", paymentService.getAll());
 
         return modelAndView;
+    }
+
+    private RequestFilter getFilter(Integer id, String answer) {
+        RequestFilter filter = new RequestFilter();
+        filter.setId(id);
+        filter.setAnswer(answer);
+        return filter;
     }
 }

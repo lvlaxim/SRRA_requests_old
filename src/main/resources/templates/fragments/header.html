@@ -18,11 +18,13 @@
 
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
-                    Фильтр <span class="badge badge-secondary" th:text="${requests.getTotalElements()}">99+</span>
+                    Фильтр <span class="badge badge-secondary"
+                                 th:if="${filter.isEnabled()}"
+                                 th:text="${requests.getTotalElements()<100 ? requests.getTotalElements() : '99+'}">99+</span>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" data-toggle="modal" data-target="#exampleModal" href="#">Создать Фильтр</a>
-                    <a class="dropdown-item" href="/requests">Отменить фильтр</a>
+                    <a class="dropdown-item" data-toggle="modal" data-target="#exampleModal" href="#" th:text="${filter.isEnabled() ? 'Изменить' : 'Создать'}">Создать</a>
+                    <a class="dropdown-item" href="/requests">Отменить</a>
                 </div>
             </ul>
         </div>
@@ -42,15 +44,11 @@
                         </div>
 
                         <div class="modal-body">
-                            <div class="d-none">
-                                Это скрыто!!!
-                                <input class="form-control" type="checkbox" name="filterIsOn" checked value="true"/>
-                            </div>
                             <div class="row">
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label for="filterRequestId">Код запроса</label>
-                                        <input class="form-control" type="text" name="id" id="filterRequestId"/>
+                                        <input class="form-control" type="text" name="id" id="filterRequestId" th:value="${filter.getId()}"/>
                                     </div>
                                 </div>
                                 <div class="col-4">
@@ -70,7 +68,7 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label for="filterAnswer">Ответ кратко</label>
-                                        <input class="form-control" type="text" name="answer" id="filterAnswer">
+                                        <input class="form-control" type="text" name="answer" id="filterAnswer" th:value="${filter.getAnswer()}">
                                     </div>
                                 </div>
                             </div>
