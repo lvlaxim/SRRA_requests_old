@@ -18,5 +18,9 @@ public class RequestSpecifications {
         return (request, query,criteriaBuilder) -> criteriaBuilder.like(request.get("shortAnswer"), "%" + answer + "%");
     }
 
+    public static Specification<Request> outNumberContains(String outNumber) {
+        return (request, query, criteriaBuilder) -> criteriaBuilder.like(request.get("outNumber"), "%" + outNumber + "%");
+    }
+
 }
 

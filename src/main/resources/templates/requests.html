@@ -33,7 +33,7 @@
                 </a>
             </td>
             <td class="col-7" scope="row" th:text="${request.getSubject()}"></td>
-            <td class="col-1" scope="row" th:text="${request.getInNumber()}"></td>
+            <td class="col-1" scope="row" th:text="${request.getOutNumber()}"></td>
             <td class="col-1" scope="row" th:text="${#temporals.format(request.getEndDate(), 'dd.MM.yyyy')}"></td>
             <td class="col-2" scope="row" th:text="${request.getExecutor().getName()}"></td>
         </tr>

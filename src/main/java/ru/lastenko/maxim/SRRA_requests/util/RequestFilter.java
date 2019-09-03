@@ -6,13 +6,12 @@ import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
-import static ru.lastenko.maxim.SRRA_requests.repository.RequestSpecifications.answerContains;
-import static ru.lastenko.maxim.SRRA_requests.repository.RequestSpecifications.hasId;
+import static ru.lastenko.maxim.SRRA_requests.repository.RequestSpecifications.*;
 
 public class RequestFilter {
 
     private Integer id;
-    private Integer inNumber;
+    private String outNumber;
     private Integer themeId;
     private String answer;
     private Integer executorId;
@@ -22,9 +21,9 @@ public class RequestFilter {
     public RequestFilter() {
     }
 
-    public RequestFilter(Integer id, Integer inNumber, Integer themeId, String answer, Integer executorId, LocalDate localDate, Integer smav) {
+    public RequestFilter(Integer id, String outNumber, Integer themeId, String answer, Integer executorId, LocalDate localDate, Integer smav) {
         this.id = id;
-        this.inNumber = inNumber;
+        this.outNumber = outNumber;
         this.themeId = themeId;
         this.answer = answer;
         this.executorId = executorId;
@@ -40,12 +39,12 @@ public class RequestFilter {
         this.id = id;
     }
 
-    public Integer getInNumber() {
-        return inNumber;
+    public String getOutNumber() {
+        return outNumber;
     }
 
-    public void setInNumber(Integer inNumber) {
-        this.inNumber = inNumber;
+    public void setOutNumber(String outNumber) {
+        this.outNumber = outNumber;
     }
 
     public Integer getThemeId() {
@@ -93,15 +92,16 @@ public class RequestFilter {
         if (id != null) {
             specifications.add(hasId(id));
         }
-        if (answerIsEnabled()) {
+        if (isEnabled(outNumber)) {
+            specifications.add(outNumberContains(outNumber));
+        }
+        if (isEnabled(answer)) {
             specifications.add(answerContains(answer));
         }
         int size = specifications.size();
         Specification specification;
         if (size > 0) {
-//            specification = Specification.where(specifications.get(0));
             specification = specifications.get(0);
-
             if (size > 1) {
                 for (int i = 1; i < size; i++) {
                     specification = specification.and(specifications.get(i));
@@ -115,13 +115,14 @@ public class RequestFilter {
 
     public Boolean isEnabled() {
         if (id != null
-                || answerIsEnabled()) {
+                || isEnabled(answer)
+                || isEnabled(outNumber)) {
             return true;
         }
         return false;
     }
 
-    private Boolean answerIsEnabled(){
-        return answer != null && !answer.isEmpty();
+    private Boolean isEnabled(String s) {
+        return s != null && !s.isEmpty();
     }
 }

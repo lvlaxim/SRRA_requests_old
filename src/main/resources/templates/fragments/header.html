@@ -54,13 +54,13 @@
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label for="filterInNumber">Исх. №</label>
-                                        <input class="form-control" type="text" id="filterInNumber">
+                                        <input class="form-control" type="text" name="outNumber" id="filterInNumber" th:value="${filter.getOutNumber()}">
                                     </div>
                                 </div>
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label for="filterSmav">№ СМЭВ</label>
-                                        <input class="form-control" type="text" id="filterSmav">
+                                        <input class="form-control" type="text" name="smav" id="filterSmav" th:value="${filter.getSmav()}">
                                     </div>
                                 </div>
                             </div>
