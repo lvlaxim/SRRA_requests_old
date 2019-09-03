@@ -75,11 +75,11 @@ public class Request {
     @Column(name = "smav")
     private Integer smav;
 
-    @Column(name = "reg_number")
-    private Integer regNumber;
+    @Column(name = "out_number")
+    private Integer outNumber;
 
-    @Column(name = "in_number")
-    private String outNumber;
+    @Column(name = "reg_number")
+    private String regNumber;
 
     @Column(name = "in_num_from_org")
     private String inNumFromOrg;
@@ -97,7 +97,7 @@ public class Request {
     public Request() {
     }
 
-    public Request(Integer id, Rubric rubric, Theme theme, String subject, String shortRequest, String shortAnswer, Source source, boolean isUrgent, boolean isGPW, boolean isEntity, boolean isConsular, Executor receiver, LocalDate receiptDate, Department department, Executor workingBy, LocalDate startDate, Executor executor, LocalDate endDate, Integer smav, Integer regNumber, String outNumber, String inNumFromOrg, LocalDate inDate, Integer copyNumber, Payment payment) {
+    public Request(Integer id, Rubric rubric, Theme theme, String subject, String shortRequest, String shortAnswer, Source source, boolean isUrgent, boolean isGPW, boolean isEntity, boolean isConsular, Executor receiver, LocalDate receiptDate, Department department, Executor workingBy, LocalDate startDate, Executor executor, LocalDate endDate, Integer smav, Integer outNumber, String regNumber, String inNumFromOrg, LocalDate inDate, Integer copyNumber, Payment payment) {
         this.id = id;
         this.rubric = rubric;
         this.theme = theme;
@@ -117,8 +117,8 @@ public class Request {
         this.executor = executor;
         this.endDate = endDate;
         this.smav = smav;
-        this.regNumber = regNumber;
         this.outNumber = outNumber;
+        this.regNumber = regNumber;
         this.inNumFromOrg = inNumFromOrg;
         this.inDate = inDate;
         this.copyNumber = copyNumber;
@@ -277,20 +277,20 @@ public class Request {
         this.smav = smav;
     }
 
-    public Integer getRegNumber() {
-        return regNumber;
-    }
-
-    public void setRegNumber(Integer regNumber) {
-        this.regNumber = regNumber;
-    }
-
-    public String getOutNumber() {
+    public Integer getOutNumber() {
         return outNumber;
     }
 
-    public void setOutNumber(String outNumber) {
+    public void setOutNumber(Integer outNumber) {
         this.outNumber = outNumber;
+    }
+
+    public String getRegNumber() {
+        return regNumber;
+    }
+
+    public void setRegNumber(String regNumber) {
+        this.regNumber = regNumber;
     }
 
     public String getInNumFromOrg() {
@@ -349,8 +349,8 @@ public class Request {
                 Objects.equals(executor, request.executor) &&
                 Objects.equals(endDate, request.endDate) &&
                 Objects.equals(smav, request.smav) &&
-                Objects.equals(regNumber, request.regNumber) &&
                 Objects.equals(outNumber, request.outNumber) &&
+                Objects.equals(regNumber, request.regNumber) &&
                 Objects.equals(inNumFromOrg, request.inNumFromOrg) &&
                 Objects.equals(inDate, request.inDate) &&
                 Objects.equals(copyNumber, request.copyNumber) &&
@@ -359,7 +359,7 @@ public class Request {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, rubric, theme, subject, shortRequest, shortAnswer, source, isUrgent, isGPW, isEntity, isConsular, receiver, receiptDate, department, workingBy, startDate, executor, endDate, smav, regNumber, outNumber, inNumFromOrg, inDate, copyNumber, payment);
+        return Objects.hash(id, rubric, theme, subject, shortRequest, shortAnswer, source, isUrgent, isGPW, isEntity, isConsular, receiver, receiptDate, department, workingBy, startDate, executor, endDate, smav, outNumber, regNumber, inNumFromOrg, inDate, copyNumber, payment);
     }
 
     @Override
@@ -384,8 +384,8 @@ public class Request {
                 ", executor=" + executor +
                 ", endDate=" + endDate +
                 ", smav=" + smav +
-                ", regNumber=" + regNumber +
-                ", outNumber='" + outNumber + '\'' +
+                ", outNumber=" + outNumber +
+                ", regNumber='" + regNumber + '\'' +
                 ", inNumFromOrg='" + inNumFromOrg + '\'' +
                 ", inDate=" + inDate +
                 ", copyNumber=" + copyNumber +

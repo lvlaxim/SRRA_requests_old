@@ -15,11 +15,11 @@ public class RequestSpecifications {
     }
 
     public static Specification<Request> answerContains(String answer) {
-        return (request, query,criteriaBuilder) -> criteriaBuilder.like(request.get("shortAnswer"), "%" + answer + "%");
+        return (request, query, criteriaBuilder) -> criteriaBuilder.like(request.get("shortAnswer"), "%" + answer + "%");
     }
 
-    public static Specification<Request> outNumberContains(String outNumber) {
-        return (request, query, criteriaBuilder) -> criteriaBuilder.like(request.get("outNumber"), "%" + outNumber + "%");
+    public static Specification<Request> outNumberContains(Integer outNumber) {
+        return (request, query, criteriaBuilder) -> criteriaBuilder.equal(request.get("outNumber"), outNumber);
     }
 
 }

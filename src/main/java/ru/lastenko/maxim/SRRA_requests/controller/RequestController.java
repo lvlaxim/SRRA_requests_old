@@ -55,7 +55,7 @@ public class RequestController {
     public ModelAndView requests(@RequestParam("pageSize") Optional<Integer> pageSize,
                                  @RequestParam("page") Optional<Integer> page,
                                  @RequestParam(required = false) Integer id,
-                                 @RequestParam(required = false) String outNumber,
+                                 @RequestParam(required = false) Integer outNumber,
                                  @RequestParam(required = false) String answer) {
 
         // Evaluate page size. If requested parameter is null, return initial
@@ -85,7 +85,7 @@ public class RequestController {
     public ModelAndView request(@RequestParam("pageSize") Optional<Integer> pageSize,
                                 @RequestParam("page") Optional<Integer> page,
                                 @RequestParam(required = false) Integer id,
-                                @RequestParam(required = false) String outNumber,
+                                @RequestParam(required = false) Integer outNumber,
                                 @RequestParam(required = false) String answer) {
 
         ModelAndView modelAndView = new ModelAndView("request");
@@ -119,7 +119,7 @@ public class RequestController {
         return modelAndView;
     }
 
-    private RequestFilter getFilter(Integer id, String outNumber, String answer) {
+    private RequestFilter getFilter(Integer id, Integer outNumber, String answer) {
         RequestFilter filter = new RequestFilter();
         filter.setId(id);
         filter.setOutNumber(outNumber);

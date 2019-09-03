@@ -11,7 +11,7 @@ import static ru.lastenko.maxim.SRRA_requests.repository.RequestSpecifications.*
 public class RequestFilter {
 
     private Integer id;
-    private String outNumber;
+    private Integer outNumber;
     private Integer themeId;
     private String answer;
     private Integer executorId;
@@ -21,7 +21,7 @@ public class RequestFilter {
     public RequestFilter() {
     }
 
-    public RequestFilter(Integer id, String outNumber, Integer themeId, String answer, Integer executorId, LocalDate localDate, Integer smav) {
+    public RequestFilter(Integer id, Integer outNumber, Integer themeId, String answer, Integer executorId, LocalDate localDate, Integer smav) {
         this.id = id;
         this.outNumber = outNumber;
         this.themeId = themeId;
@@ -39,11 +39,11 @@ public class RequestFilter {
         this.id = id;
     }
 
-    public String getOutNumber() {
+    public Integer getOutNumber() {
         return outNumber;
     }
 
-    public void setOutNumber(String outNumber) {
+    public void setOutNumber(Integer outNumber) {
         this.outNumber = outNumber;
     }
 
@@ -92,7 +92,7 @@ public class RequestFilter {
         if (id != null) {
             specifications.add(hasId(id));
         }
-        if (isEnabled(outNumber)) {
+        if (outNumber != null) {
             specifications.add(outNumberContains(outNumber));
         }
         if (isEnabled(answer)) {
@@ -116,7 +116,7 @@ public class RequestFilter {
     public Boolean isEnabled() {
         if (id != null
                 || isEnabled(answer)
-                || isEnabled(outNumber)) {
+                || outNumber != null) {
             return true;
         }
         return false;
