@@ -12,23 +12,24 @@ public class RequestFilter {
 
     private Integer id;
     private Integer outNumber;
-    private Integer themeId;
-    private String answer;
-    private Integer executorId;
-    private LocalDate localDate;
     private Integer smav;
+    private String theme;
+    private String answer;
+    private String executor;
+    private LocalDate executeDate;
+
 
     public RequestFilter() {
     }
 
-    public RequestFilter(Integer id, Integer outNumber, Integer themeId, String answer, Integer executorId, LocalDate localDate, Integer smav) {
+    public RequestFilter(Integer id, Integer outNumber, Integer smav, String theme, String answer, String executor, String executeDate) {
         this.id = id;
         this.outNumber = outNumber;
-        this.themeId = themeId;
-        this.answer = answer;
-        this.executorId = executorId;
-        this.localDate = localDate;
         this.smav = smav;
+        this.theme = theme;
+        this.answer = answer;
+        this.executor = executor;
+        this.executeDate = isEnabled(executeDate) ? LocalDate.parse(executeDate) : null;
     }
 
     public Integer getId() {
@@ -47,12 +48,12 @@ public class RequestFilter {
         this.outNumber = outNumber;
     }
 
-    public Integer getThemeId() {
-        return themeId;
+    public String getTheme() {
+        return theme;
     }
 
-    public void setThemeId(Integer themeId) {
-        this.themeId = themeId;
+    public void setTheme(String theme) {
+        this.theme = theme;
     }
 
     public String getAnswer() {
@@ -63,20 +64,20 @@ public class RequestFilter {
         this.answer = answer;
     }
 
-    public Integer getExecutorId() {
-        return executorId;
+    public String getExecutor() {
+        return executor;
     }
 
-    public void setExecutorId(Integer executorId) {
-        this.executorId = executorId;
+    public void setExecutor(String executor) {
+        this.executor = executor;
     }
 
-    public LocalDate getLocalDate() {
-        return localDate;
+    public LocalDate getExecuteDate() {
+        return executeDate;
     }
 
-    public void setLocalDate(LocalDate localDate) {
-        this.localDate = localDate;
+    public void setExecuteDate(LocalDate executeDate) {
+        this.executeDate = executeDate;
     }
 
     public Integer getSmav() {
@@ -93,11 +94,24 @@ public class RequestFilter {
             specifications.add(hasId(id));
         }
         if (outNumber != null) {
-            specifications.add(outNumberContains(outNumber));
+            specifications.add(hasOutNumber(outNumber));
+        }
+        if (smav != null) {
+            specifications.add(hasSmav(smav));
+        }
+        if (isEnabled(theme)) {
+            specifications.add(hasTheme(theme));
         }
         if (isEnabled(answer)) {
             specifications.add(answerContains(answer));
         }
+        if (isEnabled(executor)) {
+            specifications.add(hasExecutor(executor));
+        }
+        if (executeDate != null) {
+            specifications.add(hasExecutDate(executeDate));
+        }
+
         int size = specifications.size();
         Specification specification;
         if (size > 0) {
@@ -115,8 +129,12 @@ public class RequestFilter {
 
     public Boolean isEnabled() {
         if (id != null
+                || outNumber != null
+                || smav != null
+                || isEnabled(theme)
                 || isEnabled(answer)
-                || outNumber != null) {
+                || isEnabled(executor)
+                || executeDate != null) {
             return true;
         }
         return false;

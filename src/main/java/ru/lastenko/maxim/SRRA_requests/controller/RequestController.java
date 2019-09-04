@@ -14,6 +14,7 @@ import ru.lastenko.maxim.SRRA_requests.util.Pager;
 import ru.lastenko.maxim.SRRA_requests.util.RequestFilter;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -56,7 +57,11 @@ public class RequestController {
                                  @RequestParam("page") Optional<Integer> page,
                                  @RequestParam(required = false) Integer id,
                                  @RequestParam(required = false) Integer outNumber,
-                                 @RequestParam(required = false) String answer) {
+                                 @RequestParam(required = false) Integer smav,
+                                 @RequestParam(required = false) String theme,
+                                 @RequestParam(required = false) String answer,
+                                 @RequestParam(required = false) String executor,
+                                 @RequestParam(required = false) String executeDate) {
 
         // Evaluate page size. If requested parameter is null, return initial
         // page size
@@ -67,7 +72,7 @@ public class RequestController {
         // param. decreased by 1.
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
 
-        RequestFilter filter = getFilter(id, outNumber, answer);
+        RequestFilter filter = new RequestFilter(id, outNumber, smav, theme, answer, executor, executeDate);
         Page<Request> requests = requestService.getByFilter(filter, PageRequest.of(evalPage, evalPageSize, Sort.by("id").descending()));
         Pager pager = new Pager(requests.getTotalPages(), requests.getNumber(), BUTTONS_TO_SHOW);
 
@@ -78,6 +83,10 @@ public class RequestController {
         modelAndView.addObject("selectedPageSize", evalPageSize);
         modelAndView.addObject("pageSizes", PAGE_SIZES);
         modelAndView.addObject("pager", pager);
+
+        modelAndView.addObject("themes", themeService.getAll());
+        modelAndView.addObject("executors", executorService.getAll());
+
         return modelAndView;
     }
 
@@ -86,7 +95,11 @@ public class RequestController {
                                 @RequestParam("page") Optional<Integer> page,
                                 @RequestParam(required = false) Integer id,
                                 @RequestParam(required = false) Integer outNumber,
-                                @RequestParam(required = false) String answer) {
+                                @RequestParam(required = false) Integer smav,
+                                @RequestParam(required = false) String theme,
+                                @RequestParam(required = false) String answer,
+                                @RequestParam(required = false) String executor,
+                                @RequestParam(required = false) String executeDate) {
 
         ModelAndView modelAndView = new ModelAndView("request");
 
@@ -99,7 +112,7 @@ public class RequestController {
         // param. decreased by 1.
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
 
-        RequestFilter filter = getFilter(id, outNumber, answer);
+        RequestFilter filter = new RequestFilter(id, outNumber, smav, theme, answer, executor, executeDate);
         Page<Request> requests = requestService.getByFilter(filter, PageRequest.of(evalPage, evalPageSize, Sort.by("id").descending()));
         Pager pager = new Pager(requests.getTotalPages(), requests.getNumber(), BUTTONS_TO_SHOW);
 
@@ -117,13 +130,5 @@ public class RequestController {
         modelAndView.addObject("payments", paymentService.getAll());
 
         return modelAndView;
-    }
-
-    private RequestFilter getFilter(Integer id, Integer outNumber, String answer) {
-        RequestFilter filter = new RequestFilter();
-        filter.setId(id);
-        filter.setOutNumber(outNumber);
-        filter.setAnswer(answer);
-        return filter;
     }
 }

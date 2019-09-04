@@ -23,7 +23,8 @@
                                  th:text="${requests.getTotalElements()<100 ? requests.getTotalElements() : '99+'}">99+</span>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" data-toggle="modal" data-target="#exampleModal" href="#" th:text="${filter.isEnabled() ? 'Изменить' : 'Создать'}">Создать</a>
+                    <a class="dropdown-item" data-toggle="modal" data-target="#exampleModal" href="#"
+                       th:text="${filter.isEnabled() ? 'Изменить' : 'Создать'}">Создать</a>
                     <a class="dropdown-item" href="/requests">Отменить</a>
                 </div>
             </ul>
@@ -48,19 +49,37 @@
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label for="filterRequestId">Код запроса</label>
-                                        <input class="form-control" type="text" name="id" id="filterRequestId" th:value="${filter.getId()}"/>
+                                        <input class="form-control" type="text" name="id" id="filterRequestId"
+                                               th:value="${filter.getId()}"/>
                                     </div>
                                 </div>
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label for="filterOutNumber">Исх. №</label>
-                                        <input class="form-control" type="text" name="outNumber" id="filterOutNumber" th:value="${filter.getOutNumber()}">
+                                        <input class="form-control" type="text" name="outNumber" id="filterOutNumber"
+                                               th:value="${filter.getOutNumber()}">
                                     </div>
                                 </div>
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label for="filterSmav">№ СМЭВ</label>
-                                        <input class="form-control" type="text" name="smav" id="filterSmav" th:value="${filter.getSmav()}">
+                                        <input class="form-control" type="text" name="smav" id="filterSmav"
+                                               th:value="${filter.getSmav()}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="formThemeSelect">Тема</label>
+                                        <select class="form-control" name="theme" id="formThemeSelect">
+                                            <option selected></option>
+                                            <option th:each="theme : ${themes}"
+                                                    th:selected="${theme.getName().equals(filter.getTheme())}"
+                                                    th:text="${theme.getName()}">
+                                                Default select
+                                            </option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -68,11 +87,36 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label for="filterAnswer">Ответ кратко</label>
-                                        <input class="form-control" type="text" name="answer" id="filterAnswer" th:value="${filter.getAnswer()}">
+                                        <input class="form-control" type="text" name="answer" id="filterAnswer"
+                                               th:value="${filter.getAnswer()}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5">
+                                    <div class="form-group">
+                                        <label for="formExecutorSelect">Исполнил</label>
+                                        <select class="form-control" name="executor" id="formExecutorSelect">
+                                            <option selected></option>
+                                            <option th:each="executor : ${executors}"
+                                                    th:selected="${executor.getName().equals(filter.getExecutor())}"
+                                                    th:text="${executor.getName()}"
+                                                    >
+                                                Default select
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-2"></div>
+                                <div class="col-5">
+                                    <div class="form-group">
+                                        <label for="formEndDateInput">Дата исполнения</label>
+                                        <input type="date" class="form-control" name="executeDate" id="formEndDateInput" th:value="${filter.getExecuteDate()}">
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
                             <button type="submit" class="btn btn-primary">Применить</button>
