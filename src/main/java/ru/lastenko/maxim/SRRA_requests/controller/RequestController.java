@@ -61,7 +61,8 @@ public class RequestController {
                                  @RequestParam(required = false) String theme,
                                  @RequestParam(required = false) String answer,
                                  @RequestParam(required = false) String executor,
-                                 @RequestParam(required = false) String executeDate) {
+                                 @RequestParam(required = false) String executeDate,
+                                 @RequestParam(required = false) Boolean caseIns) {
 
         // Evaluate page size. If requested parameter is null, return initial
         // page size
@@ -72,7 +73,7 @@ public class RequestController {
         // param. decreased by 1.
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
 
-        RequestFilter filter = new RequestFilter(id, outNumber, smav, theme, answer, executor, executeDate);
+        RequestFilter filter = new RequestFilter(id, outNumber, smav, theme, answer, executor, executeDate, caseIns);
         Page<Request> requests = requestService.getByFilter(filter, PageRequest.of(evalPage, evalPageSize, Sort.by("id").descending()));
         Pager pager = new Pager(requests.getTotalPages(), requests.getNumber(), BUTTONS_TO_SHOW);
 
@@ -99,7 +100,8 @@ public class RequestController {
                                 @RequestParam(required = false) String theme,
                                 @RequestParam(required = false) String answer,
                                 @RequestParam(required = false) String executor,
-                                @RequestParam(required = false) String executeDate) {
+                                @RequestParam(required = false) String executeDate,
+                                @RequestParam(required = false) Boolean caseIns) {
 
         ModelAndView modelAndView = new ModelAndView("request");
 
@@ -112,7 +114,7 @@ public class RequestController {
         // param. decreased by 1.
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
 
-        RequestFilter filter = new RequestFilter(id, outNumber, smav, theme, answer, executor, executeDate);
+        RequestFilter filter = new RequestFilter(id, outNumber, smav, theme, answer, executor, executeDate, caseIns);
         Page<Request> requests = requestService.getByFilter(filter, PageRequest.of(evalPage, evalPageSize, Sort.by("id").descending()));
         Pager pager = new Pager(requests.getTotalPages(), requests.getNumber(), BUTTONS_TO_SHOW);
 

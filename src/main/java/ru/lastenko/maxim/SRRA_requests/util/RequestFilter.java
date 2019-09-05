@@ -3,6 +3,7 @@ package ru.lastenko.maxim.SRRA_requests.util;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,12 +18,13 @@ public class RequestFilter {
     private String answer;
     private String executor;
     private LocalDate executeDate;
+    private Boolean caseInsensitive;
 
 
     public RequestFilter() {
     }
 
-    public RequestFilter(Integer id, Integer outNumber, Integer smav, String theme, String answer, String executor, String executeDate) {
+    public RequestFilter(Integer id, Integer outNumber, Integer smav, String theme, String answer, String executor, String executeDate, Boolean caseInsensitive) {
         this.id = id;
         this.outNumber = outNumber;
         this.smav = smav;
@@ -30,6 +32,7 @@ public class RequestFilter {
         this.answer = answer;
         this.executor = executor;
         this.executeDate = isEnabled(executeDate) ? LocalDate.parse(executeDate) : null;
+        this.caseInsensitive = caseInsensitive!=null ? caseInsensitive : false;
     }
 
     public Integer getId() {
@@ -88,6 +91,14 @@ public class RequestFilter {
         this.smav = smav;
     }
 
+    public Boolean getCaseInsensitive() {
+        return caseInsensitive;
+    }
+
+    public void setCaseInsensitive(Boolean caseInsensitive) {
+        this.caseInsensitive = caseInsensitive;
+    }
+
     public Specification getSpecification() {
         List<Specification> specifications = new LinkedList<>();
         if (id != null) {
@@ -103,7 +114,14 @@ public class RequestFilter {
             specifications.add(hasTheme(theme));
         }
         if (isEnabled(answer)) {
-            specifications.add(answerContains(answer));
+            List<String> words = Arrays.asList(answer.split(" "));
+            for (String word: words) {
+                if (caseInsensitive == true) {
+                    specifications.add(answerContainsCaseInsensitive(word));
+                } else {
+                    specifications.add(answerContains(word));
+                }
+            }
         }
         if (isEnabled(executor)) {
             specifications.add(hasExecutor(executor));

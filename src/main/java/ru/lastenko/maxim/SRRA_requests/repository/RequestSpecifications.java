@@ -27,6 +27,10 @@ public class RequestSpecifications {
         return (request, query, criteriaBuilder) -> criteriaBuilder.like(request.get("theme").get("name"), theme);
     }
 
+    public static Specification<Request> answerContainsCaseInsensitive(String answer) {
+        return (request, query, criteriaBuilder) -> criteriaBuilder.like(criteriaBuilder.lower(request.get("shortAnswer")), ("%" + answer + "%").toLowerCase());
+    }
+
     public static Specification<Request> answerContains(String answer) {
         return (request, query, criteriaBuilder) -> criteriaBuilder.like(request.get("shortAnswer"), "%" + answer + "%");
     }
