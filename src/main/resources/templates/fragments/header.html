@@ -20,7 +20,10 @@
                    aria-haspopup="true" aria-expanded="false">
                     Фильтр <span class="badge badge-secondary"
                                  th:if="${filter.isEnabled()}"
-                                 th:text="${requests.getTotalElements()<100 ? requests.getTotalElements() : '99+'}">99+</span>
+                                 th:text="${requests.getTotalElements()<100 ? requests.getTotalElements() : '99+'}"
+                                 data-toggle="tooltip"
+                                 data-placement="left"
+                                 th:title="${requests.getTotalElements()}">99+</span>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" data-toggle="modal" data-target="#exampleModal" href="#"
