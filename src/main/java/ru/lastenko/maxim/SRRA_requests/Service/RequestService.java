@@ -29,17 +29,12 @@ public class RequestService {
         return repository.findAll();
     }
 
-    public Page<Request> getAllOrderedByIdDesc(Pageable pageable) {
-        return repository.findAllByOrderByIdDesc(pageable);
-
-    }
-
     public Page<Request> getByFilter(RequestFilter filter, Pageable pageable) {
         return repository.findAll(filter.getSpecification(), pageable);
     }
 
-    public Page<Request> findAllPageable(Pageable pageable) {
-        return repository.findAll(pageable);
+    public void save(Request request) {
+        repository.save(request);
     }
 
 }

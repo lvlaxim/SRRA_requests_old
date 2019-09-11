@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -89,6 +90,19 @@ public class RequestController {
         modelAndView.addObject("executors", executorService.getAll());
 
         return modelAndView;
+    }
+
+//    @PostMapping("/request/update")
+//    public ModelAndView saveRequest(@RequestParam Integer outNumber,
+//                              @RequestParam String receiver, Model model) {
+//        System.out.println(outNumber);
+//        return new ModelAndView("redirect:/requests");
+//    }
+@PostMapping("/request/update")
+    public ModelAndView saveRequest(@ModelAttribute("request") Request request, Model model) {
+//        System.out.println(request);
+        requestService.save(request);
+        return new ModelAndView("redirect:/requests");
     }
 
     @GetMapping("/request")
