@@ -114,7 +114,7 @@ public class RequestFilter {
             specifications.add(hasTheme(theme));
         }
         if (isEnabled(answer)) {
-            List<String> words = Arrays.asList(answer.split(" "));
+            List<String> words = Arrays.asList(answer.split("\\+"));
             for (String word: words) {
                 if (caseInsensitive == true) {
                     specifications.add(answerContainsCaseInsensitive(word));
