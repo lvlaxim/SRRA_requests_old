@@ -39,8 +39,6 @@ public class RequestController {
     @Autowired
     private ExecutorService executorService;
     @Autowired
-    private DepartmentService departmentService;
-    @Autowired
     private PaymentService paymentService;
     @Autowired
     HttpServletRequest httpServletRequest;
@@ -142,7 +140,6 @@ public class RequestController {
         modelAndView.addObject("themes", themeService.getAll());
         modelAndView.addObject("sources", sourceService.getAll());
         modelAndView.addObject("executors", executorService.getAll());
-        modelAndView.addObject("departments", departmentService.getAll());
         modelAndView.addObject("payments", paymentService.getAll());
 
         return modelAndView;
