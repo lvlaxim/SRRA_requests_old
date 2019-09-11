@@ -1,5 +1,7 @@
 package ru.lastenko.maxim.SRRA_requests.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -36,33 +38,35 @@ public class Request {
     private Source source;
 
     @Column(name = "is_urgent")
-    private boolean isUrgent;
+    private boolean urgent;
 
     @Column(name = "is_gpw")
-    private boolean isGPW;
+    private boolean GPW;
 
     @Column(name = "is_entity")
-    private boolean isEntity;
+    private boolean entity;
 
     @Column(name = "is_consular")
-    private boolean isConsular;
+    private boolean consular;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "receiver")
     private Executor receiver;
 
     @Column(name = "receipt_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate receiptDate;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "department_id")
-    private Department department;
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "department_id")
+//    private Department department;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "working_by")
-    private Executor workingBy;
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "working_by")
+//    private Executor workingBy;
 
     @Column(name = "start_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -70,6 +74,7 @@ public class Request {
     private Executor executor;
 
     @Column(name = "end_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
 
     @Column(name = "smav")
@@ -78,13 +83,14 @@ public class Request {
     @Column(name = "out_number")
     private Integer outNumber;
 
-    @Column(name = "reg_number")
-    private String regNumber;
+//    @Column(name = "reg_number")
+//    private String regNumber;
 
     @Column(name = "in_num_from_org")
     private String inNumFromOrg;
 
     @Column(name = "in_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate inDate;
 
     @Column(name = "copy_number")
@@ -97,7 +103,7 @@ public class Request {
     public Request() {
     }
 
-    public Request(Integer id, Rubric rubric, Theme theme, String subject, String shortRequest, String shortAnswer, Source source, boolean isUrgent, boolean isGPW, boolean isEntity, boolean isConsular, Executor receiver, LocalDate receiptDate, Department department, Executor workingBy, LocalDate startDate, Executor executor, LocalDate endDate, Integer smav, Integer outNumber, String regNumber, String inNumFromOrg, LocalDate inDate, Integer copyNumber, Payment payment) {
+    public Request(Integer id, Rubric rubric, Theme theme, String subject, String shortRequest, String shortAnswer, Source source, boolean urgent, boolean GPW, boolean entity, boolean consular, Executor receiver, LocalDate receiptDate, Department department, Executor workingBy, LocalDate startDate, Executor executor, LocalDate endDate, Integer smav, Integer outNumber, String regNumber, String inNumFromOrg, LocalDate inDate, Integer copyNumber, Payment payment) {
         this.id = id;
         this.rubric = rubric;
         this.theme = theme;
@@ -105,20 +111,20 @@ public class Request {
         this.shortRequest = shortRequest;
         this.shortAnswer = shortAnswer;
         this.source = source;
-        this.isUrgent = isUrgent;
-        this.isGPW = isGPW;
-        this.isEntity = isEntity;
-        this.isConsular = isConsular;
+        this.urgent = urgent;
+        this.GPW = GPW;
+        this.entity = entity;
+        this.consular = consular;
         this.receiver = receiver;
         this.receiptDate = receiptDate;
-        this.department = department;
-        this.workingBy = workingBy;
+//        this.department = department;
+//        this.workingBy = workingBy;
         this.startDate = startDate;
         this.executor = executor;
         this.endDate = endDate;
         this.smav = smav;
         this.outNumber = outNumber;
-        this.regNumber = regNumber;
+//        this.regNumber = regNumber;
         this.inNumFromOrg = inNumFromOrg;
         this.inDate = inDate;
         this.copyNumber = copyNumber;
@@ -182,35 +188,35 @@ public class Request {
     }
 
     public boolean isUrgent() {
-        return isUrgent;
+        return urgent;
     }
 
     public void setUrgent(boolean urgent) {
-        isUrgent = urgent;
+        this.urgent = urgent;
     }
 
     public boolean isGPW() {
-        return isGPW;
+        return GPW;
     }
 
     public void setGPW(boolean GPW) {
-        isGPW = GPW;
+        this.GPW = GPW;
     }
 
     public boolean isEntity() {
-        return isEntity;
+        return entity;
     }
 
     public void setEntity(boolean entity) {
-        isEntity = entity;
+        this.entity = entity;
     }
 
     public boolean isConsular() {
-        return isConsular;
+        return consular;
     }
 
     public void setConsular(boolean consular) {
-        isConsular = consular;
+        this.consular = consular;
     }
 
     public Executor getReceiver() {
@@ -229,21 +235,21 @@ public class Request {
         this.receiptDate = receiptDate;
     }
 
-    public Department getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(Department department) {
-        this.department = department;
-    }
-
-    public Executor getWorkingBy() {
-        return workingBy;
-    }
-
-    public void setWorkingBy(Executor workingBy) {
-        this.workingBy = workingBy;
-    }
+//    public Department getDepartment() {
+//        return department;
+//    }
+//
+//    public void setDepartment(Department department) {
+//        this.department = department;
+//    }
+//
+//    public Executor getWorkingBy() {
+//        return workingBy;
+//    }
+//
+//    public void setWorkingBy(Executor workingBy) {
+//        this.workingBy = workingBy;
+//    }
 
     public LocalDate getStartDate() {
         return startDate;
@@ -285,13 +291,13 @@ public class Request {
         this.outNumber = outNumber;
     }
 
-    public String getRegNumber() {
-        return regNumber;
-    }
-
-    public void setRegNumber(String regNumber) {
-        this.regNumber = regNumber;
-    }
+//    public String getRegNumber() {
+//        return regNumber;
+//    }
+//
+//    public void setRegNumber(String regNumber) {
+//        this.regNumber = regNumber;
+//    }
 
     public String getInNumFromOrg() {
         return inNumFromOrg;
@@ -330,10 +336,10 @@ public class Request {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Request request = (Request) o;
-        return isUrgent == request.isUrgent &&
-                isGPW == request.isGPW &&
-                isEntity == request.isEntity &&
-                isConsular == request.isConsular &&
+        return urgent == request.urgent &&
+                GPW == request.GPW &&
+                entity == request.entity &&
+                consular == request.consular &&
                 id.equals(request.id) &&
                 Objects.equals(rubric, request.rubric) &&
                 Objects.equals(theme, request.theme) &&
@@ -343,14 +349,14 @@ public class Request {
                 Objects.equals(source, request.source) &&
                 Objects.equals(receiver, request.receiver) &&
                 Objects.equals(receiptDate, request.receiptDate) &&
-                Objects.equals(department, request.department) &&
-                Objects.equals(workingBy, request.workingBy) &&
+//                Objects.equals(department, request.department) &&
+//                Objects.equals(workingBy, request.workingBy) &&
                 Objects.equals(startDate, request.startDate) &&
                 Objects.equals(executor, request.executor) &&
                 Objects.equals(endDate, request.endDate) &&
                 Objects.equals(smav, request.smav) &&
                 Objects.equals(outNumber, request.outNumber) &&
-                Objects.equals(regNumber, request.regNumber) &&
+//                Objects.equals(regNumber, request.regNumber) &&
                 Objects.equals(inNumFromOrg, request.inNumFromOrg) &&
                 Objects.equals(inDate, request.inDate) &&
                 Objects.equals(copyNumber, request.copyNumber) &&
@@ -359,7 +365,8 @@ public class Request {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, rubric, theme, subject, shortRequest, shortAnswer, source, isUrgent, isGPW, isEntity, isConsular, receiver, receiptDate, department, workingBy, startDate, executor, endDate, smav, outNumber, regNumber, inNumFromOrg, inDate, copyNumber, payment);
+//        return Objects.hash(id, rubric, theme, subject, shortRequest, shortAnswer, source, urgent, GPW, entity, consular, receiver, receiptDate, department, workingBy, startDate, executor, endDate, smav, outNumber, regNumber, inNumFromOrg, inDate, copyNumber, payment);
+        return Objects.hash(id, rubric, theme, subject, shortRequest, shortAnswer, source, urgent, GPW, entity, consular, receiver, receiptDate, startDate, executor, endDate, smav, outNumber, inNumFromOrg, inDate, copyNumber, payment);
     }
 
     @Override
@@ -372,20 +379,20 @@ public class Request {
                 ", shortRequest='" + shortRequest + '\'' +
                 ", shortAnswer='" + shortAnswer + '\'' +
                 ", source=" + source +
-                ", isUrgent=" + isUrgent +
-                ", isGPW=" + isGPW +
-                ", isEntity=" + isEntity +
-                ", isConsular=" + isConsular +
+                ", urgent=" + urgent +
+                ", GPW=" + GPW +
+                ", entity=" + entity +
+                ", consular=" + consular +
                 ", receiver=" + receiver +
                 ", receiptDate=" + receiptDate +
-                ", department=" + department +
-                ", workingBy=" + workingBy +
+//                ", department=" + department +
+//                ", workingBy=" + workingBy +
                 ", startDate=" + startDate +
                 ", executor=" + executor +
                 ", endDate=" + endDate +
                 ", smav=" + smav +
                 ", outNumber=" + outNumber +
-                ", regNumber='" + regNumber + '\'' +
+//                ", regNumber='" + regNumber + '\'' +
                 ", inNumFromOrg='" + inNumFromOrg + '\'' +
                 ", inDate=" + inDate +
                 ", copyNumber=" + copyNumber +
