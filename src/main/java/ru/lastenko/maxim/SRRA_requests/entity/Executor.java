@@ -7,7 +7,7 @@ import java.util.Objects;
 @Table(name = "executors")
 public class Executor {
 
-    public static final Executor EMPTY_EXECUTOR = new Executor(0,"",false,"","","");
+    public static final Executor EMPTY_EXECUTOR = new Executor(35,"",false,"","","");
 
     @Id
     @SequenceGenerator(name = "executors_executor_id_seq", sequenceName = "requests.executors_executor_id_seq")

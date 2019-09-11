@@ -103,7 +103,7 @@ public class Request {
     public Request() {
     }
 
-    public Request(Integer id, Rubric rubric, Theme theme, String subject, String shortRequest, String shortAnswer, Source source, boolean urgent, boolean GPW, boolean entity, boolean consular, Executor receiver, LocalDate receiptDate, Department department, Executor workingBy, LocalDate startDate, Executor executor, LocalDate endDate, Integer smav, Integer outNumber, String regNumber, String inNumFromOrg, LocalDate inDate, Integer copyNumber, Payment payment) {
+    public Request(Integer id, Rubric rubric, Theme theme, String subject, String shortRequest, String shortAnswer, Source source, boolean urgent, boolean GPW, boolean entity, boolean consular, Executor receiver, LocalDate receiptDate, Executor workingBy, LocalDate startDate, Executor executor, LocalDate endDate, Integer smav, Integer outNumber, String regNumber, String inNumFromOrg, LocalDate inDate, Integer copyNumber, Payment payment) {
         this.id = id;
         this.rubric = rubric;
         this.theme = theme;
@@ -220,7 +220,7 @@ public class Request {
     }
 
     public Executor getReceiver() {
-        return receiver;
+        return receiver!=null ? receiver : Executor.EMPTY_EXECUTOR;
     }
 
     public void setReceiver(Executor receiver) {
@@ -324,7 +324,7 @@ public class Request {
     }
 
     public Payment getPayment() {
-        return payment;
+        return payment!=null ? payment : Payment.EMPTY_PAYMENT;
     }
 
     public void setPayment(Payment payment) {

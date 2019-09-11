@@ -7,7 +7,7 @@ import java.util.Objects;
 @Table(name = "rubrics")
 public class Rubric {
 
-    public static final Rubric EMPTY_RUBRIC = new Rubric(0, "", "");
+    public static final Rubric EMPTY_RUBRIC = new Rubric(29, "", "");
 
     @Id
     @SequenceGenerator(name = "rubrics_rubric_id_seq", sequenceName = "requests.rubrics_rubric_id_seq")

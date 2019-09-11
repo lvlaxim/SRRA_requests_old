@@ -7,7 +7,7 @@ import java.util.Objects;
 @Table(name = "sources")
 public class Source {
 
-    public static final Source EMPTY_SOURCE = new Source(0, "");
+    public static final Source EMPTY_SOURCE = new Source(27, "");
 
     @Id
     @SequenceGenerator(name = "sources_source_id_seq", sequenceName = "requests.sources_source_id_seq")

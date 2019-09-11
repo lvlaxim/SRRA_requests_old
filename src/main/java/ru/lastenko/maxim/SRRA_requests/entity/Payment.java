@@ -7,6 +7,8 @@ import java.util.Objects;
 @Table(name = "payments")
 public class Payment {
 
+    public static final Payment EMPTY_PAYMENT = new Payment(4, "");
+
     @Id
     @SequenceGenerator(name = "payments_payment_id_seq", sequenceName = "requests.payments_payment_id_seq")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "payments_payment_id_seq")

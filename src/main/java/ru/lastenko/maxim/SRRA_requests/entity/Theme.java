@@ -7,7 +7,7 @@ import java.util.Objects;
 @Table(name = "themes")
 public class Theme {
 
-    public static final Theme EMPTY_THEME = new Theme(0, "");
+    public static final Theme EMPTY_THEME = new Theme(56, "");
 
     @Id
     @SequenceGenerator(name = "themes_theme_id_seq", sequenceName = "requests.themes_theme_id_seq")
