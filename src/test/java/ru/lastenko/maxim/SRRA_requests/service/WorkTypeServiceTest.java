@@ -1,4 +1,4 @@
-package ru.lastenko.maxim.SRRA_requests.Service;
+package ru.lastenko.maxim.SRRA_requests.service;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -15,18 +15,18 @@ import static ru.lastenko.maxim.SRRA_requests.TestData.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Sql(scripts = "classpath:db/populateDB.sql")
-public class ThemeServiceTest {
+public class WorkTypeServiceTest {
 
     @Autowired
-    private ThemeService service;
+    private WorkTypeService service;
 
     @Test
     public void getById() {
-        Assert.assertEquals(THEME_2, service.getById(2));
+        Assert.assertEquals(THROW, service.getById(2));
     }
 
     @Test
     public void getAll() {
-        Assert.assertEquals(List.of(THEME_1, THEME_2), service.getAll());
+        Assert.assertEquals(List.of(DIG, THROW), service.getAll());
     }
 }

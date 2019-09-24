@@ -1,4 +1,4 @@
-package ru.lastenko.maxim.SRRA_requests.Service;
+package ru.lastenko.maxim.SRRA_requests.service;
 
 import org.junit.Assert;
 import org.junit.Test;

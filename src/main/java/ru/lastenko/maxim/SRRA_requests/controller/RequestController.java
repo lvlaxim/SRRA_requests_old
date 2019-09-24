@@ -8,16 +8,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import ru.lastenko.maxim.SRRA_requests.Service.*;
+import ru.lastenko.maxim.SRRA_requests.service.*;
 import ru.lastenko.maxim.SRRA_requests.entity.Request;
 import ru.lastenko.maxim.SRRA_requests.util.Pager;
 import ru.lastenko.maxim.SRRA_requests.util.RequestFilter;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Controller

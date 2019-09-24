@@ -1,18 +1,14 @@
-package ru.lastenko.maxim.SRRA_requests.Service;
+package ru.lastenko.maxim.SRRA_requests.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.lastenko.maxim.SRRA_requests.entity.Request;
 import ru.lastenko.maxim.SRRA_requests.repository.RequestRepository;
 import ru.lastenko.maxim.SRRA_requests.util.RequestFilter;
 
-import java.util.LinkedList;
 import java.util.List;
-
-import static ru.lastenko.maxim.SRRA_requests.repository.RequestSpecifications.*;
 
 
 @Service

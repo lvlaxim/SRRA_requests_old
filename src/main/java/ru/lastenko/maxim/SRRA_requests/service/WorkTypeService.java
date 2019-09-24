@@ -1,4 +1,4 @@
-package ru.lastenko.maxim.SRRA_requests.Service;
+package ru.lastenko.maxim.SRRA_requests.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
