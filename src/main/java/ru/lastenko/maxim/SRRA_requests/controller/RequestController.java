@@ -8,8 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ru.lastenko.maxim.SRRA_requests.dto.RequestDto;
+import ru.lastenko.maxim.SRRA_requests.entity.*;
 import ru.lastenko.maxim.SRRA_requests.service.*;
-import ru.lastenko.maxim.SRRA_requests.entity.Request;
 import ru.lastenko.maxim.SRRA_requests.util.Pager;
 import ru.lastenko.maxim.SRRA_requests.util.RequestFilter;
 
@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static java.time.temporal.ChronoUnit.DAYS;
 
 @Controller
 public class RequestController {
@@ -163,10 +165,32 @@ public class RequestController {
 
         RequestDto requestDto = modelMapper.map(request, RequestDto.class);
 
+        if (request.getRubric() == null) {
+            requestDto.setRubric(Rubric.EMPTY_RUBRIC);
+        }
+        if (request.getTheme() == null) {
+            requestDto.setTheme(Theme.EMPTY_THEME);
+        }
+        if (request.getSource() == null) {
+            requestDto.setSource(Source.EMPTY_SOURCE);
+        }
+        if (request.getExecutor() == null) {
+            requestDto.setExecutor(Executor.EMPTY_EXECUTOR);
+        }
+        if (request.getPayment() == null) {
+            requestDto.setPayment(Payment.EMPTY_PAYMENT);
+        }
+
         requestDto.setChangeable(false);
         if (request.getEndDate() != null
                 && LocalDate.now().isAfter(request.getEndDate().plusDays(10))) {
             requestDto.setChangeable(true);
+        }
+
+        if (request.getReceiptDate() != null) {
+            Long daysLeft = DAYS.between(LocalDate.now(), request.getReceiptDate()) + 30;
+            requestDto.setDaysLeft(daysLeft);
+            requestDto.setExpired(daysLeft>0 ? false : true);
         }
 
         return requestDto;

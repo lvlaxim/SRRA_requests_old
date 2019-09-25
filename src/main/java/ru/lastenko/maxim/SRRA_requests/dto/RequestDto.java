@@ -33,4 +33,8 @@ public class RequestDto {
     private Integer copyNumber;
     private Payment payment;
     private boolean changeable;
+    private boolean expired;
+    private boolean executed;
+    private Long daysLeft;
+
 }

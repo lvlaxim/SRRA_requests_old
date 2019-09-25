@@ -140,7 +140,7 @@ public class Request {
     }
 
     public Rubric getRubric() {
-        return rubric != null ? rubric : Rubric.EMPTY_RUBRIC;
+        return rubric;
     }
 
     public void setRubric(Rubric rubric) {
@@ -148,7 +148,7 @@ public class Request {
     }
 
     public Theme getTheme() {
-        return theme != null ? theme : Theme.EMPTY_THEME;
+        return theme;
     }
 
     public void setTheme(Theme theme) {
@@ -180,7 +180,7 @@ public class Request {
     }
 
     public Source getSource() {
-        return source != null ? source : Source.EMPTY_SOURCE;
+        return source;
     }
 
     public void setSource(Source source) {
