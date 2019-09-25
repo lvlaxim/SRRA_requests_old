@@ -1,8 +1,6 @@
 package ru.lastenko.maxim.SRRA_requests.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.lastenko.maxim.SRRA_requests.entity.*;
 
 import java.time.LocalDate;
@@ -34,6 +32,5 @@ public class RequestDto {
     private LocalDate inDate;
     private Integer copyNumber;
     private Payment payment;
-    private Boolean isChangeable;
-
+    private boolean changeable;
 }

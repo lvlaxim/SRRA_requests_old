@@ -1,20 +1,22 @@
 package ru.lastenko.maxim.SRRA_requests.controller;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import ru.lastenko.maxim.SRRA_requests.dto.RequestDto;
 import ru.lastenko.maxim.SRRA_requests.service.*;
 import ru.lastenko.maxim.SRRA_requests.entity.Request;
 import ru.lastenko.maxim.SRRA_requests.util.Pager;
 import ru.lastenko.maxim.SRRA_requests.util.RequestFilter;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 public class RequestController {
@@ -38,6 +40,8 @@ public class RequestController {
     private PaymentService paymentService;
     @Autowired
     HttpServletRequest httpServletRequest;
+    @Autowired
+    ModelMapper modelMapper;
 
 
     /**
@@ -69,13 +73,20 @@ public class RequestController {
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
 
         RequestFilter filter = new RequestFilter(id, outNumber, smav, theme, answer, executor, executeDate, caseIns);
-        Page<Request> requests = requestService.getByFilter(filter, PageRequest.of(evalPage, evalPageSize, Sort.by("id").descending()));
+        Pageable pageable = PageRequest.of(evalPage, evalPageSize, Sort.by("id").descending());
+        Page<Request> requests = requestService.getByFilter(filter, pageable);
+        Page<RequestDto> requestsDto = new PageImpl<>(
+                requests.get()
+                        .map(request -> convertToDto(request))
+                        .collect(Collectors.toList()),
+                pageable,
+                requests.getTotalElements());
         Pager pager = new Pager(requests.getTotalPages(), requests.getNumber(), BUTTONS_TO_SHOW);
 
         ModelAndView modelAndView = new ModelAndView(requests.getTotalElements() == 1 ? "forward:/request" : "requests");
 
         modelAndView.addObject("filter", filter);
-        modelAndView.addObject("requests", requests);
+        modelAndView.addObject("requests", requestsDto);
         modelAndView.addObject("selectedPageSize", evalPageSize);
         modelAndView.addObject("pageSizes", PAGE_SIZES);
         modelAndView.addObject("pager", pager);
@@ -86,13 +97,13 @@ public class RequestController {
         return modelAndView;
     }
 
-//    @PostMapping("/request/update")
+    //    @PostMapping("/request/update")
 //    public ModelAndView saveRequest(@RequestParam Integer outNumber,
 //                              @RequestParam String receiver, Model model) {
 //        System.out.println(outNumber);
 //        return new ModelAndView("redirect:/requests");
 //    }
-@PostMapping("/request/update")
+    @PostMapping("/request/update")
     public ModelAndView saveRequest(@ModelAttribute("request") Request request, Model model) {
 //        System.out.println(request);
         requestService.save(request);
@@ -123,11 +134,18 @@ public class RequestController {
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
 
         RequestFilter filter = new RequestFilter(id, outNumber, smav, theme, answer, executor, executeDate, caseIns);
-        Page<Request> requests = requestService.getByFilter(filter, PageRequest.of(evalPage, evalPageSize, Sort.by("id").descending()));
+        Pageable pageable = PageRequest.of(evalPage, evalPageSize, Sort.by("id").descending());
+        Page<Request> requests = requestService.getByFilter(filter, pageable);
+        Page<RequestDto> requestsDto = new PageImpl<>(
+                requests.get()
+                        .map(request -> convertToDto(request))
+                        .collect(Collectors.toList()),
+                pageable,
+                requests.getTotalElements());
         Pager pager = new Pager(requests.getTotalPages(), requests.getNumber(), BUTTONS_TO_SHOW);
 
         modelAndView.addObject("filter", filter);
-        modelAndView.addObject("requests", requests);
+        modelAndView.addObject("requests", requestsDto);
         modelAndView.addObject("selectedPageSize", evalPageSize);
         modelAndView.addObject("pageSizes", PAGE_SIZES);
         modelAndView.addObject("pager", pager);
@@ -139,5 +157,18 @@ public class RequestController {
         modelAndView.addObject("payments", paymentService.getAll());
 
         return modelAndView;
+    }
+
+    private RequestDto convertToDto(Request request) {
+
+        RequestDto requestDto = modelMapper.map(request, RequestDto.class);
+
+        requestDto.setChangeable(false);
+        if (request.getEndDate() != null
+                && LocalDate.now().isAfter(request.getEndDate().plusDays(10))) {
+            requestDto.setChangeable(true);
+        }
+
+        return requestDto;
     }
 }
