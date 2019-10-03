@@ -74,15 +74,9 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <label for="formThemeSelect">Тема</label>
-                                        <select class="form-control" name="theme" id="formThemeSelect">
-                                            <option selected></option>
-                                            <option th:each="theme : ${themes}"
-                                                    th:selected="${theme.getName().equals(filter.getTheme())}"
-                                                    th:text="${theme.getName()}">
-                                                Default select
-                                            </option>
-                                        </select>
+                                        <label for="filterSubjaect">Тема</label>
+                                        <input class="form-control" type="text" name="subject" id="filterSubjaect"
+                                               th:value="${filter.getSubject()}">
                                     </div>
                                 </div>
                             </div>
@@ -98,11 +92,31 @@
                             <div class="row mb-4">
                                 <div class="col-12">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="caseIns" id="isUrgentCheck"
+                                        <input class="form-check-input" type="checkbox" name="caseIns"
+                                               id="isUrgentCheck"
                                                th:checked="${filter.getCaseInsensitive()}">
                                         <label class="form-check-label" for="isUrgentCheck">
                                             Без учета регистра букв
                                         </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <label>Дата исполнения</label>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group row">
+                                        <label for="formExecuteDateInputFrom" class="col-sm-1 col-form-label d-flex justify-content-end">c:</label>
+                                        <div class="col-sm-5">
+                                            <input type="date" class="form-control" name="executeDateFrom"
+                                                   id="formExecuteDateInputFrom"
+                                                   th:value="${filter.getExecuteDateFrom()}">
+                                        </div>
+                                        <label for="formExecuteDateInputTo" class="col-sm-1 col-form-label d-flex justify-content-end">по:</label>
+                                        <div class="col-sm-5">
+                                            <input type="date" class="form-control" name="executeDateTo"
+                                                   id="formExecuteDateInputTo"
+                                                   th:value="${filter.getExecuteDateTo()}">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -119,14 +133,6 @@
                                                 Default select
                                             </option>
                                         </select>
-                                    </div>
-                                </div>
-                                <div class="col-2"></div>
-                                <div class="col-5">
-                                    <div class="form-group">
-                                        <label for="formEndDateInput">Дата исполнения</label>
-                                        <input type="date" class="form-control" name="executeDate" id="formEndDateInput"
-                                               th:value="${filter.getExecuteDate()}">
                                     </div>
                                 </div>
                             </div>

@@ -23,8 +23,12 @@ public class RequestSpecifications {
         return (request, query, criteriaBuilder) -> criteriaBuilder.equal(request.get("smav"), smav);
     }
 
-    public static Specification<Request> hasTheme(String theme) {
-        return (request, query, criteriaBuilder) -> criteriaBuilder.like(request.get("theme").get("name"), theme);
+    public static Specification<Request> subjectContainsCaseInsensitive(String subject) {
+        return (request, query, criteriaBuilder) -> criteriaBuilder.like(criteriaBuilder.lower(request.get("subject")), ("%" + subject + "%").toLowerCase());
+    }
+
+    public static Specification<Request> subjectContains(String subject) {
+        return (request, query, criteriaBuilder) -> criteriaBuilder.like(request.get("subject"), "%" + subject + "%");
     }
 
     public static Specification<Request> answerContainsCaseInsensitive(String answer) {
@@ -39,8 +43,12 @@ public class RequestSpecifications {
         return (request, query, criteriaBuilder) -> criteriaBuilder.like(request.get("executor").get("name"), executor);
     }
 
-    public static Specification<Request> hasExecutDate(LocalDate executDate) {
-        return (request, query, criteriaBuilder) -> criteriaBuilder.equal(request.get("endDate"), executDate);
+    public static Specification<Request> endDateGreater(LocalDate endDateFrom) {
+        return (request, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(request.get("endDate"), endDateFrom);
+    }
+
+    public static Specification<Request> endDateLess(LocalDate endDateTo) {
+        return (request, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(request.get("endDate"), endDateTo);
     }
 }
 

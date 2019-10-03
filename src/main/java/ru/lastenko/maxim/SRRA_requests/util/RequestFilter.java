@@ -1,5 +1,6 @@
 package ru.lastenko.maxim.SRRA_requests.util;
 
+import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDate;
@@ -9,94 +10,33 @@ import java.util.List;
 
 import static ru.lastenko.maxim.SRRA_requests.repository.RequestSpecifications.*;
 
+@Data
 public class RequestFilter {
 
     private Integer id;
     private Integer outNumber;
     private Integer smav;
-    private String theme;
+    private String subject;
     private String answer;
     private String executor;
-    private LocalDate executeDate;
+    private LocalDate executeDateFrom;
+    private LocalDate executeDateTo;
     private Boolean caseInsensitive;
 
 
     public RequestFilter() {
     }
 
-    public RequestFilter(Integer id, Integer outNumber, Integer smav, String theme, String answer, String executor, String executeDate, Boolean caseInsensitive) {
+    public RequestFilter(Integer id, Integer outNumber, Integer smav, String subject, String answer, String executor, String executeDateFrom, String executeDateTo, Boolean caseInsensitive) {
         this.id = id;
         this.outNumber = outNumber;
         this.smav = smav;
-        this.theme = theme;
+        this.subject = subject;
         this.answer = answer;
         this.executor = executor;
-        this.executeDate = isEnabled(executeDate) ? LocalDate.parse(executeDate) : null;
+        this.executeDateFrom = isEnabled(executeDateFrom) ? LocalDate.parse(executeDateFrom) : null;
+        this.executeDateTo = isEnabled(executeDateTo) ? LocalDate.parse(executeDateTo) : null;
         this.caseInsensitive = caseInsensitive!=null ? caseInsensitive : false;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getOutNumber() {
-        return outNumber;
-    }
-
-    public void setOutNumber(Integer outNumber) {
-        this.outNumber = outNumber;
-    }
-
-    public String getTheme() {
-        return theme;
-    }
-
-    public void setTheme(String theme) {
-        this.theme = theme;
-    }
-
-    public String getAnswer() {
-        return answer;
-    }
-
-    public void setAnswer(String answer) {
-        this.answer = answer;
-    }
-
-    public String getExecutor() {
-        return executor;
-    }
-
-    public void setExecutor(String executor) {
-        this.executor = executor;
-    }
-
-    public LocalDate getExecuteDate() {
-        return executeDate;
-    }
-
-    public void setExecuteDate(LocalDate executeDate) {
-        this.executeDate = executeDate;
-    }
-
-    public Integer getSmav() {
-        return smav;
-    }
-
-    public void setSmav(Integer smav) {
-        this.smav = smav;
-    }
-
-    public Boolean getCaseInsensitive() {
-        return caseInsensitive;
-    }
-
-    public void setCaseInsensitive(Boolean caseInsensitive) {
-        this.caseInsensitive = caseInsensitive;
     }
 
     public Specification getSpecification() {
@@ -110,8 +50,15 @@ public class RequestFilter {
         if (smav != null) {
             specifications.add(hasSmav(smav));
         }
-        if (isEnabled(theme)) {
-            specifications.add(hasTheme(theme));
+        if (isEnabled(subject)) {
+            List<String> words = Arrays.asList(subject.split("\\+"));
+            for (String word: words) {
+                if (caseInsensitive == true) {
+                    specifications.add(subjectContainsCaseInsensitive(subject));
+                } else {
+                    specifications.add(subjectContains(subject));
+                }
+            }
         }
         if (isEnabled(answer)) {
             List<String> words = Arrays.asList(answer.split("\\+"));
@@ -126,8 +73,13 @@ public class RequestFilter {
         if (isEnabled(executor)) {
             specifications.add(hasExecutor(executor));
         }
-        if (executeDate != null) {
-            specifications.add(hasExecutDate(executeDate));
+
+        if (executeDateFrom != null) {
+            specifications.add(endDateGreater(executeDateFrom));
+        }
+
+        if (executeDateTo != null) {
+            specifications.add(endDateLess(executeDateTo));
         }
 
         int size = specifications.size();
@@ -149,10 +101,11 @@ public class RequestFilter {
         if (id != null
                 || outNumber != null
                 || smav != null
-                || isEnabled(theme)
+                || isEnabled(subject)
                 || isEnabled(answer)
                 || isEnabled(executor)
-                || executeDate != null) {
+                || executeDateFrom != null
+                || executeDateTo != null) {
             return true;
         }
         return false;
