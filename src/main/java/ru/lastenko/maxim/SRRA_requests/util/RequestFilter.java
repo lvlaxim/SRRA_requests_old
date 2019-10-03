@@ -21,13 +21,14 @@ public class RequestFilter {
     private String executor;
     private LocalDate executeDateFrom;
     private LocalDate executeDateTo;
+    private String inNumFromOrg;
     private Boolean caseInsensitive;
 
 
     public RequestFilter() {
     }
 
-    public RequestFilter(Integer id, Integer outNumber, Integer smav, String subject, String answer, String executor, String executeDateFrom, String executeDateTo, Boolean caseInsensitive) {
+    public RequestFilter(Integer id, Integer outNumber, Integer smav, String subject, String answer, String executor, String executeDateFrom, String executeDateTo, String inNumFromOrg, Boolean caseInsensitive) {
         this.id = id;
         this.outNumber = outNumber;
         this.smav = smav;
@@ -36,7 +37,8 @@ public class RequestFilter {
         this.executor = executor;
         this.executeDateFrom = isEnabled(executeDateFrom) ? LocalDate.parse(executeDateFrom) : null;
         this.executeDateTo = isEnabled(executeDateTo) ? LocalDate.parse(executeDateTo) : null;
-        this.caseInsensitive = caseInsensitive!=null ? caseInsensitive : false;
+        this.inNumFromOrg = inNumFromOrg;
+        this.caseInsensitive = caseInsensitive != null ? caseInsensitive : false;
     }
 
     public Specification getSpecification() {
@@ -52,7 +54,7 @@ public class RequestFilter {
         }
         if (isEnabled(subject)) {
             List<String> words = Arrays.asList(subject.split("\\+"));
-            for (String word: words) {
+            for (String word : words) {
                 if (caseInsensitive == true) {
                     specifications.add(subjectContainsCaseInsensitive(subject));
                 } else {
@@ -62,7 +64,7 @@ public class RequestFilter {
         }
         if (isEnabled(answer)) {
             List<String> words = Arrays.asList(answer.split("\\+"));
-            for (String word: words) {
+            for (String word : words) {
                 if (caseInsensitive == true) {
                     specifications.add(answerContainsCaseInsensitive(word));
                 } else {
@@ -80,6 +82,10 @@ public class RequestFilter {
 
         if (executeDateTo != null) {
             specifications.add(endDateLess(executeDateTo));
+        }
+
+        if (isEnabled(inNumFromOrg)) {
+            specifications.add(inNumFromOrgContains(inNumFromOrg));
         }
 
         int size = specifications.size();
@@ -105,7 +111,8 @@ public class RequestFilter {
                 || isEnabled(answer)
                 || isEnabled(executor)
                 || executeDateFrom != null
-                || executeDateTo != null) {
+                || executeDateTo != null
+                || isEnabled(inNumFromOrg)) {
             return true;
         }
         return false;

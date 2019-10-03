@@ -64,6 +64,7 @@ public class RequestController {
                                  @RequestParam(required = false) String executor,
                                  @RequestParam(required = false) String executeDateFrom,
                                  @RequestParam(required = false) String executeDateTo,
+                                 @RequestParam(required = false) String inNumFromOrg,
                                  @RequestParam(required = false) Boolean caseIns) {
 
         // Evaluate page size. If requested parameter is null, return initial
@@ -75,7 +76,7 @@ public class RequestController {
         // param. decreased by 1.
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
 
-        RequestFilter filter = new RequestFilter(id, outNumber, smav, subject, answer, executor, executeDateFrom, executeDateTo, caseIns);
+        RequestFilter filter = new RequestFilter(id, outNumber, smav, subject, answer, executor, executeDateFrom, executeDateTo, inNumFromOrg, caseIns);
         Pageable pageable = PageRequest.of(evalPage, evalPageSize, Sort.by("id").descending());
         Page<Request> requests = requestService.getByFilter(filter, pageable);
         Page<RequestDto> requestsDto = new PageImpl<>(
@@ -124,6 +125,7 @@ public class RequestController {
                                 @RequestParam(required = false) String executor,
                                 @RequestParam(required = false) String executeDateFrom,
                                 @RequestParam(required = false) String executeDateTo,
+                                @RequestParam(required = false) String inNumFromOrg,
                                 @RequestParam(required = false) Boolean caseIns) {
 
         ModelAndView modelAndView = new ModelAndView("request");
@@ -137,7 +139,7 @@ public class RequestController {
         // param. decreased by 1.
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
 
-        RequestFilter filter = new RequestFilter(id, outNumber, smav, theme, answer, executor, executeDateFrom, executeDateTo, caseIns);
+        RequestFilter filter = new RequestFilter(id, outNumber, smav, theme, answer, executor, executeDateFrom, executeDateTo, inNumFromOrg, caseIns);
         Pageable pageable = PageRequest.of(evalPage, evalPageSize, Sort.by("id").descending());
         Page<Request> requests = requestService.getByFilter(filter, pageable);
         Page<RequestDto> requestsDto = new PageImpl<>(

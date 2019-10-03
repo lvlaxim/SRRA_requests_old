@@ -50,5 +50,9 @@ public class RequestSpecifications {
     public static Specification<Request> endDateLess(LocalDate endDateTo) {
         return (request, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(request.get("endDate"), endDateTo);
     }
+
+    public static Specification<Request> inNumFromOrgContains(String inNumFromOrg) {
+        return (request, query, criteriaBuilder) -> criteriaBuilder.like(request.get("inNumFromOrg"), "%" + inNumFromOrg + "%");
+    }
 }
 
