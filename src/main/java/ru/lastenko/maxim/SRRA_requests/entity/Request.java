@@ -11,8 +11,9 @@ import java.util.Objects;
 public class Request {
 
     @Id
-    @SequenceGenerator(name = "requests_request_id_seq", sequenceName = "requests.requests_request_id_seq")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "requests_request_id_seq")
+//    @SequenceGenerator(name = "requests_request_id_seq", sequenceName = "requests.requests_request_id_seq")
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "requests_request_id_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "request_id")
     private Integer id;
 

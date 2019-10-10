@@ -15,22 +15,28 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">
-                    Фильтр <span class="badge badge-secondary"
-                                 th:if="${filter.isEnabled()}"
-                                 th:text="${requests.getTotalElements()<100 ? requests.getTotalElements() : '99+'}"
-                                 data-toggle="tooltip"
-                                 data-placement="left"
-                                 th:title="${requests.getTotalElements()}">99+</span>
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" data-toggle="modal" data-target="#exampleModal" href="#"
-                       th:text="${filter.isEnabled() ? 'Изменить' : 'Создать'}">Создать</a>
-                    <a class="dropdown-item" href="/requests">Отменить</a>
-                </div>
+                <li class="nav-item">
+                    <a class="nav-link" href="/new">Новый запрос</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        Фильтр <span class="badge badge-secondary"
+                                     th:if="${filter.isEnabled()}"
+                                     th:text="${requests.getTotalElements()<100 ? requests.getTotalElements() : '99+'}"
+                                     data-toggle="tooltip"
+                                     data-placement="left"
+                                     th:title="${requests.getTotalElements()}">99+</span>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" data-toggle="modal" data-target="#exampleModal" href="#"
+                           th:text="${filter.isEnabled() ? 'Изменить' : 'Создать'}">Создать</a>
+                        <a class="dropdown-item" href="/requests">Отменить</a>
+                    </div>
+                </li>
             </ul>
+
         </div>
 
 
@@ -105,13 +111,15 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group row">
-                                        <label for="formExecuteDateInputFrom" class="col-sm-1 col-form-label d-flex justify-content-end">c:</label>
+                                        <label for="formExecuteDateInputFrom"
+                                               class="col-sm-1 col-form-label d-flex justify-content-end">c:</label>
                                         <div class="col-sm-5">
                                             <input type="date" class="form-control" name="executeDateFrom"
                                                    id="formExecuteDateInputFrom"
                                                    th:value="${filter.getExecuteDateFrom()}">
                                         </div>
-                                        <label for="formExecuteDateInputTo" class="col-sm-1 col-form-label d-flex justify-content-end">по:</label>
+                                        <label for="formExecuteDateInputTo"
+                                               class="col-sm-1 col-form-label d-flex justify-content-end">по:</label>
                                         <div class="col-sm-5">
                                             <input type="date" class="form-control" name="executeDateTo"
                                                    id="formExecuteDateInputTo"
@@ -139,7 +147,8 @@
                                 <div class="col-5">
                                     <div class="form-group">
                                         <label for="formInNumberFromOrg">Входящий № орг.</label>
-                                        <input class="form-control" type="text" id="formInNumberFromOrg" name="inNumFromOrg"
+                                        <input class="form-control" type="text" id="formInNumberFromOrg"
+                                               name="inNumFromOrg"
                                                th:value="${filter.getInNumFromOrg()}">
                                     </div>
                                 </div>

@@ -165,6 +165,23 @@ public class RequestController {
         return modelAndView;
     }
 
+    @GetMapping("/new")
+    public ModelAndView addNew() {
+        ModelAndView modelAndView = new ModelAndView("newRequest");
+        RequestDto requestDto = convertToDto(requestService.save(new Request()));
+
+        modelAndView.addObject("filter", new RequestFilter());
+        modelAndView.addObject("requests", requestDto);
+
+        modelAndView.addObject("rubrics", rubricService.getAll());
+        modelAndView.addObject("themes", themeService.getAll());
+        modelAndView.addObject("sources", sourceService.getAll());
+        modelAndView.addObject("executors", executorService.getAll());
+        modelAndView.addObject("payments", paymentService.getAll());
+
+        return modelAndView;
+    }
+
     private RequestDto convertToDto(Request request) {
 
         RequestDto requestDto = modelMapper.map(request, RequestDto.class);

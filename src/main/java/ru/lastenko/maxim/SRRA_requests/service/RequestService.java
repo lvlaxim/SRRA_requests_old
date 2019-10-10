@@ -29,8 +29,8 @@ public class RequestService {
         return repository.findAll(filter.getSpecification(), pageable);
     }
 
-    public void save(Request request) {
-        repository.save(request);
+    public Request save(Request request) {
+        return repository.save(request);
     }
 
 }
