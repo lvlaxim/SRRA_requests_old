@@ -1,10 +1,17 @@
 package ru.lastenko.maxim.SRRA_requests.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Table(name = "payments")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Payment {
 
     public static final Payment EMPTY_PAYMENT = new Payment(4, "");
@@ -17,30 +24,6 @@ public class Payment {
 
     @Column(name = "payment")
     private String type;
-
-    public Payment() {
-    }
-
-    public Payment(int id, String type) {
-        this.id = id;
-        this.type = type;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 
     @Override
     public boolean equals(Object o) {

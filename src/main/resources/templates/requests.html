@@ -2,10 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head :: head"></head>
 <body>
-
 <div th:replace="fragments/header :: header"></div>
 <div class="container mt-4">
-
 
     <table class="table table-sm table-hover">
         <thead>
@@ -20,15 +18,14 @@
         <tbody>
         <tr class="row" th:each="request : ${requests}">
             <td class="col-1" scope="row">
-<!--                <a th:href="@{/requests/{requestId}(requestId=${request.getId()})}">-->
-<!--                <a th:href="@{/request(page=${requests.getNumber()*selectedPageSize+requests.getContent().indexOf(request)+1})}">-->
                 <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
                    th:href="${urlBuilder
                    .replacePath('/request')
                    .replaceQueryParam('page', requests.getNumber()*selectedPageSize+requests.getContent().indexOf(request)+1)
                    .build(false).toUriString()}">
-                    <span
-                            th:text="${request.getId()}">Изменить
+
+                    <span th:text="${request.getId()}">
+                        Изменить
                     </span>
                 </a>
             </td>
@@ -39,9 +36,9 @@
         </tr>
         </tbody>
     </table>
+
     <div th:replace="fragments/pager :: pager"></div>
     <div th:replace="fragments/footer :: footer"></div>
 </div>
-
 </body>
 </html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+<body>
+</br>
+<div class="container">
+<form th:action="@{/unload}"
+      th:object="${unloadFilter}"
+      method="POST">
+    <p>
+    <div class="input-group">
+        <input type="text" class="form-control" id="rubricCode" name="rubricCode" th:value="*{rubricCode}"
+               placeholder="Рубрика"/>
+        <input type="text" class="form-control" id="sourceId" name="sourceId" th:value="*{sourceId}"
+               placeholder="Тип отправления"/>
+        <div class="input-group-prepend">
+            <span class="input-group-text">Дата</span>
+        </div>
+        <input type="date" class="form-control" id="dateFrom" name="dateFrom" th:value="*{date}"/>
+    </div>
+    </p>
+
+    <p>
+        <input type="submit" class="btn btn-primary" value="Посчитать">
+    </p>
+</form>
+
+<h4 th:utext="${countOfRecords}"></h4>
+
+</div>
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

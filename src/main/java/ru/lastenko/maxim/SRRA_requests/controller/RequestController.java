@@ -25,7 +25,7 @@ public class RequestController {
 
     private static final int BUTTONS_TO_SHOW = 5;
     private static final int INITIAL_PAGE = 0;
-    private static final int INITIAL_PAGE_SIZE = 10;
+    private static final int INITIAL_PAGE_SIZE = 15;
     private static final int[] PAGE_SIZES = {5, 10, 20};
 
     @Autowired
@@ -45,14 +45,6 @@ public class RequestController {
     @Autowired
     ModelMapper modelMapper;
 
-
-    /**
-     * Handles all requests
-     *
-     * @param pageSize
-     * @param page
-     * @return model and view
-     */
     @GetMapping("/requests")
     public ModelAndView requests(@RequestParam("pageSize") Optional<Integer> pageSize,
                                  @RequestParam("page") Optional<Integer> page,
@@ -67,13 +59,8 @@ public class RequestController {
                                  @RequestParam(required = false) String inNumFromOrg,
                                  @RequestParam(required = false) Boolean caseIns) {
 
-        // Evaluate page size. If requested parameter is null, return initial
-        // page size
         int evalPageSize = INITIAL_PAGE_SIZE; //pageSize.orElse(INITIAL_PAGE_SIZE);
 
-        // Evaluate page. If requested parameter is null or less than 0 (to
-        // prevent exception), return initial size. Otherwise, return value of
-        // param. decreased by 1.
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
 
         RequestFilter filter = new RequestFilter(id, outNumber, smav, subject, answer, executor, executeDateFrom, executeDateTo, inNumFromOrg, caseIns);
@@ -81,7 +68,7 @@ public class RequestController {
         Page<Request> requests = requestService.getByFilter(filter, pageable);
         Page<RequestDto> requestsDto = new PageImpl<>(
                 requests.get()
-                        .map(request -> convertToDto(request))
+                        .map(this::convertToDto)
                         .collect(Collectors.toList()),
                 pageable,
                 requests.getTotalElements());
@@ -101,15 +88,8 @@ public class RequestController {
         return modelAndView;
     }
 
-    //    @PostMapping("/request/update")
-//    public ModelAndView saveRequest(@RequestParam Integer outNumber,
-//                              @RequestParam String receiver, Model model) {
-//        System.out.println(outNumber);
-//        return new ModelAndView("redirect:/requests");
-//    }
     @PostMapping("/request/update")
     public ModelAndView saveRequest(@ModelAttribute("request") Request request, Model model) {
-//        System.out.println(request);
         requestService.save(request);
         return new ModelAndView("redirect:/requests");
     }
@@ -130,13 +110,8 @@ public class RequestController {
 
         ModelAndView modelAndView = new ModelAndView("request");
 
-        // Evaluate page size. If requested parameter is null, return initial
-        // page size
         int evalPageSize = 1; //pageSize.orElse(INITIAL_PAGE_SIZE);
 
-        // Evaluate page. If requested parameter is null or less than 0 (to
-        // prevent exception), return initial size. Otherwise, return value of
-        // param. decreased by 1.
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
 
         RequestFilter filter = new RequestFilter(id, outNumber, smav, theme, answer, executor, executeDateFrom, executeDateTo, inNumFromOrg, caseIns);
@@ -144,7 +119,7 @@ public class RequestController {
         Page<Request> requests = requestService.getByFilter(filter, pageable);
         Page<RequestDto> requestsDto = new PageImpl<>(
                 requests.get()
-                        .map(request -> convertToDto(request))
+                        .map(this::convertToDto)
                         .collect(Collectors.toList()),
                 pageable,
                 requests.getTotalElements());
@@ -168,7 +143,7 @@ public class RequestController {
     @GetMapping("/new")
     public ModelAndView addNew() {
         ModelAndView modelAndView = new ModelAndView("newRequest");
-        RequestDto requestDto = convertToDto(requestService.save(new Request()));
+        RequestDto requestDto = convertToDto(new Request());
 
         modelAndView.addObject("filter", new RequestFilter());
         modelAndView.addObject("requests", requestDto);
@@ -211,7 +186,7 @@ public class RequestController {
         if (request.getReceiptDate() != null) {
             Long daysLeft = DAYS.between(LocalDate.now(), request.getReceiptDate()) + 30;
             requestDto.setDaysLeft(daysLeft);
-            requestDto.setExpired(daysLeft>0 ? false : true);
+            requestDto.setExpired(daysLeft <= 0);
         }
 
         return requestDto;

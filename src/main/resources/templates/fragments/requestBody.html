@@ -79,8 +79,7 @@
                             <option th:each="rubric : ${rubrics}"
                                     th:value="${rubric.getId()}"
                                     th:text="${rubric.getRubric()} + '  ' + ${rubric.getName()}"
-                                    th:selected="${request.getRubric().getId().equals(rubric.getId())}"
-                            >
+                                    th:selected="${request.getRubric().getId().equals(rubric.getId())}">
                                 Default select
                             </option>
                         </select>
