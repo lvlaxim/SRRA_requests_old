@@ -28,38 +28,50 @@ public class RequestController {
     private static final int INITIAL_PAGE_SIZE = 15;
     private static final int[] PAGE_SIZES = {5, 10, 20};
 
-    @Autowired
-    private RequestService requestService;
-    @Autowired
-    private RubricService rubricService;
-    @Autowired
-    private ThemeService themeService;
-    @Autowired
-    private SourceService sourceService;
-    @Autowired
-    private ExecutorService executorService;
-    @Autowired
-    private PaymentService paymentService;
-    @Autowired
-    HttpServletRequest httpServletRequest;
-    @Autowired
-    ModelMapper modelMapper;
+    private final RequestService requestService;
+    private final RubricService rubricService;
+    private final ThemeService themeService;
+    private final SourceService sourceService;
+    private final ExecutorService executorService;
+    private final PaymentService paymentService;
+    private final HttpServletRequest httpServletRequest;
+    private final ModelMapper modelMapper;
+
+    public RequestController(
+            RequestService requestService,
+            RubricService rubricService,
+            ThemeService themeService,
+            SourceService sourceService,
+            ExecutorService executorService,
+            PaymentService paymentService,
+            HttpServletRequest httpServletRequest,
+            ModelMapper modelMapper) {
+        this.requestService = requestService;
+        this.rubricService = rubricService;
+        this.themeService = themeService;
+        this.sourceService = sourceService;
+        this.executorService = executorService;
+        this.paymentService = paymentService;
+        this.httpServletRequest = httpServletRequest;
+        this.modelMapper = modelMapper;
+    }
 
     @GetMapping("/requests")
-    public ModelAndView requests(@RequestParam("pageSize") Optional<Integer> pageSize,
-                                 @RequestParam("page") Optional<Integer> page,
-                                 @RequestParam(required = false) Integer id,
-                                 @RequestParam(required = false) Integer outNumber,
-                                 @RequestParam(required = false) Integer smav,
-                                 @RequestParam(required = false) String subject,
-                                 @RequestParam(required = false) String answer,
-                                 @RequestParam(required = false) String executor,
-                                 @RequestParam(required = false) String executeDateFrom,
-                                 @RequestParam(required = false) String executeDateTo,
-                                 @RequestParam(required = false) String inNumFromOrg,
-                                 @RequestParam(required = false) Boolean caseIns) {
+    public ModelAndView requests(
+            @RequestParam("pageSize") Optional<Integer> pageSize,
+            @RequestParam("page") Optional<Integer> page,
+            @RequestParam(required = false) Integer id,
+            @RequestParam(required = false) Integer outNumber,
+            @RequestParam(required = false) Integer smav,
+            @RequestParam(required = false) String subject,
+            @RequestParam(required = false) String answer,
+            @RequestParam(required = false) String executor,
+            @RequestParam(required = false) String executeDateFrom,
+            @RequestParam(required = false) String executeDateTo,
+            @RequestParam(required = false) String inNumFromOrg,
+            @RequestParam(required = false) Boolean caseIns) {
 
-        int evalPageSize = INITIAL_PAGE_SIZE; //pageSize.orElse(INITIAL_PAGE_SIZE);
+        int evalPageSize = INITIAL_PAGE_SIZE;
 
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
 
@@ -67,53 +79,47 @@ public class RequestController {
         Pageable pageable = PageRequest.of(evalPage, evalPageSize, Sort.by("id").descending());
         Page<Request> requests = requestService.getByFilter(filter, pageable);
         Page<RequestDto> requestsDto = new PageImpl<>(
-                requests.get()
-                        .map(this::convertToDto)
-                        .collect(Collectors.toList()),
+                requests.get().map(this::convertToDto).collect(Collectors.toList()),
                 pageable,
                 requests.getTotalElements());
         Pager pager = new Pager(requests.getTotalPages(), requests.getNumber(), BUTTONS_TO_SHOW);
 
         ModelAndView modelAndView = new ModelAndView(requests.getTotalElements() == 1 ? "forward:/request" : "requests");
-
         modelAndView.addObject("filter", filter);
         modelAndView.addObject("requests", requestsDto);
         modelAndView.addObject("selectedPageSize", evalPageSize);
         modelAndView.addObject("pageSizes", PAGE_SIZES);
         modelAndView.addObject("pager", pager);
-
         modelAndView.addObject("themes", themeService.getAll());
         modelAndView.addObject("executors", executorService.getAll());
-
         return modelAndView;
     }
 
     @PostMapping("/request/update")
-    public ModelAndView saveRequest(@ModelAttribute("request") Request request, Model model) {
+    public ModelAndView saveRequest(@ModelAttribute("request") Request request) {
         requestService.save(request);
         return new ModelAndView("redirect:/requests");
     }
 
     @GetMapping("/request")
-    public ModelAndView request(@RequestParam("pageSize") Optional<Integer> pageSize,
-                                @RequestParam("page") Optional<Integer> page,
-                                @RequestParam(required = false) Integer id,
-                                @RequestParam(required = false) Integer outNumber,
-                                @RequestParam(required = false) Integer smav,
-                                @RequestParam(required = false) String theme,
-                                @RequestParam(required = false) String answer,
-                                @RequestParam(required = false) String executor,
-                                @RequestParam(required = false) String executeDateFrom,
-                                @RequestParam(required = false) String executeDateTo,
-                                @RequestParam(required = false) String inNumFromOrg,
-                                @RequestParam(required = false) Boolean caseIns) {
+    public ModelAndView request(
+            @RequestParam("pageSize") Optional<Integer> pageSize,
+            @RequestParam("page") Optional<Integer> page,
+            @RequestParam(required = false) Integer id,
+            @RequestParam(required = false) Integer outNumber,
+            @RequestParam(required = false) Integer smav,
+            @RequestParam(required = false) String theme,
+            @RequestParam(required = false) String answer,
+            @RequestParam(required = false) String executor,
+            @RequestParam(required = false) String executeDateFrom,
+            @RequestParam(required = false) String executeDateTo,
+            @RequestParam(required = false) String inNumFromOrg,
+            @RequestParam(required = false) Boolean caseIns) {
 
         ModelAndView modelAndView = new ModelAndView("request");
 
-        int evalPageSize = 1; //pageSize.orElse(INITIAL_PAGE_SIZE);
-
+        int evalPageSize = 1;
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
-
         RequestFilter filter = new RequestFilter(id, outNumber, smav, theme, answer, executor, executeDateFrom, executeDateTo, inNumFromOrg, caseIns);
         Pageable pageable = PageRequest.of(evalPage, evalPageSize, Sort.by("id").descending());
         Page<Request> requests = requestService.getByFilter(filter, pageable);
@@ -130,13 +136,11 @@ public class RequestController {
         modelAndView.addObject("selectedPageSize", evalPageSize);
         modelAndView.addObject("pageSizes", PAGE_SIZES);
         modelAndView.addObject("pager", pager);
-
         modelAndView.addObject("rubrics", rubricService.getAll());
         modelAndView.addObject("themes", themeService.getAll());
         modelAndView.addObject("sources", sourceService.getAll());
         modelAndView.addObject("executors", executorService.getAll());
         modelAndView.addObject("payments", paymentService.getAll());
-
         return modelAndView;
     }
 
@@ -144,21 +148,17 @@ public class RequestController {
     public ModelAndView addNew() {
         ModelAndView modelAndView = new ModelAndView("newRequest");
         RequestDto requestDto = convertToDto(new Request());
-
         modelAndView.addObject("filter", new RequestFilter());
         modelAndView.addObject("requests", requestDto);
-
         modelAndView.addObject("rubrics", rubricService.getAll());
         modelAndView.addObject("themes", themeService.getAll());
         modelAndView.addObject("sources", sourceService.getAll());
         modelAndView.addObject("executors", executorService.getAll());
         modelAndView.addObject("payments", paymentService.getAll());
-
         return modelAndView;
     }
 
     private RequestDto convertToDto(Request request) {
-
         RequestDto requestDto = modelMapper.map(request, RequestDto.class);
 
         if (request.getRubric() == null) {

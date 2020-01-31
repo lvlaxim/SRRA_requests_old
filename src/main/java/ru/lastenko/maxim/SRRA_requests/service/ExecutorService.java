@@ -1,6 +1,5 @@
 package ru.lastenko.maxim.SRRA_requests.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.lastenko.maxim.SRRA_requests.entity.Executor;
 import ru.lastenko.maxim.SRRA_requests.repository.ExecutorRepository;
@@ -10,8 +9,11 @@ import java.util.List;
 @Service
 public class ExecutorService {
 
-    @Autowired
-    private ExecutorRepository repository;
+    private final ExecutorRepository repository;
+
+    public ExecutorService(ExecutorRepository repository) {
+        this.repository = repository;
+    }
 
     public Executor save(Executor executor) {
         return repository.save(executor);

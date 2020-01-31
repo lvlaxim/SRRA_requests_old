@@ -53,9 +53,9 @@ public class RequestFilter {
             specifications.add(hasSmav(smav));
         }
         if (isEnabled(subject)) {
-            List<String> words = Arrays.asList(subject.split("\\+"));
+            String[] words = subject.split("\\+");
             for (String word : words) {
-                if (caseInsensitive == true) {
+                if (caseInsensitive) {
                     specifications.add(subjectContainsCaseInsensitive(subject));
                 } else {
                     specifications.add(subjectContains(subject));
@@ -63,9 +63,9 @@ public class RequestFilter {
             }
         }
         if (isEnabled(answer)) {
-            List<String> words = Arrays.asList(answer.split("\\+"));
+            String[] words = answer.split("\\+");
             for (String word : words) {
-                if (caseInsensitive == true) {
+                if (caseInsensitive) {
                     specifications.add(answerContainsCaseInsensitive(word));
                 } else {
                     specifications.add(answerContains(word));
@@ -104,7 +104,7 @@ public class RequestFilter {
     }
 
     public Boolean isEnabled() {
-        if (id != null
+        return id != null
                 || outNumber != null
                 || smav != null
                 || isEnabled(subject)
@@ -112,10 +112,7 @@ public class RequestFilter {
                 || isEnabled(executor)
                 || executeDateFrom != null
                 || executeDateTo != null
-                || isEnabled(inNumFromOrg)) {
-            return true;
-        }
-        return false;
+                || isEnabled(inNumFromOrg);
     }
 
     private Boolean isEnabled(String s) {

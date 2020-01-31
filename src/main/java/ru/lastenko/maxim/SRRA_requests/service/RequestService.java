@@ -1,6 +1,5 @@
 package ru.lastenko.maxim.SRRA_requests.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -14,8 +13,11 @@ import java.util.List;
 @Service
 public class RequestService {
 
-    @Autowired
-    private RequestRepository repository;
+    private final RequestRepository repository;
+
+    public RequestService(RequestRepository repository) {
+        this.repository = repository;
+    }
 
     public Request getById(int id) {
         return repository.findById(id).orElse(null);
@@ -29,8 +31,8 @@ public class RequestService {
         return repository.findAll(filter.getSpecification(), pageable);
     }
 
-    public Request save(Request request) {
-        return repository.save(request);
+    public void save(Request request) {
+        repository.save(request);
     }
 
 }
