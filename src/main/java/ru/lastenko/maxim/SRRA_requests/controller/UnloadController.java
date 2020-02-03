@@ -43,22 +43,19 @@ public class UnloadController {
     @RequestMapping(method = RequestMethod.POST)
     public String unloadFromDbWithFilter(@ModelAttribute("unloadFilter") UnloadFilter unloadFilter, Model model) {
         if (unloadFilter.getRubrics() != null) {
-            if (unloadFilter.getDateFrom().equals("") || unloadFilter.getDateTo().equals(""))
-                model.addAttribute("errorMessage", "Задайте дату");
-            else {
-                countOfRequests = 0;
-                unloadModels = new ArrayList<>();
-                connectToDbAndCountUp(
-                        unloadFilter.getRubrics(),
-                        unloadFilter.getSourceId(),
-                        unloadFilter.getExecutorId(),
-                        unloadFilter.isEntity(),
-                        unloadFilter.getDateFrom(),
-                        unloadFilter.getDateTo());
+            countOfRequests = 0;
+            unloadModels = new ArrayList<>();
+            connectToDbAndCountUp(
+                    unloadFilter.getRubrics(),
+                    unloadFilter.getSourceId(),
+                    unloadFilter.getExecutorId(),
+                    unloadFilter.getIsEntity(),
+                    unloadFilter.getDateFrom(),
+                    unloadFilter.getDateTo());
 
-                model.addAttribute("countOfRecords", countOfRequests);
-                model.addAttribute("unloadModels",unloadModels);
-            }
+            model.addAttribute("countOfRecords", countOfRequests);
+            model.addAttribute("unloadModels", unloadModels);
+
         } else {
             model.addAttribute("errorMessage", "Не заданы рубрики");
         }
@@ -68,31 +65,38 @@ public class UnloadController {
         return "unload";
     }
 
-    private void connectToDbAndCountUp(String[] rubricCodes, int sourceId, int executorId, boolean isEntity, String dateFrom, String dateTo) {
+    private void connectToDbAndCountUp(String[] rubricCodes, int sourceId, int executorId, String isEntity, String dateFrom, String dateTo) {
         String url = "jdbc:postgresql://server:5433/archive";
         try (Connection connection = DriverManager.getConnection(url, "admin", "adminus")) {
-            StringBuilder rubricQuery = new StringBuilder();
+            StringBuilder sqlQuery = new StringBuilder("SELECT rubric_code, SUM(copy_number), COUNT(requests.rubric_id) " +
+                    "FROM requests.requests " +
+                    "INNER JOIN requests.rubrics ON requests.rubric_id = rubrics.rubric_id " +
+                    "WHERE requests.rubric_id IN (" +
+                    "SELECT rubric_id " +
+                    "FROM requests.rubrics WHERE ");
             for (String rubric : rubricCodes) {
-                rubricQuery.append(" OR rubric_code = ").append('\'').append(rubric).append('\'');
+                sqlQuery.append("rubric_code = ").append('\'').append(rubric).append('\'').append(" OR ");
             }
-            rubricQuery.delete(0, 4);
+            sqlQuery.delete(sqlQuery.length() - 4, sqlQuery.length()).append(')');
 
-            String sql = String.format(
-                    "SELECT rubric_code, SUM(copy_number), COUNT(requests.rubric_id) " +
-                            "FROM requests.requests " +
-                            "INNER JOIN requests.rubrics ON requests.rubric_id = rubrics.rubric_id " +
-                            "WHERE requests.rubric_id IN (" +
-                            "SELECT rubric_id " +
-                            "FROM requests.rubrics WHERE %s" +
-                            ") " +
-                            "AND source_id = %s " +
-                            "AND receipt_date > '%s' " +
-                            "GROUP BY rubric_code",
-                    rubricQuery.toString(),
-                    sourceId,
-                    dateFrom);
+            if (sourceId != 0) {
+                sqlQuery.append(" AND source_id = ").append(sourceId);
+            }
+            if (executorId != 0) {
+                sqlQuery.append(" AND executor_id = ").append(executorId);
+            }
+            if (!isEntity.equals("0")) {
+                sqlQuery.append(" AND is_entity = ").append(isEntity);
+            }
+            if (!dateFrom.equals("")) {
+                sqlQuery.append(" AND receipt_date > '").append(dateFrom).append('\'');
+            }
+            if (!dateTo.equals("")) {
+                sqlQuery.append(" AND receipt_date < '").append(dateTo).append('\'');
+            }
+            sqlQuery.append(" GROUP BY rubric_code");
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(sql);
+            ResultSet resultSet = statement.executeQuery(sqlQuery.toString());
             while (resultSet.next()) {
                 unloadModels.add(new UnloadModel(
                         resultSet.getString("rubric_code"),

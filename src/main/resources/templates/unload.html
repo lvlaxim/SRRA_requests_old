@@ -11,7 +11,7 @@
         }
     </script>
 
-    <div th:if="${countOfRecords}"
+    <div th:if="${unloadModels}"
          class="alert alert-success" role="alert">
         <h4 class="alert-heading" th:utext="'Всего: ' + ${countOfRecords}"></h4>
         <table>
@@ -45,7 +45,7 @@
             <div class="form-group">
                 <label for="formSourceSelect">Тип отправления</label>
                 <select class="form-control" id="formSourceSelect" name="sourceId">
-                    <option>[Не выбрано]</option>
+                    <option th:value="0">[Не выбрано]</option>
                     <option th:each="source : ${sources}"
                             th:value="${source.getId()}"
                             th:text="${source.getName()}"
@@ -57,7 +57,7 @@
             <div class="form-group">
                 <label for="formExecutorSelect">Исполнитель</label>
                 <select class="form-control" id="formExecutorSelect" name="executorId">
-                    <option>[Не выбрано]</option>
+                    <option th:value="0">[Не выбрано]</option>
                     <option th:each="executor : ${executors}"
                             th:value="${executor.getId()}"
                             th:text="${executor.getName()}"
@@ -69,9 +69,15 @@
             <div class="form-group">
                 <label for="entity">Юр. лицо</label>
                 <select class="form-control" id="entity" name="isEntity">
-                    <option>[Не выбрано]</option>
-                    <option>Да</option>
-                    <option>Нет</option>
+                    <option th:value="0"
+                            th:selected="${unloadFilter.getIsEntity() == '0'}">[Не выбрано]
+                    </option>
+                    <option th:value="true"
+                            th:selected="${unloadFilter.getIsEntity() == 'true'}">Да
+                    </option>
+                    <option th:value="false"
+                            th:selected="${unloadFilter.getIsEntity() == 'false'}">Нет
+                    </option>
                 </select>
             </div>
             <div class="form-group">
@@ -83,6 +89,26 @@
                 <input type="date" class="form-control" id="dateTo" name="dateTo" th:value="*{dateTo}"/>
             </div>
         </div>
+
+        <script>
+            function checkAll() {
+                let checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                for (let i = 0; i < checkboxes.length; i++) {
+                    checkboxes[i].checked = true;
+                }
+            }
+            
+            function uncheckAll() {
+                let checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                for (let i = 0; i < checkboxes.length; i++) {
+                    checkboxes[i].checked = false;
+                }
+            }
+        </script>
+        <input type="button" class="btn btn-primary" onclick="checkAll();" value="Отметить все"/>
+        <input type="button" class="btn btn-secondary" onclick="uncheckAll();" value="Снять все"/>
+
+
         <div class="form-group">
             <table>
                 <thead>
@@ -96,7 +122,8 @@
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="rubrics"
                                    th:value="${rubric.getRubric()}"
-                                   th:id="${rubric.getRubric()}"/>
+                                   th:id="${rubric.getRubric()}"
+                                   th:checked="${unloadFilter.isCheckedRubric(rubric.getRubric())}"/>
                             <label class="form-check-label"
                                    th:for="${rubric.getRubric()}"
                                    th:text="${rubric.getRubric()} + ' ' + ${rubric.getName()}"></label>
