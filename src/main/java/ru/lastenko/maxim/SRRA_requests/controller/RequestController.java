@@ -1,20 +1,27 @@
 package ru.lastenko.maxim.SRRA_requests.controller;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ru.lastenko.maxim.SRRA_requests.dto.RequestDto;
-import ru.lastenko.maxim.SRRA_requests.entity.*;
+import ru.lastenko.maxim.SRRA_requests.entity.executor.Executor;
+import ru.lastenko.maxim.SRRA_requests.entity.payment.Payment;
+import ru.lastenko.maxim.SRRA_requests.entity.personal_data.PersonalData;
+import ru.lastenko.maxim.SRRA_requests.entity.request.Request;
+import ru.lastenko.maxim.SRRA_requests.entity.rubric.Rubric;
+import ru.lastenko.maxim.SRRA_requests.entity.source.Source;
+import ru.lastenko.maxim.SRRA_requests.entity.theme.Theme;
 import ru.lastenko.maxim.SRRA_requests.service.*;
 import ru.lastenko.maxim.SRRA_requests.util.Pager;
 import ru.lastenko.maxim.SRRA_requests.util.RequestFilter;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -22,11 +29,11 @@ import static java.time.temporal.ChronoUnit.DAYS;
 
 @Controller
 public class RequestController {
-
     private static final int BUTTONS_TO_SHOW = 5;
     private static final int INITIAL_PAGE = 0;
     private static final int INITIAL_PAGE_SIZE = 15;
     private static final int[] PAGE_SIZES = {5, 10, 20};
+    private List<String> whitelistOfIps = new ArrayList<>(Arrays.asList("0:0:0:0:0:0:0:1", "192.168.0.156", "192.168.0.194"));
 
     private final RequestService requestService;
     private final RubricService rubricService;
@@ -34,7 +41,8 @@ public class RequestController {
     private final SourceService sourceService;
     private final ExecutorService executorService;
     private final PaymentService paymentService;
-    private final HttpServletRequest httpServletRequest;
+    private final PersonalDataService personalDataService;
+
     private final ModelMapper modelMapper;
 
     public RequestController(
@@ -44,7 +52,7 @@ public class RequestController {
             SourceService sourceService,
             ExecutorService executorService,
             PaymentService paymentService,
-            HttpServletRequest httpServletRequest,
+            PersonalDataService personalDataService,
             ModelMapper modelMapper) {
         this.requestService = requestService;
         this.rubricService = rubricService;
@@ -52,7 +60,7 @@ public class RequestController {
         this.sourceService = sourceService;
         this.executorService = executorService;
         this.paymentService = paymentService;
-        this.httpServletRequest = httpServletRequest;
+        this.personalDataService = personalDataService;
         this.modelMapper = modelMapper;
     }
 
@@ -70,11 +78,8 @@ public class RequestController {
             @RequestParam(required = false) String executeDateTo,
             @RequestParam(required = false) String inNumFromOrg,
             @RequestParam(required = false) Boolean caseIns) {
-
         int evalPageSize = INITIAL_PAGE_SIZE;
-
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
-
         RequestFilter filter = new RequestFilter(id, outNumber, smav, subject, answer, executor, executeDateFrom, executeDateTo, inNumFromOrg, caseIns);
         Pageable pageable = PageRequest.of(evalPage, evalPageSize, Sort.by("id").descending());
         Page<Request> requests = requestService.getByFilter(filter, pageable);
@@ -95,12 +100,6 @@ public class RequestController {
         return modelAndView;
     }
 
-    @PostMapping("/request/update")
-    public ModelAndView saveRequest(@ModelAttribute("request") Request request) {
-        requestService.save(request);
-        return new ModelAndView("redirect:/requests");
-    }
-
     @GetMapping("/request")
     public ModelAndView request(
             @RequestParam("pageSize") Optional<Integer> pageSize,
@@ -114,22 +113,17 @@ public class RequestController {
             @RequestParam(required = false) String executeDateFrom,
             @RequestParam(required = false) String executeDateTo,
             @RequestParam(required = false) String inNumFromOrg,
-            @RequestParam(required = false) Boolean caseIns) {
-
-        ModelAndView modelAndView = new ModelAndView("request");
-
+            @RequestParam(required = false) Boolean caseIns,
+            HttpServletRequest servletRequest) {
         int evalPageSize = 1;
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
         RequestFilter filter = new RequestFilter(id, outNumber, smav, theme, answer, executor, executeDateFrom, executeDateTo, inNumFromOrg, caseIns);
         Pageable pageable = PageRequest.of(evalPage, evalPageSize, Sort.by("id").descending());
         Page<Request> requests = requestService.getByFilter(filter, pageable);
-        Page<RequestDto> requestsDto = new PageImpl<>(
-                requests.get()
-                        .map(this::convertToDto)
-                        .collect(Collectors.toList()),
-                pageable,
-                requests.getTotalElements());
+        Page<RequestDto> requestsDto = new PageImpl<>(requests.get().map(this::convertToDto).collect(Collectors.toList()), pageable, requests.getTotalElements());
         Pager pager = new Pager(requests.getTotalPages(), requests.getNumber(), BUTTONS_TO_SHOW);
+
+        ModelAndView modelAndView = new ModelAndView("request");
 
         modelAndView.addObject("filter", filter);
         modelAndView.addObject("requests", requestsDto);
@@ -141,21 +135,29 @@ public class RequestController {
         modelAndView.addObject("sources", sourceService.getAll());
         modelAndView.addObject("executors", executorService.getAll());
         modelAndView.addObject("payments", paymentService.getAll());
+        if (whitelistOfIps.contains(servletRequest.getRemoteAddr())) {
+            int requestId = requestsDto.getContent().get(0).getId();
+            PersonalData personalData = personalDataService.getById(requestId) == null ?
+                    new PersonalData()
+                    :
+                    personalDataService.getById(requestId);
+            modelAndView.addObject("personalData", personalData);
+        }
         return modelAndView;
     }
 
     @GetMapping("/new")
-    public ModelAndView addNew() {
-        ModelAndView modelAndView = new ModelAndView("newRequest");
-        RequestDto requestDto = convertToDto(new Request());
-        modelAndView.addObject("filter", new RequestFilter());
-        modelAndView.addObject("requests", requestDto);
-        modelAndView.addObject("rubrics", rubricService.getAll());
-        modelAndView.addObject("themes", themeService.getAll());
-        modelAndView.addObject("sources", sourceService.getAll());
-        modelAndView.addObject("executors", executorService.getAll());
-        modelAndView.addObject("payments", paymentService.getAll());
-        return modelAndView;
+    public String addNew() {
+        requestService.save(new Request());
+        return "redirect:/request";
+    }
+
+    @PostMapping("/request/update")
+    public String saveRequest(@ModelAttribute("request") Request request,
+                              @ModelAttribute("personalData") PersonalData personalData) {
+        requestService.save(request);
+        personalDataService.save(personalData);
+        return "redirect:/requests";
     }
 
     private RequestDto convertToDto(Request request) {

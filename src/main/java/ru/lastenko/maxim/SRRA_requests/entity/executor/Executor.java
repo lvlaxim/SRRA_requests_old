@@ -1,4 +1,4 @@
-package ru.lastenko.maxim.SRRA_requests.entity;
+package ru.lastenko.maxim.SRRA_requests.entity.executor;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -107,7 +107,7 @@ public class Executor {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Executor executor1 = (Executor) o;
-        return id == executor1.id &&
+        return id.equals(executor1.id) &&
                 isActive == executor1.isActive &&
                 name.equals(executor1.name) &&
                 job.equals(executor1.job) &&

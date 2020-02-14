@@ -1,7 +1,7 @@
-package ru.lastenko.maxim.SRRA_requests.repository;
+package ru.lastenko.maxim.SRRA_requests.repository.request;
 
 import org.springframework.data.jpa.domain.Specification;
-import ru.lastenko.maxim.SRRA_requests.entity.Request;
+import ru.lastenko.maxim.SRRA_requests.entity.request.Request;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;

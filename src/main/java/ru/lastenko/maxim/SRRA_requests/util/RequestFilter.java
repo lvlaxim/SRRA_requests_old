@@ -4,11 +4,10 @@ import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import static ru.lastenko.maxim.SRRA_requests.repository.RequestSpecifications.*;
+import static ru.lastenko.maxim.SRRA_requests.repository.request.RequestSpecifications.*;
 
 @Data
 public class RequestFilter {

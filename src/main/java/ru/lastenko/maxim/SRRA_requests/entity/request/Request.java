@@ -1,6 +1,11 @@
-package ru.lastenko.maxim.SRRA_requests.entity;
+package ru.lastenko.maxim.SRRA_requests.entity.request;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import ru.lastenko.maxim.SRRA_requests.entity.executor.Executor;
+import ru.lastenko.maxim.SRRA_requests.entity.payment.Payment;
+import ru.lastenko.maxim.SRRA_requests.entity.rubric.Rubric;
+import ru.lastenko.maxim.SRRA_requests.entity.source.Source;
+import ru.lastenko.maxim.SRRA_requests.entity.theme.Theme;
 
 import javax.persistence.*;
 import java.time.LocalDate;

@@ -1,4 +1,4 @@
-package ru.lastenko.maxim.SRRA_requests.entity;
+package ru.lastenko.maxim.SRRA_requests.entity.payment;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,8 +1,8 @@
 package ru.lastenko.maxim.SRRA_requests.service;
 
 import org.springframework.stereotype.Service;
-import ru.lastenko.maxim.SRRA_requests.entity.Rubric;
-import ru.lastenko.maxim.SRRA_requests.repository.RubricRepository;
+import ru.lastenko.maxim.SRRA_requests.entity.rubric.Rubric;
+import ru.lastenko.maxim.SRRA_requests.repository.rubric.RubricRepository;
 
 import java.util.List;
 
@@ -19,7 +19,9 @@ public class RubricService {
         return repository.findAll();
     }
 
-    public List<Rubric> getAllOrderById() {return repository.findAllByOrderById();}
+    public List<Rubric> getAllOrderById() {
+        return repository.findAllByOrderById();
+    }
 
     public Rubric getById(int id) {
         return repository.findById(id).orElse(null);

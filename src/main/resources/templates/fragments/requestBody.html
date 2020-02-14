@@ -125,10 +125,22 @@
                 </div>
             </div>
 
-
             <div class="form-group">
             <textarea class="form-control" id="formSubjectTextarea" rows="2" name="subject"
                       th:text="${request.getSubject()}"></textarea>
+            </div>
+
+            <div th:if="${personalData}">
+                <div class="form-group">
+                    <label for="requestInitiatorTextarea">Инициатор запроса</label>
+                    <textarea class="form-control" id="requestInitiatorTextarea" rows="2" name="requestInitiator"
+                              th:text="${personalData.getRequestInitiator()}"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="shipmentTextarea">Пересылка</label>
+                    <textarea class="form-control" id="shipmentTextarea" rows="2" name="shipment"
+                              th:text="${personalData.getShipment()}"></textarea>
+                </div>
             </div>
 
             <div class="form-group">

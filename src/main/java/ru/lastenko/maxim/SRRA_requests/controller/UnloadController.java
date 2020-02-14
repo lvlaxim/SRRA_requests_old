@@ -2,15 +2,14 @@ package ru.lastenko.maxim.SRRA_requests.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import ru.lastenko.maxim.SRRA_requests.model.UnloadModel;
+import org.springframework.web.bind.annotation.*;
+import ru.lastenko.maxim.SRRA_requests.form.UnloadForm;
 import ru.lastenko.maxim.SRRA_requests.service.ExecutorService;
 import ru.lastenko.maxim.SRRA_requests.service.RubricService;
 import ru.lastenko.maxim.SRRA_requests.service.SourceService;
 import ru.lastenko.maxim.SRRA_requests.util.UnloadFilter;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +18,7 @@ import java.util.List;
 @RequestMapping("/unload")
 public class UnloadController {
     private int countOfRequests;
-    private List<UnloadModel> unloadModels;
+    private List<UnloadForm> unloadModels;
 
     private final RubricService rubricService;
     private final SourceService sourceService;
@@ -32,11 +31,12 @@ public class UnloadController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String unloadFromDb(Model model) {
+    public String unloadFromDb(HttpServletRequest request, Model model) {
         model.addAttribute("unloadFilter", new UnloadFilter());
         model.addAttribute("rubrics", rubricService.getAllOrderById());
         model.addAttribute("sources", sourceService.getAll());
         model.addAttribute("executors", executorService.getAll());
+        System.out.println(request.getRemoteAddr());
         return "unload";
     }
 
@@ -47,7 +47,7 @@ public class UnloadController {
             unloadModels = new ArrayList<>();
             connectToDbAndCountUp(
                     unloadFilter.getRubrics(),
-                    unloadFilter.getSourceId(),
+                    unloadFilter.getSourceIds(),
                     unloadFilter.getExecutorId(),
                     unloadFilter.getIsEntity(),
                     unloadFilter.getDateFrom(),
@@ -65,7 +65,7 @@ public class UnloadController {
         return "unload";
     }
 
-    private void connectToDbAndCountUp(String[] rubricCodes, int sourceId, int executorId, String isEntity, String dateFrom, String dateTo) {
+    private void connectToDbAndCountUp(String[] rubricCodes, int[] sourceIds, int executorId, String isEntity, String dateFrom, String dateTo) {
         String url = "jdbc:postgresql://server:5433/archive";
         try (Connection connection = DriverManager.getConnection(url, "admin", "adminus")) {
             StringBuilder sqlQuery = new StringBuilder("SELECT rubric_code, SUM(copy_number), COUNT(requests.rubric_id) " +
@@ -79,8 +79,11 @@ public class UnloadController {
             }
             sqlQuery.delete(sqlQuery.length() - 4, sqlQuery.length()).append(')');
 
-            if (sourceId != 0) {
-                sqlQuery.append(" AND source_id = ").append(sourceId);
+            if (sourceIds != null) {
+                sqlQuery.append(" AND (");
+                for (int sourceId : sourceIds)
+                    sqlQuery.append("source_id = ").append(sourceId).append(" OR ");
+                sqlQuery.delete(sqlQuery.length() - 4, sqlQuery.length()).append(')');
             }
             if (executorId != 0) {
                 sqlQuery.append(" AND executor_id = ").append(executorId);
@@ -98,7 +101,7 @@ public class UnloadController {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sqlQuery.toString());
             while (resultSet.next()) {
-                unloadModels.add(new UnloadModel(
+                unloadModels.add(new UnloadForm(
                         resultSet.getString("rubric_code"),
                         resultSet.getInt("sum"),
                         resultSet.getInt("count")));

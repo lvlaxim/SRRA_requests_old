@@ -3,8 +3,8 @@ package ru.lastenko.maxim.SRRA_requests.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import ru.lastenko.maxim.SRRA_requests.entity.Request;
-import ru.lastenko.maxim.SRRA_requests.repository.RequestRepository;
+import ru.lastenko.maxim.SRRA_requests.entity.request.Request;
+import ru.lastenko.maxim.SRRA_requests.repository.request.RequestRepository;
 import ru.lastenko.maxim.SRRA_requests.util.RequestFilter;
 
 import java.util.List;
@@ -12,7 +12,6 @@ import java.util.List;
 
 @Service
 public class RequestService {
-
     private final RequestRepository repository;
 
     public RequestService(RequestRepository repository) {
@@ -31,8 +30,7 @@ public class RequestService {
         return repository.findAll(filter.getSpecification(), pageable);
     }
 
-    public void save(Request request) {
-        repository.save(request);
+    public Request save(Request request) {
+        return repository.save(request);
     }
-
 }

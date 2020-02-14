@@ -1,7 +1,11 @@
 package ru.lastenko.maxim.SRRA_requests.dto;
 
 import lombok.*;
-import ru.lastenko.maxim.SRRA_requests.entity.*;
+import ru.lastenko.maxim.SRRA_requests.entity.executor.Executor;
+import ru.lastenko.maxim.SRRA_requests.entity.payment.Payment;
+import ru.lastenko.maxim.SRRA_requests.entity.rubric.Rubric;
+import ru.lastenko.maxim.SRRA_requests.entity.source.Source;
+import ru.lastenko.maxim.SRRA_requests.entity.theme.Theme;
 
 import java.time.LocalDate;
 
@@ -9,7 +13,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Data
 public class RequestDto {
-
     private Integer id;
     private Rubric rubric;
     private Theme theme;
@@ -36,5 +39,4 @@ public class RequestDto {
     private boolean expired;
     private boolean executed;
     private Long daysLeft;
-
 }

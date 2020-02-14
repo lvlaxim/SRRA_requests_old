@@ -1,4 +1,4 @@
-package ru.lastenko.maxim.SRRA_requests.entity;
+package ru.lastenko.maxim.SRRA_requests.entity.rubric;
 
 import javax.persistence.*;
 import java.util.Objects;
