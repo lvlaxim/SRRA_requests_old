@@ -1,13 +1,13 @@
 package ru.lastenko.maxim.SRRA_requests;
 
 
-import ru.lastenko.maxim.SRRA_requests.entity.executor.Executor;
-import ru.lastenko.maxim.SRRA_requests.entity.payment.Payment;
-import ru.lastenko.maxim.SRRA_requests.entity.request.Request;
-import ru.lastenko.maxim.SRRA_requests.entity.rubric.Rubric;
-import ru.lastenko.maxim.SRRA_requests.entity.source.Source;
-import ru.lastenko.maxim.SRRA_requests.entity.theme.Theme;
-import ru.lastenko.maxim.SRRA_requests.entity.work_type.WorkType;
+import ru.lastenko.maxim.SRRA_requests.entity.requests.Executor;
+import ru.lastenko.maxim.SRRA_requests.entity.requests.Payment;
+import ru.lastenko.maxim.SRRA_requests.entity.requests.Request;
+import ru.lastenko.maxim.SRRA_requests.entity.requests.Rubric;
+import ru.lastenko.maxim.SRRA_requests.entity.requests.Source;
+import ru.lastenko.maxim.SRRA_requests.entity.requests.Theme;
+import ru.lastenko.maxim.SRRA_requests.entity.requests.WorkType;
 
 import java.time.LocalDate;
 

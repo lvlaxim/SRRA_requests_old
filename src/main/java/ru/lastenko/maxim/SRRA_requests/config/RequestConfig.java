@@ -21,15 +21,7 @@ import javax.sql.DataSource;
 @EnableJpaRepositories(
         entityManagerFactoryRef = "requestEntityManagerFactory",
         transactionManagerRef = "requestTransactionManager",
-        basePackages = {
-                "ru.lastenko.maxim.SRRA_requests.repository.request",
-                "ru.lastenko.maxim.SRRA_requests.repository.executor",
-                "ru.lastenko.maxim.SRRA_requests.repository.payment",
-                "ru.lastenko.maxim.SRRA_requests.repository.rubric",
-                "ru.lastenko.maxim.SRRA_requests.repository.source",
-                "ru.lastenko.maxim.SRRA_requests.repository.theme",
-                "ru.lastenko.maxim.SRRA_requests.repository.work_type"
-        }
+        basePackages = "ru.lastenko.maxim.SRRA_requests.repository.requests"
 )
 public class RequestConfig {
 
@@ -42,22 +34,12 @@ public class RequestConfig {
 
     @Primary
     @Bean(name = "requestEntityManagerFactory")
-    public LocalContainerEntityManagerFactoryBean
-    entityManagerFactory(
+    public LocalContainerEntityManagerFactoryBean requestEntityManagerFactory(
             EntityManagerFactoryBuilder builder,
-            @Qualifier("requestDataSource") DataSource dataSource
-    ) {
+            @Qualifier("requestDataSource") DataSource dataSource) {
         return builder
                 .dataSource(dataSource)
-                .packages(
-                        "ru.lastenko.maxim.SRRA_requests.entity.request",
-                        "ru.lastenko.maxim.SRRA_requests.entity.executor",
-                        "ru.lastenko.maxim.SRRA_requests.entity.payment",
-                        "ru.lastenko.maxim.SRRA_requests.entity.rubric",
-                        "ru.lastenko.maxim.SRRA_requests.entity.source",
-                        "ru.lastenko.maxim.SRRA_requests.entity.theme",
-                        "ru.lastenko.maxim.SRRA_requests.entity.work_type"
-                        )
+                .packages("ru.lastenko.maxim.SRRA_requests.entity.requests")
                 .persistenceUnit("requests")
                 .build();
     }
@@ -65,8 +47,7 @@ public class RequestConfig {
     @Primary
     @Bean(name = "requestTransactionManager")
     public PlatformTransactionManager requestTransactionManager(
-            @Qualifier("requestEntityManagerFactory") EntityManagerFactory requestEntityManagerFactory
-    ) {
+            @Qualifier("requestEntityManagerFactory") EntityManagerFactory requestEntityManagerFactory) {
         return new JpaTransactionManager(requestEntityManagerFactory);
     }
 }

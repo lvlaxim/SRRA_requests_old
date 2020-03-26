@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
-import static ru.lastenko.maxim.SRRA_requests.repository.request.RequestSpecifications.*;
+import static ru.lastenko.maxim.SRRA_requests.repository.requests.RequestSpecifications.*;
 
 @Data
 public class RequestFilter {

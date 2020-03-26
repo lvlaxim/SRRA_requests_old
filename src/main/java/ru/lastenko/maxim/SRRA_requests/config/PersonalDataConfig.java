@@ -33,11 +33,9 @@ public class PersonalDataConfig {
     }
 
     @Bean(name = "personalEntityManagerFactory")
-    public LocalContainerEntityManagerFactoryBean
-    barEntityManagerFactory(
+    public LocalContainerEntityManagerFactoryBean personalEntityManagerFactory(
             EntityManagerFactoryBuilder builder,
-            @Qualifier("personalDataSource") DataSource dataSource
-    ) {
+            @Qualifier("personalDataSource") DataSource dataSource){
         return
                 builder
                         .dataSource(dataSource)

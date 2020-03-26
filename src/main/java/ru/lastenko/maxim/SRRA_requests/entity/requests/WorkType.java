@@ -1,4 +1,4 @@
-package ru.lastenko.maxim.SRRA_requests.entity.work_type;
+package ru.lastenko.maxim.SRRA_requests.entity.requests;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

@@ -3,8 +3,8 @@ package ru.lastenko.maxim.SRRA_requests.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import ru.lastenko.maxim.SRRA_requests.entity.request.Request;
-import ru.lastenko.maxim.SRRA_requests.repository.request.RequestRepository;
+import ru.lastenko.maxim.SRRA_requests.entity.requests.Request;
+import ru.lastenko.maxim.SRRA_requests.repository.requests.RequestRepository;
 import ru.lastenko.maxim.SRRA_requests.util.RequestFilter;
 
 import java.util.List;

@@ -1,27 +1,27 @@
-package ru.lastenko.maxim.SRRA_requests.entity.theme;
+package ru.lastenko.maxim.SRRA_requests.entity.requests;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "themes")
-public class Theme {
+@Table(name = "sources")
+public class Source {
 
-    public static final Theme EMPTY_THEME = new Theme(56, "");
+    public static final Source EMPTY_SOURCE = new Source(27, "");
 
     @Id
-    @SequenceGenerator(name = "themes_theme_id_seq", sequenceName = "requests.themes_theme_id_seq")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "themes_theme_id_seq")
-    @Column(name = "theme_id")
+    @SequenceGenerator(name = "sources_source_id_seq", sequenceName = "requests.sources_source_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sources_source_id_seq")
+    @Column(name = "source_id")
     private Integer id;
 
-    @Column(name = "theme")
+    @Column(name = "sources")
     private String name;
 
-    public Theme() {
+    public Source() {
     }
 
-    public Theme(Integer id, String name) {
+    public Source(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -46,9 +46,9 @@ public class Theme {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Theme theme = (Theme) o;
-        return id.equals(theme.id) &&
-                name.equals(theme.name);
+        Source source = (Source) o;
+        return id.equals(source.id) &&
+                name.equals(source.name);
     }
 
     @Override

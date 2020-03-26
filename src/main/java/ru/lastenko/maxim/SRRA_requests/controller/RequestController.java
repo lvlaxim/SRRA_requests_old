@@ -6,13 +6,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ru.lastenko.maxim.SRRA_requests.dto.RequestDto;
-import ru.lastenko.maxim.SRRA_requests.entity.executor.Executor;
-import ru.lastenko.maxim.SRRA_requests.entity.payment.Payment;
+import ru.lastenko.maxim.SRRA_requests.entity.requests.Executor;
+import ru.lastenko.maxim.SRRA_requests.entity.requests.Payment;
 import ru.lastenko.maxim.SRRA_requests.entity.personal_data.PersonalData;
-import ru.lastenko.maxim.SRRA_requests.entity.request.Request;
-import ru.lastenko.maxim.SRRA_requests.entity.rubric.Rubric;
-import ru.lastenko.maxim.SRRA_requests.entity.source.Source;
-import ru.lastenko.maxim.SRRA_requests.entity.theme.Theme;
+import ru.lastenko.maxim.SRRA_requests.entity.requests.Request;
+import ru.lastenko.maxim.SRRA_requests.entity.requests.Rubric;
+import ru.lastenko.maxim.SRRA_requests.entity.requests.Source;
+import ru.lastenko.maxim.SRRA_requests.entity.requests.Theme;
 import ru.lastenko.maxim.SRRA_requests.service.*;
 import ru.lastenko.maxim.SRRA_requests.util.Pager;
 import ru.lastenko.maxim.SRRA_requests.util.RequestFilter;
@@ -33,7 +33,7 @@ public class RequestController {
     private static final int INITIAL_PAGE = 0;
     private static final int INITIAL_PAGE_SIZE = 15;
     private static final int[] PAGE_SIZES = {5, 10, 20};
-    private List<String> whitelistOfIps = new ArrayList<>(Arrays.asList("0:0:0:0:0:0:0:1", "192.168.0.156", "192.168.0.194"));
+    static List<String> whitelistOfIps = new ArrayList<>(Arrays.asList("0:0:0:0:0:0:0:1", "192.168.0.156", "192.168.0.194"));
 
     private final RequestService requestService;
     private final RubricService rubricService;
@@ -83,10 +83,7 @@ public class RequestController {
         RequestFilter filter = new RequestFilter(id, outNumber, smav, subject, answer, executor, executeDateFrom, executeDateTo, inNumFromOrg, caseIns);
         Pageable pageable = PageRequest.of(evalPage, evalPageSize, Sort.by("id").descending());
         Page<Request> requests = requestService.getByFilter(filter, pageable);
-        Page<RequestDto> requestsDto = new PageImpl<>(
-                requests.get().map(this::convertToDto).collect(Collectors.toList()),
-                pageable,
-                requests.getTotalElements());
+        Page<RequestDto> requestsDto = new PageImpl<>(requests.get().map(this::convertToDto).collect(Collectors.toList()), pageable, requests.getTotalElements());
         Pager pager = new Pager(requests.getTotalPages(), requests.getNumber(), BUTTONS_TO_SHOW);
 
         ModelAndView modelAndView = new ModelAndView(requests.getTotalElements() == 1 ? "forward:/request" : "requests");
@@ -107,7 +104,7 @@ public class RequestController {
             @RequestParam(required = false) Integer id,
             @RequestParam(required = false) Integer outNumber,
             @RequestParam(required = false) Integer smav,
-            @RequestParam(required = false) String theme,
+            @RequestParam(required = false) String subject,
             @RequestParam(required = false) String answer,
             @RequestParam(required = false) String executor,
             @RequestParam(required = false) String executeDateFrom,
@@ -117,14 +114,13 @@ public class RequestController {
             HttpServletRequest servletRequest) {
         int evalPageSize = 1;
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
-        RequestFilter filter = new RequestFilter(id, outNumber, smav, theme, answer, executor, executeDateFrom, executeDateTo, inNumFromOrg, caseIns);
+        RequestFilter filter = new RequestFilter(id, outNumber, smav, subject, answer, executor, executeDateFrom, executeDateTo, inNumFromOrg, caseIns);
         Pageable pageable = PageRequest.of(evalPage, evalPageSize, Sort.by("id").descending());
         Page<Request> requests = requestService.getByFilter(filter, pageable);
         Page<RequestDto> requestsDto = new PageImpl<>(requests.get().map(this::convertToDto).collect(Collectors.toList()), pageable, requests.getTotalElements());
         Pager pager = new Pager(requests.getTotalPages(), requests.getNumber(), BUTTONS_TO_SHOW);
 
         ModelAndView modelAndView = new ModelAndView("request");
-
         modelAndView.addObject("filter", filter);
         modelAndView.addObject("requests", requestsDto);
         modelAndView.addObject("selectedPageSize", evalPageSize);
@@ -162,7 +158,6 @@ public class RequestController {
 
     private RequestDto convertToDto(Request request) {
         RequestDto requestDto = modelMapper.map(request, RequestDto.class);
-
         if (request.getRubric() == null) {
             requestDto.setRubric(Rubric.EMPTY_RUBRIC);
         }
@@ -178,19 +173,16 @@ public class RequestController {
         if (request.getPayment() == null) {
             requestDto.setPayment(Payment.EMPTY_PAYMENT);
         }
-
         requestDto.setChangeable(false);
         if (request.getEndDate() != null
                 && LocalDate.now().isAfter(request.getEndDate().plusDays(10))) {
             requestDto.setChangeable(true);
         }
-
         if (request.getReceiptDate() != null) {
             Long daysLeft = DAYS.between(LocalDate.now(), request.getReceiptDate()) + 30;
             requestDto.setDaysLeft(daysLeft);
             requestDto.setExpired(daysLeft <= 0);
         }
-
         return requestDto;
     }
 }

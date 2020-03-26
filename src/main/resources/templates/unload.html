@@ -76,6 +76,16 @@
                 <label for="dateTo">По какое</label>
                 <input type="date" class="form-control" id="dateTo" name="dateTo" th:value="*{dateTo}"/>
             </div>
+            <div th:if="${isPersonal}" class="form-group">
+                <label for="requestInitiator">Инициатор запроса</label>
+                <input type="text" class="form-control" id="requestInitiator" name="requestInitiator"
+                          th:value="*{requestInitiator}">
+            </div>
+            <div th:if="${isPersonal}" class="form-group">
+                <label for="shipment">Пересылка</label>
+                <input type="text" class="form-control" id="shipment" name="shipment"
+                          th:value="*{shipment}">
+            </div>
         </div>
 
         <script>

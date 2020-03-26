@@ -1,8 +1,8 @@
 package ru.lastenko.maxim.SRRA_requests.service;
 
 import org.springframework.stereotype.Service;
-import ru.lastenko.maxim.SRRA_requests.entity.executor.Executor;
-import ru.lastenko.maxim.SRRA_requests.repository.executor.ExecutorRepository;
+import ru.lastenko.maxim.SRRA_requests.entity.requests.Executor;
+import ru.lastenko.maxim.SRRA_requests.repository.requests.ExecutorRepository;
 
 
 import java.util.List;

@@ -14,6 +14,8 @@ public class UnloadFilter {
     private String dateFrom;
     private String dateTo;
     private String[] rubrics;
+    private String requestInitiator;
+    private String shipment;
 
     public boolean isCheckedRubric(String rubric) {
         try {

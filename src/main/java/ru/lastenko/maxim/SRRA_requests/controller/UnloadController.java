@@ -14,6 +14,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ru.lastenko.maxim.SRRA_requests.controller.RequestController.whitelistOfIps;
+
 @Controller
 @RequestMapping("/unload")
 public class UnloadController {
@@ -23,7 +25,6 @@ public class UnloadController {
     private final RubricService rubricService;
     private final SourceService sourceService;
     private final ExecutorService executorService;
-
     public UnloadController(RubricService rubricService, SourceService sourceService, ExecutorService executorService) {
         this.rubricService = rubricService;
         this.sourceService = sourceService;
@@ -31,17 +32,18 @@ public class UnloadController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String unloadFromDb(HttpServletRequest request, Model model) {
+    public String unloadFromDb(Model model, HttpServletRequest servletRequest) {
         model.addAttribute("unloadFilter", new UnloadFilter());
         model.addAttribute("rubrics", rubricService.getAllOrderById());
         model.addAttribute("sources", sourceService.getAll());
         model.addAttribute("executors", executorService.getAll());
-        System.out.println(request.getRemoteAddr());
+        if (whitelistOfIps.contains(servletRequest.getRemoteAddr()))
+            model.addAttribute("isPersonal", true);
         return "unload";
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String unloadFromDbWithFilter(@ModelAttribute("unloadFilter") UnloadFilter unloadFilter, Model model) {
+    public String unloadFromDbWithFilter(@ModelAttribute("unloadFilter") UnloadFilter unloadFilter, Model model, HttpServletRequest servletRequest) {
         if (unloadFilter.getRubrics() != null) {
             countOfRequests = 0;
             unloadModels = new ArrayList<>();
@@ -51,7 +53,8 @@ public class UnloadController {
                     unloadFilter.getExecutorId(),
                     unloadFilter.getIsEntity(),
                     unloadFilter.getDateFrom(),
-                    unloadFilter.getDateTo());
+                    unloadFilter.getDateTo()
+            );
 
             model.addAttribute("countOfRecords", countOfRequests);
             model.addAttribute("unloadModels", unloadModels);
@@ -62,10 +65,18 @@ public class UnloadController {
         model.addAttribute("rubrics", rubricService.getAllOrderById());
         model.addAttribute("sources", sourceService.getAll());
         model.addAttribute("executors", executorService.getAll());
+        if (whitelistOfIps.contains(servletRequest.getRemoteAddr()))
+            model.addAttribute("isPersonal", true);
         return "unload";
     }
 
-    private void connectToDbAndCountUp(String[] rubricCodes, int[] sourceIds, int executorId, String isEntity, String dateFrom, String dateTo) {
+    private void connectToDbAndCountUp(
+            String[] rubricCodes,
+            int[] sourceIds,
+            int executorId,
+            String isEntity,
+            String dateFrom,
+            String dateTo) {
         String url = "jdbc:postgresql://server:5433/archive";
         try (Connection connection = DriverManager.getConnection(url, "admin", "adminus")) {
             StringBuilder sqlQuery = new StringBuilder("SELECT rubric_code, SUM(copy_number), COUNT(requests.rubric_id) " +

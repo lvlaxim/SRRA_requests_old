@@ -1,8 +1,8 @@
 package ru.lastenko.maxim.SRRA_requests.service;
 
 import org.springframework.stereotype.Service;
-import ru.lastenko.maxim.SRRA_requests.entity.rubric.Rubric;
-import ru.lastenko.maxim.SRRA_requests.repository.rubric.RubricRepository;
+import ru.lastenko.maxim.SRRA_requests.entity.requests.Rubric;
+import ru.lastenko.maxim.SRRA_requests.repository.requests.RubricRepository;
 
 import java.util.List;
 
