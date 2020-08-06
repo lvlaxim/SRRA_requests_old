@@ -225,11 +225,13 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-9"></div>
-                <div class="col-3" th:hidden="${request.isChangeable()}">
-                    <button type="reset" class="btn btn-secondary">Отменить</button>
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
+            <div class="row" th:hidden="${request.isChangeable()}">
+                <div class="col-9">
+                    <button type="submit" name="printInquiry" class="btn btn-primary">Справка</button>
+                </div>
+                <div class="col-3">
+                    <button type="reset" name="reset" class="btn btn-secondary">Отменить</button>
+                    <button type="submit" name="save" class="btn btn-primary">Сохранить</button>
                 </div>
             </div>
         </form>

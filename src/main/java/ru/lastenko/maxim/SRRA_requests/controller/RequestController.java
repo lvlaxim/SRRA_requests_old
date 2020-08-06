@@ -33,7 +33,7 @@ public class RequestController {
     private static final int INITIAL_PAGE = 0;
     private static final int INITIAL_PAGE_SIZE = 15;
     private static final int[] PAGE_SIZES = {5, 10, 20};
-    static List<String> whitelistOfIps = new ArrayList<>(Arrays.asList("0:0:0:0:0:0:0:1", "192.168.0.156", "192.168.0.194"));
+    static List<String> whitelistOfIps = new ArrayList<>(Arrays.asList("192.168.1.156", "192.168.1.194", "192.168.1.29"));
 
     private final RequestService requestService;
     private final RubricService rubricService;
@@ -64,7 +64,7 @@ public class RequestController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("/requests")
+    @GetMapping({"/requests", "/"})
     public ModelAndView requests(
             @RequestParam("pageSize") Optional<Integer> pageSize,
             @RequestParam("page") Optional<Integer> page,
@@ -131,6 +131,7 @@ public class RequestController {
         modelAndView.addObject("sources", sourceService.getAll());
         modelAndView.addObject("executors", executorService.getAll());
         modelAndView.addObject("payments", paymentService.getAll());
+        System.out.println(servletRequest.getRemoteAddr());
         if (whitelistOfIps.contains(servletRequest.getRemoteAddr())) {
             int requestId = requestsDto.getContent().get(0).getId();
             PersonalData personalData = personalDataService.getById(requestId) == null ?
@@ -145,15 +146,33 @@ public class RequestController {
     @GetMapping("/new")
     public String addNew() {
         requestService.save(new Request());
+        //personalDataService.save(new PersonalData());
         return "redirect:/request";
     }
 
-    @PostMapping("/request/update")
+    @RequestMapping(value = "/request/update", params = "save", method = RequestMethod.POST)
     public String saveRequest(@ModelAttribute("request") Request request,
-                              @ModelAttribute("personalData") PersonalData personalData) {
+                              @ModelAttribute("personalData") PersonalData personalData,
+                              HttpServletRequest servletRequest) {
         requestService.save(request);
-        personalDataService.save(personalData);
+        if (whitelistOfIps.contains(servletRequest.getRemoteAddr())) {
+            personalDataService.save(new PersonalData(request.getId(), personalData.getRequestInitiator(), personalData.getShipment()));
+        }
         return "redirect:/requests";
+    }
+
+    @RequestMapping(value = "/request/update", params = "printInquiry", method = RequestMethod.POST)
+    public ModelAndView printInquiry(@ModelAttribute("request") Request request,
+                                     @ModelAttribute("personalData") PersonalData personalData,
+                                     HttpServletRequest servletRequest) {
+        requestService.save(request);
+        if (whitelistOfIps.contains(servletRequest.getRemoteAddr())) {
+            personalDataService.save(new PersonalData(request.getId(), personalData.getRequestInitiator(), personalData.getShipment()));
+        }
+        ModelAndView modelAndView = new ModelAndView("print_inquiry");
+        modelAndView.addObject("request", request);
+        modelAndView.addObject("personalData", personalData);
+        return modelAndView;
     }
 
     private RequestDto convertToDto(Request request) {

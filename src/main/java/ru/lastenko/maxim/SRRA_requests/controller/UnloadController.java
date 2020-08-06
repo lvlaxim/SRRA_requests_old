@@ -103,10 +103,10 @@ public class UnloadController {
                 sqlQuery.append(" AND is_entity = ").append(isEntity);
             }
             if (!dateFrom.equals("")) {
-                sqlQuery.append(" AND receipt_date > '").append(dateFrom).append('\'');
+                sqlQuery.append(" AND end_date >= '").append(dateFrom).append('\'');
             }
             if (!dateTo.equals("")) {
-                sqlQuery.append(" AND receipt_date < '").append(dateTo).append('\'');
+                sqlQuery.append(" AND end_date <= '").append(dateTo).append('\'');
             }
             sqlQuery.append(" GROUP BY rubric_code");
             Statement statement = connection.createStatement();

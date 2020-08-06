@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Архивная справка</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" media="print" th:href="@{/css/print.css}">
+</head>
+<body style="position: relative;">
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <div class="text-center">
+                <img th:src="@{/images/logo.jpg}"/><br/>
+                Комитет по управлению<br/>
+                Архивным делом администрации<br/>
+                Ростовской области<br/>
+                <b>государственное учреждение <br/>
+                    Ростовской области <br/>
+                    «ГОСУДАРСТВЕННЫЙ АРХИВ <br/>
+                    РОСТОВСКОЙ ОБЛАСТИ» <br/>
+                    (ГУ ГАРО)</b><br/>
+                пр.Ворошиловский, 28<br/>
+                ГСП, 344006, г.Ростов-на-Дону,<br/>
+                Факс: (863) 2404892<br/>
+                Тел. 2406126, 2630501<br/>
+                ОКПО 00074234, ОГРН 1026103166540<br/>
+                ИНН/КПП 6163018728/6163011001<br/><br/>
+            </div>
+
+            АРХИВНАЯ СПРАВКА<br/><br/>
+
+            <span th:text="${request.getEndDate()} + ' №' + ${request.rubric.getRubric()} + '/' + ${request.getOutNumber()}"></span><br/>
+            На №
+            <span th:utext="${request.getInNumFromOrg() == '' ?
+            '<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>'
+            :
+            request.getInNumFromOrg()}">
+            </span> от <u><span style="text-decoration: underline" th:utext="${request.getInDate()}"></span></u>
+        </div>
+        <div class="col-4">ФКУ лечебное исправительное учреждение №23 (ФКУ ЛИУ-23 УФСИН России по Волгодонской
+            области)
+            Гора восточная, 151, г.
+        </div>
+    </div>
+
+    <br/>
+
+    <div>
+        <p style="text-indent: 20px"
+           th:utext="${#strings.unescapeJava(#strings.replace(#strings.escapeJava(request.getShortAnswer()),'\n','&lt;/ p&gt; &lt;p style=&quot;text-indent: 20px&quot; &gt;'))}"></p>
+    </div>
+
+    <div class="footer">
+        <span th:text="${request.getExecutor().getName()}+', '+${request.getExecutor().getJob()}"></span>&nbsp;
+        <span th:text="${request.getExecutor().getPhoneNumber()}+', '+${request.getExecutor().getEmail()}"></span><br/>
+    </div>
+    <div style="position: fixed;bottom:0;right: 11mm">
+        <span><b th:text="'Код - ' + ${request.getId()}"></b></span>
+    </div>
+</div>
+
+<script>
+    window.onload = () => window.print();
+</script>
+</body>
+</html>
