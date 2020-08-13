@@ -33,7 +33,7 @@ public class RequestController {
     private static final int INITIAL_PAGE = 0;
     private static final int INITIAL_PAGE_SIZE = 15;
     private static final int[] PAGE_SIZES = {5, 10, 20};
-    static List<String> whitelistOfIps = new ArrayList<>(Arrays.asList("192.168.1.156", "192.168.1.194", "192.168.1.29"));
+    static List<String> whitelistOfIps = new ArrayList<>(Arrays.asList("192.168.1.156", "192.168.1.194", "192.168.1.29", "192.168.1.4"));
 
     private final RequestService requestService;
     private final RubricService rubricService;
@@ -42,6 +42,7 @@ public class RequestController {
     private final ExecutorService executorService;
     private final PaymentService paymentService;
     private final PersonalDataService personalDataService;
+    private final RequestWithPersonalService requestWithPersonalService;
 
     private final ModelMapper modelMapper;
 
@@ -53,6 +54,7 @@ public class RequestController {
             ExecutorService executorService,
             PaymentService paymentService,
             PersonalDataService personalDataService,
+            RequestWithPersonalService requestWithPersonalService,
             ModelMapper modelMapper) {
         this.requestService = requestService;
         this.rubricService = rubricService;
@@ -61,12 +63,12 @@ public class RequestController {
         this.executorService = executorService;
         this.paymentService = paymentService;
         this.personalDataService = personalDataService;
+        this.requestWithPersonalService = requestWithPersonalService;
         this.modelMapper = modelMapper;
     }
 
     @GetMapping({"/requests", "/"})
     public ModelAndView requests(
-            @RequestParam("pageSize") Optional<Integer> pageSize,
             @RequestParam("page") Optional<Integer> page,
             @RequestParam(required = false) Integer id,
             @RequestParam(required = false) Integer outNumber,
@@ -77,15 +79,27 @@ public class RequestController {
             @RequestParam(required = false) String executeDateFrom,
             @RequestParam(required = false) String executeDateTo,
             @RequestParam(required = false) String inNumFromOrg,
-            @RequestParam(required = false) Boolean caseIns) {
+            @RequestParam(required = false) Boolean caseIns,
+            @RequestParam(required = false) String initiator,
+            HttpServletRequest servletRequest) {
+
         int evalPageSize = INITIAL_PAGE_SIZE;
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
-        RequestFilter filter = new RequestFilter(id, outNumber, smav, subject, answer, executor, executeDateFrom, executeDateTo, inNumFromOrg, caseIns);
         Pageable pageable = PageRequest.of(evalPage, evalPageSize, Sort.by("id").descending());
-        Page<Request> requests = requestService.getByFilter(filter, pageable);
+        RequestFilter filter = new RequestFilter(id, outNumber, smav, subject, answer, executor, executeDateFrom, executeDateTo, inNumFromOrg, caseIns, initiator);
+
+        Page<Request> requests;
+        if (whitelistOfIps.contains(servletRequest.getRemoteAddr()) && initiator != null) {
+            if (!initiator.equals("")) {
+                requests = requestWithPersonalService.getByFilterAndInitiator(filter, pageable);
+            } else {
+                requests = requestService.getByFilter(filter, pageable);
+            }
+        } else {
+            requests = requestService.getByFilter(filter, pageable);
+        }
         Page<RequestDto> requestsDto = new PageImpl<>(requests.get().map(this::convertToDto).collect(Collectors.toList()), pageable, requests.getTotalElements());
         Pager pager = new Pager(requests.getTotalPages(), requests.getNumber(), BUTTONS_TO_SHOW);
-
         ModelAndView modelAndView = new ModelAndView(requests.getTotalElements() == 1 ? "forward:/request" : "requests");
         modelAndView.addObject("filter", filter);
         modelAndView.addObject("requests", requestsDto);
@@ -99,7 +113,6 @@ public class RequestController {
 
     @GetMapping("/request")
     public ModelAndView request(
-            @RequestParam("pageSize") Optional<Integer> pageSize,
             @RequestParam("page") Optional<Integer> page,
             @RequestParam(required = false) Integer id,
             @RequestParam(required = false) Integer outNumber,
@@ -111,12 +124,22 @@ public class RequestController {
             @RequestParam(required = false) String executeDateTo,
             @RequestParam(required = false) String inNumFromOrg,
             @RequestParam(required = false) Boolean caseIns,
+            @RequestParam(required = false) String initiator,
             HttpServletRequest servletRequest) {
         int evalPageSize = 1;
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
-        RequestFilter filter = new RequestFilter(id, outNumber, smav, subject, answer, executor, executeDateFrom, executeDateTo, inNumFromOrg, caseIns);
+        RequestFilter filter = new RequestFilter(id, outNumber, smav, subject, answer, executor, executeDateFrom, executeDateTo, inNumFromOrg, caseIns, initiator);
         Pageable pageable = PageRequest.of(evalPage, evalPageSize, Sort.by("id").descending());
-        Page<Request> requests = requestService.getByFilter(filter, pageable);
+        Page<Request> requests;
+        if (whitelistOfIps.contains(servletRequest.getRemoteAddr()) && initiator != null) {
+            if (!initiator.equals("")) {
+                requests = requestWithPersonalService.getByFilterAndInitiator(filter, pageable);
+            } else {
+                requests = requestService.getByFilter(filter, pageable);
+            }
+        } else {
+            requests = requestService.getByFilter(filter, pageable);
+        }
         Page<RequestDto> requestsDto = new PageImpl<>(requests.get().map(this::convertToDto).collect(Collectors.toList()), pageable, requests.getTotalElements());
         Pager pager = new Pager(requests.getTotalPages(), requests.getNumber(), BUTTONS_TO_SHOW);
 
@@ -146,7 +169,6 @@ public class RequestController {
     @GetMapping("/new")
     public String addNew() {
         requestService.save(new Request());
-        //personalDataService.save(new PersonalData());
         return "redirect:/request";
     }
 
@@ -163,13 +185,17 @@ public class RequestController {
 
     @RequestMapping(value = "/request/update", params = "printInquiry", method = RequestMethod.POST)
     public ModelAndView printInquiry(@ModelAttribute("request") Request request,
-                                     @ModelAttribute("personalData") PersonalData personalData,
-                                     HttpServletRequest servletRequest) {
-        requestService.save(request);
-        if (whitelistOfIps.contains(servletRequest.getRemoteAddr())) {
-            personalDataService.save(new PersonalData(request.getId(), personalData.getRequestInitiator(), personalData.getShipment()));
-        }
+                                     @ModelAttribute("personalData") PersonalData personalData) {
         ModelAndView modelAndView = new ModelAndView("print_inquiry");
+        modelAndView.addObject("request", request);
+        modelAndView.addObject("personalData", personalData);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/request/update", params = "printLetter", method = RequestMethod.POST)
+    public ModelAndView printLetter(@ModelAttribute("request") Request request,
+                                    @ModelAttribute("personalData") PersonalData personalData) {
+        ModelAndView modelAndView = new ModelAndView("print_letter");
         modelAndView.addObject("request", request);
         modelAndView.addObject("personalData", personalData);
         return modelAndView;

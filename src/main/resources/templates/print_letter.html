@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Архивная справка</title>
+    <title>Пересылка</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
 </head>
@@ -27,26 +27,23 @@
                 ИНН/КПП 6163018728/6163011001<br/><br/>
             </div>
         </div>
-        <div class="col-4" th:text="${personalData.getRequestInitiator()}"></div>
+        <div class="col-4" th:text="${personalData.getShipment()}"></div>
     </div>
 
-    АРХИВНАЯ СПРАВКА<br/><br/>
-
-    <div style="font-size: 15pt">
-        <span th:text="${request.getEndDateFormated()} + ' №' + ${request.rubric.getRubric()} + '/' + ${request.getOutNumber()}"></span><br/>
-        На №
-        <span th:utext="${request.getInNumFromOrg() == '' ?
+    <span th:text="${request.getEndDateFormated()} + ' №' + ${request.rubric.getRubric()} + '/' + ${request.getOutNumber()}"></span><br/>
+    На №
+    <span th:utext="${request.getInNumFromOrg() == '' ?
             '<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>'
             :
             request.getInNumFromOrg()}">
-        </span>
-        от
-        <span th:utext="${request.getInDate() == null ?
+            </span>
+    от
+    <span th:utext="${request.getInDate() == null ?
             '<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>'
             :
             request.getInDateFormated()}">
-        </span>
-    </div>
+
+            </span>
 
     <br/>
     <br/>
@@ -63,8 +60,8 @@
     </div>
 
     <div style="position:fixed;bottom:0;">
-        <span th:text="${request.getExecutor().getName()}+', '+${request.getExecutor().getJob()}"></span><br/>
-        <span th:text="${request.getExecutor().getPhoneNumber() == null ? '': '8 (863) '+request.getExecutor().getPhoneNumber()+', '+(request.getExecutor().getEmail()== null ? '':request.getExecutor().getEmail())}"></span><br/>
+        <span th:text="${request.getExecutor().getName()}+', '+${request.getExecutor().getJob()}"></span>&nbsp;
+        <span th:text="${request.getExecutor().getPhoneNumber() == null ? '': '&lt;br/&gt;8 (863) '+request.getExecutor().getPhoneNumber()+', '+(request.getExecutor().getEmail()== null ? '':request.getExecutor().getEmail())}"></span><br/>
     </div>
     <div style="position: fixed;bottom:0;right: 11mm">
         <span><b th:text="'Код - ' + ${request.getId()}"></b></span>

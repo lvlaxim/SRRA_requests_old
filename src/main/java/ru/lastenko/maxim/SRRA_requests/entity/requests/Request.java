@@ -4,6 +4,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 @Entity
@@ -272,6 +273,10 @@ public class Request {
         return endDate;
     }
 
+    public String getEndDateFormated() {
+        return endDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+    }
+
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
@@ -310,6 +315,10 @@ public class Request {
 
     public LocalDate getInDate() {
         return inDate;
+    }
+
+    public String getInDateFormated() {
+        return inDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
     }
 
     public void setInDate(LocalDate inDate) {

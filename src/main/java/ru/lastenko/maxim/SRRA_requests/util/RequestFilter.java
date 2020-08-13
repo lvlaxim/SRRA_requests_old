@@ -22,12 +22,13 @@ public class RequestFilter {
     private LocalDate executeDateTo;
     private String inNumFromOrg;
     private Boolean caseInsensitive;
+    private String initiator;
 
 
     public RequestFilter() {
     }
 
-    public RequestFilter(Integer id, Integer outNumber, Integer smav, String subject, String answer, String executor, String executeDateFrom, String executeDateTo, String inNumFromOrg, Boolean caseInsensitive) {
+    public RequestFilter(Integer id, Integer outNumber, Integer smav, String subject, String answer, String executor, String executeDateFrom, String executeDateTo, String inNumFromOrg, Boolean caseInsensitive, String initiator) {
         this.id = id;
         this.outNumber = outNumber;
         this.smav = smav;
@@ -38,6 +39,7 @@ public class RequestFilter {
         this.executeDateTo = isEnabled(executeDateTo) ? LocalDate.parse(executeDateTo) : null;
         this.inNumFromOrg = inNumFromOrg;
         this.caseInsensitive = caseInsensitive != null ? caseInsensitive : false;
+        this.initiator = initiator;
     }
 
     public Specification getSpecification() {
@@ -111,7 +113,8 @@ public class RequestFilter {
                 || isEnabled(executor)
                 || executeDateFrom != null
                 || executeDateTo != null
-                || isEnabled(inNumFromOrg);
+                || isEnabled(inNumFromOrg)
+                || initiator != null;
     }
 
     private Boolean isEnabled(String s) {

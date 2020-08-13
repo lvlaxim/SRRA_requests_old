@@ -127,7 +127,7 @@
 
             <div class="form-group">
             <textarea class="form-control" id="formSubjectTextarea" rows="2" name="subject"
-                      th:text="${request.getSubject()}"></textarea>
+                      th:text="${request.getSubject()}" placeholder="Полная тема"></textarea>
             </div>
 
             <div th:if="${personalData}">
@@ -225,11 +225,12 @@
                     </div>
                 </div>
             </div>
-            <div class="row" th:hidden="${request.isChangeable()}">
+            <div class="row">
                 <div class="col-9">
                     <button type="submit" name="printInquiry" class="btn btn-primary">Справка</button>
+                    <button type="submit" name="printLetter" class="btn btn-primary">Письмо</button>
                 </div>
-                <div class="col-3">
+                <div class="col-3" th:hidden="${request.isChangeable()}">
                     <button type="reset" name="reset" class="btn btn-secondary">Отменить</button>
                     <button type="submit" name="save" class="btn btn-primary">Сохранить</button>
                 </div>

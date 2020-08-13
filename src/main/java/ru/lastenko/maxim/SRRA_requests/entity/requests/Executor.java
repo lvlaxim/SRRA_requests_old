@@ -27,7 +27,7 @@ public class Executor {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Column(name = "email")
+    @Column(name = "`e-mail`")
     private String email;
 
     public Executor() {
