@@ -91,7 +91,7 @@ public class RequestController {
         Page<Request> requests;
         if (whitelistOfIps.contains(servletRequest.getRemoteAddr()) && initiator != null) {
             if (!initiator.equals("")) {
-                requests = requestWithPersonalService.getByFilterAndInitiator(filter, pageable);
+                requests = requestWithPersonalService.getByFilterAndPersonal(filter, pageable);
             } else {
                 requests = requestService.getByFilter(filter, pageable);
             }
@@ -133,7 +133,7 @@ public class RequestController {
         Page<Request> requests;
         if (whitelistOfIps.contains(servletRequest.getRemoteAddr()) && initiator != null) {
             if (!initiator.equals("")) {
-                requests = requestWithPersonalService.getByFilterAndInitiator(filter, pageable);
+                requests = requestWithPersonalService.getByFilterAndPersonal(filter, pageable);
             } else {
                 requests = requestService.getByFilter(filter, pageable);
             }
@@ -142,7 +142,6 @@ public class RequestController {
         }
         Page<RequestDto> requestsDto = new PageImpl<>(requests.get().map(this::convertToDto).collect(Collectors.toList()), pageable, requests.getTotalElements());
         Pager pager = new Pager(requests.getTotalPages(), requests.getNumber(), BUTTONS_TO_SHOW);
-
         ModelAndView modelAndView = new ModelAndView("request");
         modelAndView.addObject("filter", filter);
         modelAndView.addObject("requests", requestsDto);
