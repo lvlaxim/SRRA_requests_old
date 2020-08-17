@@ -81,16 +81,16 @@ public class RequestController {
             @RequestParam(required = false) String inNumFromOrg,
             @RequestParam(required = false) Boolean caseIns,
             @RequestParam(required = false) String initiator,
+            @RequestParam(required = false) String shipment,
             HttpServletRequest servletRequest) {
 
         int evalPageSize = INITIAL_PAGE_SIZE;
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
         Pageable pageable = PageRequest.of(evalPage, evalPageSize, Sort.by("id").descending());
-        RequestFilter filter = new RequestFilter(id, outNumber, smav, subject, answer, executor, executeDateFrom, executeDateTo, inNumFromOrg, caseIns, initiator);
-
+        RequestFilter filter = new RequestFilter(id, outNumber, smav, subject, answer, executor, executeDateFrom, executeDateTo, inNumFromOrg, caseIns, initiator, shipment);
         Page<Request> requests;
-        if (whitelistOfIps.contains(servletRequest.getRemoteAddr()) && initiator != null) {
-            if (!initiator.equals("")) {
+        if (whitelistOfIps.contains(servletRequest.getRemoteAddr()) && initiator != null && shipment != null) {
+            if (!initiator.equals("") || !shipment.equals("")) {
                 requests = requestWithPersonalService.getByFilterAndPersonal(filter, pageable);
             } else {
                 requests = requestService.getByFilter(filter, pageable);
@@ -125,14 +125,15 @@ public class RequestController {
             @RequestParam(required = false) String inNumFromOrg,
             @RequestParam(required = false) Boolean caseIns,
             @RequestParam(required = false) String initiator,
+            @RequestParam(required = false) String shipment,
             HttpServletRequest servletRequest) {
         int evalPageSize = 1;
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
-        RequestFilter filter = new RequestFilter(id, outNumber, smav, subject, answer, executor, executeDateFrom, executeDateTo, inNumFromOrg, caseIns, initiator);
         Pageable pageable = PageRequest.of(evalPage, evalPageSize, Sort.by("id").descending());
+        RequestFilter filter = new RequestFilter(id, outNumber, smav, subject, answer, executor, executeDateFrom, executeDateTo, inNumFromOrg, caseIns, initiator, shipment);
         Page<Request> requests;
-        if (whitelistOfIps.contains(servletRequest.getRemoteAddr()) && initiator != null) {
-            if (!initiator.equals("")) {
+        if (whitelistOfIps.contains(servletRequest.getRemoteAddr()) && initiator != null && shipment != null) {
+            if (!initiator.equals("") || !shipment.equals("")) {
                 requests = requestWithPersonalService.getByFilterAndPersonal(filter, pageable);
             } else {
                 requests = requestService.getByFilter(filter, pageable);

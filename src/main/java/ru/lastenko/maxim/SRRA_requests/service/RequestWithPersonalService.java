@@ -9,6 +9,7 @@ import ru.lastenko.maxim.SRRA_requests.repository.personal_data.PersonalDataRepo
 import ru.lastenko.maxim.SRRA_requests.repository.requests.RequestRepository;
 import ru.lastenko.maxim.SRRA_requests.util.RequestFilter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -23,8 +24,19 @@ public class RequestWithPersonalService {
     }
 
     public Page<Request> getByFilterAndPersonal(RequestFilter filter, Pageable pageable) {
-        List<Integer> personalDataIdsByInitiator = personalDataRepository.findOnlyIdsByRequestInitiator("%"+filter.getInitiator()+"%");
-        Specification spec = (request, query, criteriaBuilder) -> request.get("id").in(personalDataIdsByInitiator);
+        Specification spec;
+        if (!filter.getInitiator().equals("") && filter.getShipment().equals("")) {
+            List<Integer> personalDataIds = personalDataRepository.findOnlyIdsByRequestInitiator("%" + filter.getInitiator() + "%");
+            spec = (request, query, criteriaBuilder) -> request.get("id").in(personalDataIds);
+        }
+        else if (filter.getInitiator().equals("") && !filter.getShipment().equals("")) {
+            List<Integer> personalDataIds = personalDataRepository.findOnlyIdsByShipment("%" + filter.getShipment() + "%");
+            spec = (request, query, criteriaBuilder) -> request.get("id").in(personalDataIds);
+        }
+        else  {
+            List<Integer> personalDataIds = personalDataRepository.findOnlyIdsByInitiatorAndShipment("%" + filter.getInitiator() + "%", "%" + filter.getShipment() + "%");
+            spec = (request, query, criteriaBuilder) -> request.get("id").in(personalDataIds);
+        }
         if (filter.getSpecification() != null) spec = filter.getSpecification().and(spec);
         return requestRepository.findAll(spec, pageable);
     }

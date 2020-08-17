@@ -11,7 +11,6 @@ import static ru.lastenko.maxim.SRRA_requests.repository.requests.RequestSpecifi
 
 @Data
 public class RequestFilter {
-
     private Integer id;
     private Integer outNumber;
     private Integer smav;
@@ -23,12 +22,12 @@ public class RequestFilter {
     private String inNumFromOrg;
     private Boolean caseInsensitive;
     private String initiator;
-
+    private String shipment;
 
     public RequestFilter() {
     }
 
-    public RequestFilter(Integer id, Integer outNumber, Integer smav, String subject, String answer, String executor, String executeDateFrom, String executeDateTo, String inNumFromOrg, Boolean caseInsensitive, String initiator) {
+    public RequestFilter(Integer id, Integer outNumber, Integer smav, String subject, String answer, String executor, String executeDateFrom, String executeDateTo, String inNumFromOrg, Boolean caseInsensitive, String initiator, String shipment) {
         this.id = id;
         this.outNumber = outNumber;
         this.smav = smav;
@@ -40,6 +39,7 @@ public class RequestFilter {
         this.inNumFromOrg = inNumFromOrg;
         this.caseInsensitive = caseInsensitive != null ? caseInsensitive : false;
         this.initiator = initiator;
+        this.shipment = shipment;
     }
 
     public Specification getSpecification() {

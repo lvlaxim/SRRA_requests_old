@@ -10,6 +10,9 @@ public interface PersonalDataRepository extends JpaRepository<PersonalData, Inte
     @Query("select id from #{#entityName} where lower(initiator) like lower(:initiator)")
     List<Integer> findOnlyIdsByRequestInitiator(String initiator);
 
-    @Query("select id from #{#entityName} where lower(initiator) like lower(:shipment)")
+    @Query("select id from #{#entityName} where lower(shipment) like lower(:shipment)")
     List<Integer> findOnlyIdsByShipment(String shipment);
+
+    @Query("select id from #{#entityName} where (lower(initiator) like lower(:initiator)) and (lower(shipment) like lower(:shipment))")
+    List<Integer> findOnlyIdsByInitiatorAndShipment(String initiator, String shipment);
 }

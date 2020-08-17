@@ -27,7 +27,7 @@
                 ИНН/КПП 6163018728/6163011001<br/><br/>
             </div>
         </div>
-        <div class="col-4" th:text="${personalData.getRequestInitiator()}"></div>
+        <div class="col-5" th:utext="${#strings.unescapeJava(#strings.replace(#strings.escapeJava(personalData.getRequestInitiator()),'\n','&lt;br/&gt;'))}"></div>
     </div>
 
     АРХИВНАЯ СПРАВКА<br/><br/>

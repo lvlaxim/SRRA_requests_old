@@ -27,7 +27,7 @@
                 ИНН/КПП 6163018728/6163011001<br/><br/>
             </div>
         </div>
-        <div class="col-4" th:text="${personalData.getShipment()}"></div>
+        <div class="col-5" th:utext="${#strings.unescapeJava(#strings.replace(#strings.escapeJava(personalData.getShipment()),'\n','&lt;br/&gt;'))}"></div>
     </div>
 
     <span th:text="${request.getEndDateFormated()} + ' №' + ${request.rubric.getRubric()} + '/' + ${request.getOutNumber()}"></span><br/>
@@ -60,8 +60,8 @@
     </div>
 
     <div style="position:fixed;bottom:0;">
-        <span th:text="${request.getExecutor().getName()}+', '+${request.getExecutor().getJob()}"></span>&nbsp;
-        <span th:text="${request.getExecutor().getPhoneNumber() == null ? '': '&lt;br/&gt;8 (863) '+request.getExecutor().getPhoneNumber()+', '+(request.getExecutor().getEmail()== null ? '':request.getExecutor().getEmail())}"></span><br/>
+        <span th:text="${request.getExecutor().getName()}+', '+${request.getExecutor().getJob()}"></span><br/>
+        <span th:text="${request.getExecutor().getPhoneNumber() == null ? '': '8 (863) '+request.getExecutor().getPhoneNumber()+', '+(request.getExecutor().getEmail()== null ? '':request.getExecutor().getEmail())}"></span><br/>
     </div>
     <div style="position: fixed;bottom:0;right: 11mm">
         <span><b th:text="'Код - ' + ${request.getId()}"></b></span>
