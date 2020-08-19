@@ -1,94 +1,55 @@
 body {
-    font-family: "Times New Roman", serif;
-    font-size: 14px;
+    font-family: 'Times New Roman', serif;
+    font-size: 18pt;
+    padding: 0mm 15.0mm 0mm 20.0mm;
+    margin: 0
+}
+p {
+    text-indent: 1.5cm;
+    text-align: justify
+}
+
+.page-footer-space {
+    height: 75px;
+}
+
+.page-footer-code {
+    position: fixed;
+    bottom: 0;
+    left: 212mm;
+    font-size: 18pt;
+}
+
+.page-footer-executor {
+    position: fixed;
+    bottom: 0;
+    left: 20mm;
+    width: 100%;
+    font-size: 18pt;
+}
+
+.page {
+    page-break-after: always;
+}
+
+@page {
+    margin: 20mm
 }
 
 @media print {
-    @page {
-        size: A4;
+    thead {
+        display: table-header-group;
     }
 
-    .main-text {
-        width: 210mm;
-        /* height: 297mm; */
-        height: 282mm;
-        overflow: visible;
-        margin: 0 0 10mm 0;
+    tfoot {
+        display: table-footer-group;
     }
 
-    .footer {
-        position: fixed;
-        bottom: 0;
+    button {
+        display: none;
     }
 
-    .content-block, p {
-        page-break-inside: avoid;
-    }
-
-    html, body {
-        width: 210mm;
-        height: 297mm;
-    }
-}
-
-/*  BOOTSTRAP  */
-
-.row {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    margin-right: -15px;
-    margin-left: -15px;
-}
-
-.col-6 {
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 50%;
-    flex: 0 0 50%;
-    max-width: 50%;
-}
-
-.col-4 {
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 33.333333%;
-    flex: 0 0 33.333333%;
-    max-width: 33.333333%;
-}
-
-.text-center {
-    text-align: center !important;
-}
-
-.container {
-    width: 100%;
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
-}
-
-@media (min-width: 576px) {
-    .container {
-        max-width: 540px;
-    }
-}
-
-@media (min-width: 768px) {
-    .container {
-        max-width: 720px;
-    }
-}
-
-@media (min-width: 992px) {
-    .container {
-        max-width: 960px;
-    }
-}
-
-@media (min-width: 1200px) {
-    .container {
-        max-width: 1140px;
+    body {
+        margin: 0;
     }
 }

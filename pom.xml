@@ -8,7 +8,7 @@
         <version>2.1.6.RELEASE</version>
         <relativePath/> <!-- lookup parent from requestRepository -->
     </parent>
-    <groupId>ru.lastenko.maxim</groupId>
+    <groupId>ru.gosarhro</groupId>
     <artifactId>SRRA_requests</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>SRRA_requests</name>
