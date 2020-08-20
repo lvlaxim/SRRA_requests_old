@@ -35,6 +35,9 @@
                         <a class="dropdown-item" href="/requests">Отменить</a>
                     </div>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/unload">Выгрузка</a>
+                </li>
             </ul>
 
         </div>
@@ -55,21 +58,21 @@
 
                         <div class="modal-body">
                             <div class="row">
-                                <div class="col-4">
+                                <div class="col">
                                     <div class="form-group">
                                         <label for="filterRequestId">Код запроса</label>
                                         <input class="form-control" type="text" name="id" id="filterRequestId"
                                                th:value="${filter.getId()}"/>
                                     </div>
                                 </div>
-                                <div class="col-4">
+                                <div class="col">
                                     <div class="form-group">
                                         <label for="filterOutNumber">Исх. №</label>
                                         <input class="form-control" type="text" name="outNumber" id="filterOutNumber"
                                                th:value="${filter.getOutNumber()}">
                                     </div>
                                 </div>
-                                <div class="col-4">
+                                <div class="col">
                                     <div class="form-group">
                                         <label for="filterSmav">№ СМЭВ</label>
                                         <input class="form-control" type="text" name="smav" id="filterSmav"
@@ -129,7 +132,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-5">
+                                <div class="col">
                                     <div class="form-group">
                                         <label for="formExecutorSelect">Исполнил</label>
                                         <select class="form-control" name="executor" id="formExecutorSelect">
@@ -143,13 +146,30 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-2"></div>
-                                <div class="col-5">
+                                <div class="col">
                                     <div class="form-group">
                                         <label for="formInNumberFromOrg">Входящий № орг.</label>
                                         <input class="form-control" type="text" id="formInNumberFromOrg"
                                                name="inNumFromOrg"
                                                th:value="${filter.getInNumFromOrg()}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="formInNumberFromOrg">Инициатор</label>
+                                        <input class="form-control" type="text" id="initiator"
+                                               name="initiator"
+                                               th:value="${filter.getInitiator()}">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="formInNumberFromOrg">Пересылка</label>
+                                        <input class="form-control" type="text" id="shipment"
+                                               name="shipment"
+                                               th:value="${filter.getShipment()}">
                                     </div>
                                 </div>
                             </div>

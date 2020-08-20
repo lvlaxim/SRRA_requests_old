@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Печать</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/css/print.css}">
+</head>
+<body>
+
+<div class="page-footer-executor">
+    <span th:text="${request.getExecutor().getName()}+', '+${request.getExecutor().getJob()}"></span>
+    <br/>
+    <span th:text="${request.getExecutor().getPhoneNumber() == null ? '': '8 (863) '+request.getExecutor().getPhoneNumber()+', '+(request.getExecutor().getEmail()== null ? '':request.getExecutor().getEmail())}"></span>
+</div>
+<div class="page-footer-code">
+    <span><b th:text="'Код - ' + ${request.getId()}"></b></span>
+</div>
+
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <div class="page">
+                <div class="row justify-content-between">
+                    <div class="col-5">
+                        <div class="text-center" style="font-size: 12.5pt">
+                            <img style="height: 1.53cm; width: 1.53cm" th:src="@{/images/logo.png}"/><br/>
+                            Комитет по управлению<br/>
+                            архивным делом Ростовской области<br/>
+                            <b>государственное казённое учреждение<br/>
+                                Ростовской области <br/>
+                                «Государственный архив <br/>
+                                Ростовское области» <br/>
+                                (ГКУ РО «ГАРО»)</b><br/>
+                            пр.Ворошиловский, 28<br/>
+                            г.Ростов-на-Дону, 344006,<br/>
+                            Тел (863) 2404892, 2406126, 2630501<br/>
+                            email:garo@gosarhro.ru<br/>
+                            ОКПО 03492729, ОГРН 1026103166540<br/>
+                            ИНН/КПП 6163018728/6163011001<br/><br/>
+                        </div>
+                    </div>
+                    <div class="col-5"
+                         th:utext="${#strings.unescapeJava(#strings.replace(#strings.escapeJava(personalData),'\n','&lt;br/&gt;'))}"></div>
+                </div>
+
+                <div th:if="${isInquiry}">АРХИВНАЯ СПРАВКА<br/><br/></div>
+
+                <div style="font-size: 15pt">
+                    <span th:text="${request.getEndDateFormated()} + ' №' + ${request.rubric.getRubric()} + '/' + ${request.getOutNumber()}"></span><br/>
+                    На №
+                    <span th:utext="${request.getInNumFromOrg() == '' ?
+            '<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>'
+            :
+            request.getInNumFromOrg()}">
+                    </span>
+                    от
+                    <span th:utext="${request.getInDate() == null ?
+            '<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>'
+            :
+            request.getInDateFormated()}">
+                    </span>
+                </div>
+
+                <br/>
+
+                <div>
+                    <p
+                            th:utext="${#strings.unescapeJava(#strings.replace(#strings.escapeJava(request.getShortAnswer()),'\n','&lt;/ p&gt; &lt;p style=&quot;text-indent: 1.5cm; text-align: justify&quot; &gt;'))}"></p>
+                    <br/>
+                    <br/>
+                    <p class="row" style="text-indent: 1.5cm">
+                        <span class="col-9">Директор</span>
+                        <span class="col-3" style="text-align: right">Н.А. Трапш <br/>мп</span>
+                    </p>
+                </div>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+
+    <tfoot>
+    <tr>
+        <td>
+            <!--place holder for the fixed-position footer-->
+            <div class="page-footer-space"></div>
+        </td>
+    </tr>
+    </tfoot>
+</table>
+
+
+<script>
+    window.onload = () => {
+        window.print();
+    }
+</script>
+</body>
+</html>

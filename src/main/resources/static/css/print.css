@@ -1,0 +1,55 @@
+body {
+    font-family: 'Times New Roman', serif;
+    font-size: 18pt;
+    padding: 0mm 15.0mm 0mm 20.0mm;
+    margin: 0
+}
+p {
+    text-indent: 1.5cm;
+    text-align: justify
+}
+
+.page-footer-space {
+    height: 75px;
+}
+
+.page-footer-code {
+    position: fixed;
+    bottom: 0;
+    left: 212mm;
+    font-size: 18pt;
+}
+
+.page-footer-executor {
+    position: fixed;
+    bottom: 0;
+    left: 20mm;
+    width: 100%;
+    font-size: 18pt;
+}
+
+.page {
+    page-break-after: always;
+}
+
+@page {
+    margin: 20mm
+}
+
+@media print {
+    thead {
+        display: table-header-group;
+    }
+
+    tfoot {
+        display: table-footer-group;
+    }
+
+    button {
+        display: none;
+    }
+
+    body {
+        margin: 0;
+    }
+}
