@@ -17,11 +17,12 @@
     <span><b th:text="'Код - ' + ${request.getId()}"></b></span>
 </div>
 
-<table>
-    <tbody>
-    <tr>
-        <td>
-            <div class="page">
+
+<div class="container page">
+    <table>
+        <tbody>
+        <tr>
+            <td>
                 <div class="row justify-content-between">
                     <div class="col-5">
                         <div class="text-center" style="font-size: 12.5pt">
@@ -53,21 +54,18 @@
                     <span th:utext="${request.getInNumFromOrg() == '' ?
             '<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>'
             :
-            request.getInNumFromOrg()}">
-                    </span>
+            request.getInNumFromOrg()}"></span>
                     от
                     <span th:utext="${request.getInDate() == null ?
             '<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>'
             :
-            request.getInDateFormated()}">
-                    </span>
+            request.getInDateFormated()}"></span>
                 </div>
 
                 <br/>
 
-                <div>
-                    <p
-                            th:utext="${#strings.unescapeJava(#strings.replace(#strings.escapeJava(request.getShortAnswer()),'\n','&lt;/ p&gt; &lt;p style=&quot;text-indent: 1.5cm; text-align: justify&quot; &gt;'))}"></p>
+                <div style="min-width: 211mm;">
+                    <p th:utext="${#strings.unescapeJava(#strings.replace(#strings.escapeJava(request.getShortAnswer()),'\n','&lt;/ p&gt; &lt;p&gt;'))}"></p>
                     <br/>
                     <br/>
                     <p class="row" style="text-indent: 1.5cm">
@@ -75,20 +73,19 @@
                         <span class="col-3" style="text-align: right">Н.А. Трапш <br/>мп</span>
                     </p>
                 </div>
-            </div>
-        </td>
-    </tr>
-    </tbody>
+            </td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td>
+                <div class="page-footer-space"></div>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
 
-    <tfoot>
-    <tr>
-        <td>
-            <!--place holder for the fixed-position footer-->
-            <div class="page-footer-space"></div>
-        </td>
-    </tr>
-    </tfoot>
-</table>
+</div>
 
 
 <script>

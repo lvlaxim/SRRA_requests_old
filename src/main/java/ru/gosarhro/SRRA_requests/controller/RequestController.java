@@ -3,6 +3,7 @@ package ru.gosarhro.SRRA_requests.controller;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -127,8 +128,7 @@ public class RequestController {
             @RequestParam(required = false) Boolean caseIns,
             @RequestParam(required = false) String initiator,
             @RequestParam(required = false) String shipment,
-            HttpServletRequest servletRequest,
-            RedirectAttributes redirectAttributes) {
+            HttpServletRequest servletRequest) {
         int evalPageSize = 1;
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
         Pageable pageable = PageRequest.of(evalPage, evalPageSize, Sort.by("id").descending());
@@ -183,25 +183,62 @@ public class RequestController {
         if (whitelistOfIps.contains(servletRequest.getRemoteAddr())) {
             personalDataService.save(new PersonalData(request.getId(), personalData.getRequestInitiator(), personalData.getShipment()));
         }
-        redirectAttributes.addFlashAttribute("action", "save");
-        return "redirect:/request";
+        redirectAttributes.addFlashAttribute("action", "Изменения сохранены");
+        return "redirect:" + servletRequest.getHeader("Referer");
     }
 
     @RequestMapping(value = "/request/update", params = "printInquiry", method = RequestMethod.POST)
-    public ModelAndView printInquiry(@ModelAttribute("request") Request request) {
-        ModelAndView modelAndView = new ModelAndView("print_page");
-        modelAndView.addObject("request", request);
-        modelAndView.addObject("personalData", personalDataService.getById(request.getId()).getRequestInitiator());
-        modelAndView.addObject("isInquiry", true);
-        return modelAndView;
+    public String printInquiry(@ModelAttribute("request") Request request,
+                               @ModelAttribute("personalData") PersonalData personalData,
+                               Model model,
+                               HttpServletRequest servletRequest,
+                               RedirectAttributes redirectAttributes) {
+        LocalDate endDate = requestService.getById(request.getId()).getEndDate();
+        if (endDate == null || !LocalDate.now().isAfter(endDate.plusDays(10))) {
+            requestService.save(request);
+            if (whitelistOfIps.contains(servletRequest.getRemoteAddr())) {
+                personalDataService.save(new PersonalData(request.getId(), personalData.getRequestInitiator(), personalData.getShipment()));
+            }
+        }
+        if (request.getEndDate() == null) {
+            redirectAttributes.addFlashAttribute("action", "Не задана дата исполнения");
+            return "redirect:" + servletRequest.getHeader("Referer");
+        }
+        if (personalData.getRequestInitiator().equals("")) {
+            redirectAttributes.addFlashAttribute("action", "Не задан инициатор");
+            return "redirect:" + servletRequest.getHeader("Referer");
+
+        }
+        model.addAttribute("request", request);
+        model.addAttribute("personalData", personalDataService.getById(request.getId()).getRequestInitiator());
+        model.addAttribute("isInquiry", true);
+        return "print_page";
     }
 
     @RequestMapping(value = "/request/update", params = "printLetter", method = RequestMethod.POST)
-    public ModelAndView printLetter(@ModelAttribute("request") Request request) {
-        ModelAndView modelAndView = new ModelAndView("print_page");
-        modelAndView.addObject("request", request);
-        modelAndView.addObject("personalData", personalDataService.getById(request.getId()).getShipment());
-        return modelAndView;
+    public String printLetter(@ModelAttribute("request") Request request,
+                              @ModelAttribute("personalData") PersonalData personalData,
+                              Model model,
+                              HttpServletRequest servletRequest,
+                              RedirectAttributes redirectAttributes) {
+        LocalDate endDate = requestService.getById(request.getId()).getEndDate();
+        if (endDate == null || !LocalDate.now().isAfter(endDate.plusDays(10))) {
+            requestService.save(request);
+            if (whitelistOfIps.contains(servletRequest.getRemoteAddr())) {
+                personalDataService.save(new PersonalData(request.getId(), personalData.getRequestInitiator(), personalData.getShipment()));
+            }
+        }
+        if (request.getEndDate() == null) {
+            redirectAttributes.addFlashAttribute("action", "Не задана дата исполнения");
+            return "redirect:" + servletRequest.getHeader("Referer");
+        }
+        if (personalData.getShipment().equals("")) {
+            redirectAttributes.addFlashAttribute("action", "Не задана пересылка");
+            return "redirect:" + servletRequest.getHeader("Referer");
+        }
+        model.addAttribute("request", request);
+        model.addAttribute("personalData", personalDataService.getById(request.getId()).getShipment());
+        return "print_page";
     }
 
     private RequestDto convertToDto(Request request) {
@@ -221,10 +258,10 @@ public class RequestController {
         if (request.getPayment() == null) {
             requestDto.setPayment(Payment.EMPTY_PAYMENT);
         }
-        requestDto.setChangeable(false);
+        requestDto.setChangeable(true);
         if (request.getEndDate() != null
                 && LocalDate.now().isAfter(request.getEndDate().plusDays(10))) {
-            requestDto.setChangeable(true);
+            requestDto.setChangeable(false);
         }
         if (request.getReceiptDate() != null) {
             Long daysLeft = DAYS.between(LocalDate.now(), request.getReceiptDate()) + 30;

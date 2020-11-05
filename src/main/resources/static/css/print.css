@@ -1,46 +1,36 @@
 body {
     font-family: 'Times New Roman', serif;
     font-size: 18pt;
-    padding: 0mm 15.0mm 0mm 20.0mm;
-    margin: 0
 }
 p {
-    text-indent: 1.5cm;
+    text-indent: 1.25cm;
     text-align: justify
 }
-
 .page-footer-space {
-    height: 75px;
+    height: 30mm;
 }
 
 .page-footer-code {
     position: fixed;
-    bottom: 0;
-    left: 212mm;
-    font-size: 18pt;
+    bottom: 10mm;
+    right: 20mm;
+    font-size: 15pt
 }
 
 .page-footer-executor {
     position: fixed;
-    bottom: 0;
-    left: 20mm;
-    width: 100%;
-    font-size: 18pt;
+    bottom: 10mm;
+    left: 25mm;
+    font-size: 15pt
 }
 
 .page {
     page-break-after: always;
-}
-
-@page {
-    margin: 20mm
+    padding: 0 20mm 0 25mm;
+    margin: 0
 }
 
 @media print {
-    thead {
-        display: table-header-group;
-    }
-
     tfoot {
         display: table-footer-group;
     }

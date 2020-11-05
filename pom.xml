@@ -10,9 +10,9 @@
     </parent>
     <groupId>ru.gosarhro</groupId>
     <artifactId>SRRA_requests</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>SRRA_requests</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Spring project for tracking submitted requests to the archive</description>
 
     <properties>
         <java.version>11</java.version>
