@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ru.gosarhro.SRRA_requests.entity.personal_data.ComputerWithAccess;
 import ru.gosarhro.SRRA_requests.entity.personal_data.PersonalData;
 import ru.gosarhro.SRRA_requests.service.*;
 import ru.gosarhro.SRRA_requests.dto.RequestDto;
@@ -21,8 +22,6 @@ import ru.gosarhro.SRRA_requests.util.RequestFilter;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -35,7 +34,7 @@ public class RequestController {
     private static final int INITIAL_PAGE = 0;
     private static final int INITIAL_PAGE_SIZE = 15;
     private static final int[] PAGE_SIZES = {5, 10, 20};
-    static List<String> whitelistOfIps = new ArrayList<>(Arrays.asList("0:0:0:0:0:0:0:1", "192.168.1.156", "192.168.1.194", "192.168.1.29", "192.168.1.4", "192.168.1.23"));
+    static List<String> whitelistOfIps;
 
     private final RequestService requestService;
     private final RubricService rubricService;
@@ -45,6 +44,7 @@ public class RequestController {
     private final PaymentService paymentService;
     private final PersonalDataService personalDataService;
     private final RequestWithPersonalService requestWithPersonalService;
+    private final ComputerWithAccessService computerWithAccessService;
 
     private final ModelMapper modelMapper;
 
@@ -57,6 +57,7 @@ public class RequestController {
             PaymentService paymentService,
             PersonalDataService personalDataService,
             RequestWithPersonalService requestWithPersonalService,
+            ComputerWithAccessService computerWithAccessService,
             ModelMapper modelMapper) {
         this.requestService = requestService;
         this.rubricService = rubricService;
@@ -66,7 +67,9 @@ public class RequestController {
         this.paymentService = paymentService;
         this.personalDataService = personalDataService;
         this.requestWithPersonalService = requestWithPersonalService;
+        this.computerWithAccessService = computerWithAccessService;
         this.modelMapper = modelMapper;
+        whitelistOfIps = computerWithAccessService.getAll().stream().map(ComputerWithAccess::getIp).collect(Collectors.toList());
     }
 
     @GetMapping({"/requests", "/"})
