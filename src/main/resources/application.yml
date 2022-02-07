@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    jdbc-url: jdbc:postgresql://localhost:5432/archive
+    username: postgres
+    password: password
+
+  personal-datasource:
+    jdbc-url: jdbc:postgresql://localhost:5432/personal
+    password: password
+    username: postgres
+
+  jpa:
+    generate-ddl: true
+    properties:
+      hibernate:
+        default_schema: requests
+
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+

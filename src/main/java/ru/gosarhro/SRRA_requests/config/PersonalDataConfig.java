@@ -27,7 +27,7 @@ import javax.sql.DataSource;
 public class PersonalDataConfig {
 
     @Bean(name = "personalDataSource")
-    @ConfigurationProperties(prefix = "spring.second-datasource")
+    @ConfigurationProperties(prefix = "spring.personal-datasource")
     public DataSource dataSource() {
         return DataSourceBuilder.create().build();
     }
